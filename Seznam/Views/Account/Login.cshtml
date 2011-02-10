@@ -1,0 +1,39 @@
+﻿@model LoginViewModel
+<article class="form" id="login">
+    <script>
+        $(function () {
+            $("#login form:first").submit(function (o) {
+
+                jQT.submitForm(o, function (success) {
+                    if (!success) {
+                        jQT.goTo("#login_error");
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+
+    <div class="toolbar">
+        <a class="back" href="#home">Home</a>
+        <h1>Log in</h1>
+    </div>
+    @{Html.BeginForm("Login", "Account", FormMethod.Post);}
+        <ul class="rounded">
+            <li>@Html.TextBoxFor(m => m.Username, new { placeholder = "Username" })</li>
+            <li>@Html.PasswordFor(m => m.Password, new { placeholder = "Password" })</li>
+            <li>Remember me <span class="toggle">@Html.CheckBoxFor(m => m.RembemberLogin)</span></li>
+        </ul>
+        <a class="submit whiteButton">Enter</a>
+    @{Html.EndForm();}
+</article>
+<article id="login_error">
+    <div class="toolbar">
+        <h1>Login error</h1>
+        <a class="back" href="#login">Back</a>
+    </div>
+    <p class="info">
+        Could not log in. Please go back and try again!
+    </p>
+</article>

@@ -1,0 +1,15 @@
+﻿@model dynamic
+
+<article id="home" class="current"> 
+    <div class="toolbar"> 
+        <h1>Seznam</h1> 
+        <a class="button slideup" id="infoButton" href="#about">About</a> 
+    </div>
+    <ul class="rounded">
+        <li class="forward"><a href="#login">Log in</a></li> 
+        <li class="forward"><a href="#signup">Sign up</a></li> 
+    </ul> 
+</article> 
+
+@Html.Action("Login", "Account", null)
+@Html.Action("Signup", "Account", null)

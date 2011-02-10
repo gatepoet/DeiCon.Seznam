@@ -1,0 +1,14 @@
+﻿@model SignupViewModel
+<article id="signup">
+    <div class="toolbar">
+        <a class="back" href="#home">Home</a>
+        <h1>Sign up</h1>
+    </div>
+    @{Html.BeginForm("Signup", "Account", FormMethod.Post);}
+        <ul class="rounded">
+            <li>@Html.TextBoxFor(m => m.Username, new { placeholder = "Username" })</li>
+            <li>@Html.TextBoxFor(m => m.Password, new { placeholder = "Password" })</li>
+        </ul>
+        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#" class="submit whiteButton">Submit</a>
+    @{Html.EndForm();}
+</article>

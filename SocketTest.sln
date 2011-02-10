@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketTest", "SocketTest\SocketTest.csproj", "{7F0083A4-3C6D-40A4-8DCD-F2E8B040D229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seznam", "Seznam\Seznam.csproj", "{FE8D59AC-4AF9-4BC9-825A-AC32CB4DFB52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socket.IO", "Socket.IO\Socket.IO.csproj", "{FF274B2E-9B51-48C9-ABDB-D76E765D4917}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F0083A4-3C6D-40A4-8DCD-F2E8B040D229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0083A4-3C6D-40A4-8DCD-F2E8B040D229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0083A4-3C6D-40A4-8DCD-F2E8B040D229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0083A4-3C6D-40A4-8DCD-F2E8B040D229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8D59AC-4AF9-4BC9-825A-AC32CB4DFB52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8D59AC-4AF9-4BC9-825A-AC32CB4DFB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8D59AC-4AF9-4BC9-825A-AC32CB4DFB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8D59AC-4AF9-4BC9-825A-AC32CB4DFB52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

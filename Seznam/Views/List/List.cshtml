@@ -1,0 +1,135 @@
+﻿@model ListViewModel
+@using Seznam.Models;
+
+
+<article id="my_lists"> 
+    <div class="toolbar"> 
+        <a class="back" href="#loggedin_home">Home</a>
+        <h1>My lists</h1> 
+        <a class="button slidedown" href="#add_list">Add</a> 
+    </div>
+
+    <ul class="rounded">
+        @foreach (var list in Model.Lists) {
+            <li class="arrow"><a href="@Url.Action("My", "List")/@list.Name">@list.Name</a> <small class="counter">@list.Count</small></li> 
+        }
+        <li class="arrow"><a href="#add_list">Add</a> </li> 
+    </ul>
+</article> 
+<article id="add_list" class="form">
+@*    <script>
+        $("#add_list form").submit(function (form) {
+            var items = [
+                $("#my_lists"),
+                $("#add_list"),
+                $("#loggedin_home")
+                ];
+
+            jQT.submitForm(form, function (success) {
+                for (i = 0; i < items.length; i++) {
+                    items[i].remove();
+                }
+                return false;
+            });
+        });
+    </script>
+*@
+    <script>
+        function createListItem(name, count) {
+            var url = '@Url.Action("My", "List")/' + name;
+            var html = '<li class="arrow">';
+            html += '<a href="' + url + '">' + name + '</a> ';
+            html += '<small class="counter">' + count + '</small>';
+            html += '</li>\n';
+            return html;
+        }
+    </script>
+    <script>
+        function listItemAdded(listId, data) {
+            var $list = $(listId + " ul");
+            var row = createListItem(data.name, data.count);
+            $list.children().last().before(row);
+
+            var $counter = $("#loggedin_home ul li:first .counter")
+            $counter.html(data.totalCount);
+
+            jQT.goTo(listId);
+
+        }
+
+        function put($form, success) {
+            $.ajax({
+                type: 'PUT',
+                url: $form.attr('action'),
+                dataType: 'json',
+                data: $form.serialize(),
+                processData: false,
+                success: success,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    throw("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+                }
+            });
+        }
+        function get(url, success) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                processData: false,
+                success: success,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    throw("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+                }
+            });
+        }
+        function newItemAdded(listId, name) {
+            var url = '@Url.Action("Detail", "List")/' + name;
+            get(url, function (data, textStatus) {
+                listItemAdded(listId, data);
+            });
+        }
+
+        $(function () {
+            $("add_list").bind('pageAnimationStart', function (event, info) {
+                if (info.direction != 'in') return;
+
+                //$(".info", $(this)).hide();
+            });
+            $("#add_list form").submit(function (e) {
+                $('#myloading').css("display", "");
+                $('#myloading').center();
+                var $form = $(this);
+                var name = $("input[name='name']", $form).val();
+
+                put($form, function (data, textStatus) {
+                    if (data['ok'] == true) {
+                        $("input[name='name']", $form).val("");
+                        newItemAdded("#my_lists", name);
+                        $('#myloading').css("display", "none");
+                    } else {
+                        throw("Oooops!, something failed");
+                    }
+                });
+                e.preventDefault();
+                return false;
+            });
+        });
+        jQuery.fn.center = function () {
+            this.css("position", "absolute");
+            this.css("top", ($(window).height() - this.height()) / 2 + $(window).scrollTop() + "px");
+            this.css("left", ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + "px");
+            return this;
+        }
+    </script>
+    <div class="toolbar"> 
+        <a class="back" href="#loggedin_home">Home</a>
+        <h1>Add list</h1> 
+        <a class="button slideup" href="#my_lists">Cancel</a> 
+    </div>
+    @{Html.BeginForm("Add", "List");}
+        <ul class="rounded">
+            <li><input type="text" name="name" placeholder="New list"/></li>
+        </ul>
+        <a class="submit whiteButton">Add</a>
+    @{Html.EndForm();}
+</article>

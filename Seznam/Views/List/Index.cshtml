@@ -1,0 +1,16 @@
+﻿@model ListHomeViewModel
+@using Seznam.Models;
+
+
+<article id="loggedin_home"> 
+    <div class="toolbar"> 
+        <h1>Seznam</h1> 
+        @Html.ActionLink("Log out", "Logout", "Account", null, new { @class = "button slideup" })
+    </div>
+    <ul class="rounded"> 
+        <li class="arrow"><a href="#my_lists">My lists</a> <small class="counter">@Model.PersonalListCount</small></li> 
+        <li class="arrow">@Html.ActionLink("Shared lists", "Shared") <small class="counter">@Model.SharedListCount</small></li> 
+    </ul> 
+</article>
+
+@Html.Action("My", "List", null)
