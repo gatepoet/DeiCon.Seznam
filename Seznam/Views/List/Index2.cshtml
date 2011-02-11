@@ -1,0 +1,101 @@
+﻿@Model dynamic
+
+<article id="loggedin_home"> 
+@if (false){
+    <script src="../../Scripts/dojo.js.uncompressed.js" type="text/javascript"></script>
+    <script src="../../Scripts/jqtouch.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery-1.4.1.js" type="text/javascript"></script>
+    <script src="../../Scripts/Seznam.js" type="text/javascript"></script>
+}
+    <script src='@Url.Content("~/Scripts/Seznam.js")' type="text/javascript"></script>
+    <script>
+        $(function () {
+            var seznam = new Seznam("loggedin_home", "my_lists", "my_list_view");
+            hookupEvents();
+            initializeLists();
+
+            function initializeLists() {
+                var url = '@Url.Action("All", "List")';
+                Net.get(url, function (data) {
+                    var personalLists = data.personalLists;
+                    var lists = new Array();
+                    for (i = 0; i < personalLists.length; i++) {
+                        var l = personalLists[i];
+                        var list = new PersonalList(l.name, l.count);
+                        lists.push(list)
+                    }
+                    seznam.personalLists.addAll(lists);
+                });
+            }
+
+            function hookupEvents() {
+                dojo.subscribe(Events.PersonalListAddedEvent, function (message) {
+                    var list = new PersonalList(message.name, message.count);
+                    seznam.personalLists.add(list);
+                });
+
+                dojo.subscribe(Events.CreateNewListEvent, function ($form) {
+                    var nameElement = $("input[name='name']", $form);
+
+                    var name = nameElement.val();
+                    Net.put($form, function (data) {
+                        if (data['ok'] == true) {
+                            nameElement.clear();
+                            fakeServerEvent_personalListAdded(name);
+                            jQT.goBack();
+                        } else {
+                            throw ("Oooops!, something failed");
+                        }
+                    });
+
+                    function fakeServerEvent_personalListAdded(name) {
+                        var url = '@Url.Action("Detail", "List")/' + name;
+                        Net.get(url, function (data) {
+                            dojo.publish(Events.PersonalListAddedEvent, [data]);
+                        });
+                    }
+                });
+
+                $("#add_list form").submit(function (e) {
+                    dojo.publish(Events.CreateNewListEvent, [$(this)]);
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        });
+</script>
+    <div class="toolbar"> 
+        <h1>Seznam</h1> 
+        @Html.ActionLink("Log out", "Logout", "Account", null, new { @class = "button slideup" })
+    </div>
+    <ul class="rounded"> 
+        <li class="arrow"><a href="#my_lists">My lists</a> <small class="counter"></small></li> 
+        <li class="arrow"><a href="#shared_lists">Shared lists</a> <small class="counter">0</small></li> 
+    </ul> 
+</article>
+
+<article id="my_lists"> 
+    <div class="toolbar"> 
+        <a class="back" href="#loggedin_home">Home</a>
+        <h1>My lists</h1> 
+        <a class="button slidedown" href="#add_list">Add</a> 
+    </div>
+
+    <ul class="rounded">
+        <li class="arrow"><a href="#add_list">Add</a> </li> 
+    </ul>
+</article>
+ 
+<article id="add_list" class="form">
+    <div class="toolbar"> 
+        <a class="back" href="#loggedin_home">Home</a>
+        <h1>Add list</h1> 
+        <a class="button slideup" href="#my_lists">Cancel</a> 
+    </div>
+    @using (Html.BeginForm("Add", "List")) {
+        <ul class="rounded">
+            <li><input type="text" name="name" placeholder="New list"/></li>
+        </ul>
+        <a class="submit whiteButton">Add</a>
+    }
+</article>

@@ -71,7 +71,7 @@ namespace Seznam.Controllers
 
         private RedirectToRouteResult RedirectToListHome()
         {
-            return RedirectToAction("Index", "List");
+            return RedirectToAction("Index2", "List");
         }
 
         public ActionResult LoggedOut()

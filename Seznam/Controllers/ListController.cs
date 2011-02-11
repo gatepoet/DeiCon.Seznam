@@ -40,6 +40,11 @@ namespace Seznam.Controllers
                                 };
             return View(viewModel);
         }
+        [HttpGet]
+        public ViewResult Index2()
+        {
+            return View();
+        }
 
         [HttpGet]
         public ViewResult My()
@@ -49,6 +54,17 @@ namespace Seznam.Controllers
                                                 Lists = user.PersonalLists,
                                 };
             return View("List", viewModel);
+        }
+
+        [HttpGet]
+        public JsonResult All()
+        {
+            var user = _userRepository.GetUser(_sessionContext.Username);
+            var message = new
+                              {
+                                  personalLists = user.PersonalLists.Select(l => new {name=l.Name, count=l.Count}).ToArray()
+                              };
+            return Json(message, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPut]
