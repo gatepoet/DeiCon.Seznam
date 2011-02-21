@@ -133,6 +133,9 @@
     <Content Include="Content\themes\jqt\img\whiteButton.png" />
     <Content Include="Content\themes\jqt\theme.css" />
     <Content Include="Content\themes\jqt\theme.min.css" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.5.js" />
+    <Content Include="Scripts\jquery-1.5.min.js" />
     <Content Include="Scripts\Seznam.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -141,8 +144,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-1.4.1.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <Content Include="Views\Account\LoggedOut.cshtml" />
     <Content Include="Views\Account\Signup.cshtml" />
+    <Content Include="packages.config" />
     <None Include="Views\Account\Login.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\List\Index.cshtml" />

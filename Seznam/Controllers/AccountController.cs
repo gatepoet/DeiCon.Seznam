@@ -38,9 +38,11 @@ namespace Seznam.Controllers
         public RedirectToRouteResult Login(LoginViewModel viewModel)
         {
             var username = viewModel.Username;
+            
             _userRepository
                 .GetUser(username)
                 .Authenticate(viewModel.Password);
+         
             _sessionContext.Username = username;
             FormsAuthentication.SetAuthCookie(username, viewModel.RembemberLogin);
 
@@ -62,10 +64,13 @@ namespace Seznam.Controllers
         public RedirectToRouteResult Signup(SignupViewModel viewModel)
         {
             var username = viewModel.Username;
+            
             var user = new User(username, viewModel.Password);
             _userRepository.Add(user);
+            
             _sessionContext.Username = username;
             FormsAuthentication.SetAuthCookie(username, false);
+            
             return RedirectToListHome();
         }
 

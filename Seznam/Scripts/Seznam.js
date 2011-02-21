@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-1.4.1.js" />
+﻿/// <reference path="jquery-1.5.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 
 Seznam = function (id, personalListId, personalviewId) {
@@ -24,6 +24,20 @@ PersonalListCollection = function (listId, viewId) {
         this._onPersonalListCountChanged();
     }
 
+    this.select = function (listName) {
+        var list = this.getByName(listName);
+        this.current = list;
+        this._onCurrentItemChanged(list);
+    }
+
+    this.getByName = function (name) {
+        for (i = 0; i < this.items.length; i++) {
+            var item = this.items[i];
+            if (item.name == name)
+                return item;
+        }
+    }
+
     this.addAll = function (lists) {
         for (i = 0; i < lists.length; i++) {
             this._addList(lists[i]);
@@ -34,6 +48,9 @@ PersonalListCollection = function (listId, viewId) {
     this._onPersonalListCountChanged = function () {
         dojo.publish(PersonalListCollection.ListCountChangedEvent, [this.count()]);
     }
+    this._onCurrentItemChanged = function (list) {
+        dojo.publish(PersonalListCollection.CurrentItemChangedEvent, [list]);
+    }
     this._addList = function (list) {
         this.items.push(list);
         var html = list.getHtml(this.viewId);
@@ -42,10 +59,12 @@ PersonalListCollection = function (listId, viewId) {
     }
 }
 PersonalListCollection.ListCountChangedEvent = "personalListCountChanged";
+PersonalListCollection.CurrentItemChangedEvent = "personalListCurrentItemChanged";
 
 PersonalList = function (name, count) {
     this.name = name;
     this.count = count ? count : 0;
+    this.items = new Array();
 
     this.getHtml = function (viewId) {
         var row = '<li class="arrow">';
@@ -60,6 +79,7 @@ PersonalList = function (name, count) {
 Events = function () { }
 Events.CreateNewListEvent = "createNewList";
 Events.PersonalListAddedEvent = "personalListAdded";
+Events.ShowPersonalListDetails = "showPersonalListDetails";
 
 Net = function () { }
 Net.put = function ($form, success) { Net.ajax('PUT', $form.attr('action'), success, $form.serialize()); }
