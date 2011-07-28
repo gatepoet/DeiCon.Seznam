@@ -23,15 +23,31 @@ namespace Seznam
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "PersonalListItem", // Route name
+                "List/Details/{listName}/{name}", // URL with parameters
+                new { controller = "List", action = "PersonalItemDetail"} // Parameter defaults
+            );
+
+            routes.MapRoute(
                 "Default", // Route name
-                "{controller}/{action}/{name}", // URL with parameters
-                new { controller = "Home", action = "Index", name = UrlParameter.Optional } // Parameter defaults
+                "{controller}/{action}/{json}", // URL with parameters
+                new { controller = "Home", action = "Index", json = UrlParameter.Optional } // Parameter defaults
             );
         }
 
         protected void Application_BeginRequest()
         {
             
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var ex = Server.GetLastError();
+            Debug.WriteLine("ERROR:");
+            Debug.WriteLine("Url: " + Request.Url);
+            Debug.WriteLine("Message: " + ex.Message);
+            Debug.WriteLine(ex.StackTrace);
+            Server.ClearError();
         }
         
         protected void Application_Start()
@@ -40,12 +56,8 @@ namespace Seznam
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-        }
-        
-        protected void Application_OnError()
-        {
-            var e = Server.GetLastError();
-            Debug.WriteLine(e.ToString());
+
+            ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
         }
     }
 }

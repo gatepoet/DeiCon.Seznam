@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Seznam.Models;
 using Seznam.Utilities;
 
@@ -76,18 +78,65 @@ namespace Seznam.Controllers
             return Json(new { ok = true });
         }
 
+        [HttpPut]
+        public JsonResult AddPersonalItem(string listName, string name)
+        {
+            var user = _userRepository.GetUser(_sessionContext.Username);
+            user.GetPersonalList(listName).CreateNewItem(name);
+
+            return Json(new { ok = true });
+        }
+
         [HttpGet]
-        public JsonResult Detail(string name)
+        public MyJsonResult Detail(string name)
         {
             var user = _userRepository.GetUser(_sessionContext.Username);
             var list = user.GetPersonalList(name);
             var json = new
                            {
                                name = list.Name,
-                               count = list.Count,
-                               totalCount = user.PersonalLists.Count()
+                               items = list,
                            };
-            return Json(json, JsonRequestBehavior.AllowGet);
+            return new MyJsonResult(json);
+            //return Json(json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult PersonalItemDetail(string listName, string name)
+        {
+            var user = _userRepository.GetUser(_sessionContext.Username);
+            var item = user.GetPersonalList(listName).GetItem(name);
+            return Json(item, JsonRequestBehavior.AllowGet);
+        }
+    }
+
+    public class MyJsonResult : ActionResult
+    {
+        private readonly object _data;
+
+        public MyJsonResult(object data)
+        {
+            _data = data;
+        }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            HttpResponseBase response = context.HttpContext.Response;
+            response.ContentType = "application/json";
+            response.Write(_data.ToJson());
+        }
+    }
+
+    public static class JsonExtensions
+    {
+        public static string ToJson(this object o)
+        {
+            return JsonConvert.SerializeObject(o,
+                Formatting.None,
+                new JsonSerializerSettings
+                    {ContractResolver = new CamelCasePropertyNamesContractResolver()}
+                );
+
         }
     }
 }

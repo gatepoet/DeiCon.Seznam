@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\MvcContrib.FluentHtml.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
     <Reference Include="System.Web.Helpers" />
@@ -88,54 +92,27 @@
   <ItemGroup>
     <Content Include="Content\10-medical.png" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\dojo.js" />
     <Content Include="Scripts\dojo.js.uncompressed.js" />
+    <Content Include="Content\ajax-loader.png" />
+    <Content Include="Content\icon-search-black.png" />
+    <Content Include="Content\icons-18-black.png" />
+    <Content Include="Content\icons-18-white.png" />
+    <Content Include="Content\icons-36-black.png" />
+    <Content Include="Content\icons-36-white.png" />
     <Content Include="Scripts\jqtouch.js" />
     <Content Include="Scripts\jqtouch.min.js" />
     <Content Include="Scripts\jqtouch.transitions.js" />
-    <Content Include="Content\jqtouch.css" />
-    <Content Include="Content\jqtouch.min.css" />
-    <Content Include="Content\jqtouch.png" />
-    <Content Include="Content\jqt_startup.png" />
-    <Content Include="Content\themes\apple\img\backButton.png" />
-    <Content Include="Content\themes\apple\img\blueButton.png" />
-    <Content Include="Content\themes\apple\img\cancel.png" />
-    <Content Include="Content\themes\apple\img\chevron.png" />
-    <Content Include="Content\themes\apple\img\grayButton.png" />
-    <Content Include="Content\themes\apple\img\listArrowSel.png" />
-    <Content Include="Content\themes\apple\img\listGroup.png" />
-    <Content Include="Content\themes\apple\img\loading.gif" />
-    <Content Include="Content\themes\apple\img\on_off.png" />
-    <Content Include="Content\themes\apple\img\pinstripes.png" />
-    <Content Include="Content\themes\apple\img\selection.png" />
-    <Content Include="Content\themes\apple\img\thumb.png" />
-    <Content Include="Content\themes\apple\img\toggle.png" />
-    <Content Include="Content\themes\apple\img\toggleOn.png" />
-    <Content Include="Content\themes\apple\img\toolbar.png" />
-    <Content Include="Content\themes\apple\img\toolButton.png" />
-    <Content Include="Content\themes\apple\img\whiteButton.png" />
-    <Content Include="Content\themes\apple\theme.css" />
-    <Content Include="Content\themes\apple\theme.min.css" />
-    <Content Include="Content\themes\jqt\img\back_button.png" />
-    <Content Include="Content\themes\jqt\img\back_button_clicked.png" />
-    <Content Include="Content\themes\jqt\img\button.png" />
-    <Content Include="Content\themes\jqt\img\button_clicked.png" />
-    <Content Include="Content\themes\jqt\img\chevron.png" />
-    <Content Include="Content\themes\jqt\img\chevron_circle.png" />
-    <Content Include="Content\themes\jqt\img\grayButton.png" />
-    <Content Include="Content\themes\jqt\img\loading.gif" />
-    <Content Include="Content\themes\jqt\img\on_off.png" />
-    <Content Include="Content\themes\jqt\img\rowhead.png" />
-    <Content Include="Content\themes\jqt\img\toggle.png" />
-    <Content Include="Content\themes\jqt\img\toggleOn.png" />
-    <Content Include="Content\themes\jqt\img\toolbar.png" />
-    <Content Include="Content\themes\jqt\img\whiteButton.png" />
-    <Content Include="Content\themes\jqt\theme.css" />
-    <Content Include="Content\themes\jqt\theme.min.css" />
     <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.5.2.js" />
     <Content Include="Scripts\jquery-1.5.js" />
     <Content Include="Scripts\jquery-1.5.min.js" />
+    <Content Include="Content\jquery.mobile-1.0b1.css" />
+    <Content Include="Scripts\jquery.mobile-1.0b1.js" />
+    <Content Include="Content\jquery.mobile-1.0b1.min.css" />
+    <Content Include="Scripts\jquery.mobile-1.0b1.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\knockout-1.2.0.js" />
     <Content Include="Scripts\Seznam.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -191,7 +168,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55525</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

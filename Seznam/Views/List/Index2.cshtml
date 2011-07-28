@@ -37,7 +37,7 @@
     </div>
     @using (Html.BeginForm("Add", "List")) {
         <ul class="rounded">
-            <li><input type="text" name="name" placeholder="New list" value=""/></li>
+            <li>List name <input type="text" name="name" placeholder="New list" value=""/></li>
         </ul>
         <a class="submit whiteButton">Add</a>
     }
@@ -45,13 +45,13 @@
 
 <article id="personal_list_view"> 
     <div class="toolbar"> 
-        <a class="back" href="#loggedin_home">Home</a>
+        <a class="back" href="#my_lists">Back</a>
         <h1 class="title"></h1> 
-        <a class="button slidedown" href="#my_lists">My lists</a> 
+        <a class="button slidedown" href="#add_list_item">Add</a> 
     </div>
 
     <ul class="rounded">
-        <li class="arrow"><a href="#add_item">Add</a> </li> 
+        <li class="arrow"><a href="#add_list_item">Add</a> </li> 
     </ul>
 </article>
 
@@ -59,24 +59,121 @@
 <article id="add_list_item" class="form">
     <div class="toolbar"> 
         <a class="back" href="#loggedin_home">Home</a>
-        <h1>Add list</h1> 
+        <h1>Add item</h1> 
         <a class="button slideup" href="#personal_list_view">Cancel</a> 
     </div>
     @using (Html.BeginForm("AddPersonalItem", "List")) {
         <ul class="rounded">
-            <li><input type="text" name="name" placeholder="New item" value=""/></li>
+            <li>Item name <input type="text" name="name" placeholder="New item" value=""/></li>
+            <li>Count (if any)<input type="text" placeholder="0" /></li>
         </ul>
+        <input type="hidden" name="listName" />
         <a class="submit whiteButton">Add</a>
     }
 </article>
 
     <script src='@Url.Content("~/Scripts/Seznam.js")' type="text/javascript"></script>
     <script>
+
+        MainView = function (id) {
+            this.id = id;
+
+            this.setPersonalListCount = function (count) {
+                $("#" + this.id + " ul li:first .counter").html(count);
+            }
+
+        }
+
+        MainController = function (model, view) {
+            this.model = model;
+            this.view = view;
+
+            dojo.subscribe(PersonalListCollection.CountChangedEvent, function (count) {
+                this.view.setPersonalListCount(count);
+            });
+        }
+
+        PersonalListsView = function (id, detailsViewId) {
+            this.$ = $("#" + id);
+            this.detailsViewId = detailsViewId;
+            this.showDetails = null;
+
+            this.addList = function (list) {
+                var html = this._getRowHtml(list);
+                var $newItemRow = $("ul li:last", this.$);
+                $newItemRow.before(html);
+            }
+
+            this.updateList = function (list) {
+                $("ul li", this.$).each(function ($item) {
+                    var $idField = $(".name", $item);
+                    if ($idField.val() == list.name) {
+                        $item.replace(this._getRowHtml(list));
+                    }
+                });
+            }
+
+            this._getRowHtml = function (list) {
+                var row = '<li class="arrow">';
+                row += '<a href="#' + this.detailsViewId + '">' + list.name + '</a> ';
+                row += '<small class="counter">' + list.count + '</small>';
+                row += '<input name="name" type="hidden" value="' + list.name + '" />';
+                row += '</li>\n';
+                return row;
+            }
+
+            $("ul.rounded", this.$).delegate("li.arrow a", "click", function (e) {
+                var $row = $(e.target).parent();
+                if (this.showDetails) {
+                    var row = new PersonalListsRow($row);
+                    this.showDetails(row.getId());
+                }
+                e.preventDefault();
+                return false;
+
+                function getName(clickedLink) {
+                    return $("input[type='hidden']", $(clickedLink).parent()).val();
+                }
+            });
+
+        }
+        PersonalListsRow = function ($row) {
+            this.$ = $row;
+            this.getId = function () {
+                return $("input[name='id']", $row).val();
+            }
+        }
+        PersonalListsController = function (model, view) {
+            this.model = model;
+            this.view = new PersonalListsView("my_lists", "my_personal_lists"); ;
+
+            dojo.subscribe(PersonalListCollection.ItemAddedEvent, function (list) {
+                this.view.AddList(list);
+            });
+
+            dojo.subscribe(PersonalList.ChangedEvent, function (list) {
+                this.view.updateList(list);
+            });
+
+            this.view_onShowDetails(name){
+                
+            }
+        }
+
+        AddListView = function (id) {
+        }
+
+        AddListController = function (model, view) {
+            this.model = model;
+            this.view = view;
+
+        }
+
         $(function () {
             var seznam = new Seznam("loggedin_home", "my_lists", "personal_list_view");
             hookupEvents();
             initializeLists();
-
+            
             function initializeLists() {
                 var url = '@Url.Action("All", "List")';
                 Net.get(url, function (data) {
@@ -91,8 +188,9 @@
                 });
             }
 
+
             function hookupEvents() {
-                dojo.subscribe(Events.ShowPersonalListDetails, function (listName) {
+                dojo.subscribe(Events.ShowPersonalListDetailsEvent, function (listName) {
                     seznam.personalLists.select(listName);
                     jQT.goTo("#personal_list_view");
                 });
@@ -100,21 +198,40 @@
                 dojo.subscribe(PersonalListCollection.CurrentItemChangedEvent, function (list) {
                     var view = $("#personal_list_view");
                     $(".title", view).html(list.name);
+                    $('#add_list_item input[name="listName"]').val(seznam.personalLists.current.name);
+                });
+
+                dojo.subscribe(PersonalListCollection.ListItemChangedEvent, function (list) {
+                    var view = $("#my_lists");
+                    $("ul li", view).each(function () {
+                        var $item = $(this);
+                        var $idField = $(".name", $item);
+                        if ($idField.val() == list.name) {
+                            $item.replace(list.getHtml("#personal_list_view"));
+                        }
+                    });
                 });
 
                 dojo.subscribe(Events.PersonalListAddedEvent, function (message) {
-                    var list = new PersonalList(message.name, message.count);
+                    var list = $.extend(new PersonalList(), eval(message));
                     seznam.personalLists.add(list);
+                });
+
+                dojo.subscribe(Events.PersonalListChangedEvent, function (message) {
+                    seznam.personalLists.update(eval(message));
                 });
 
                 dojo.subscribe(Events.CreateNewListEvent, function ($form) {
                     var nameElement = $("input[name='name']", $form);
 
                     var name = nameElement.val();
+                    var $view = $(".submit", $form);
+                    $view.addClass("loading");
                     Net.put($form, function (data) {
                         if (data['ok'] == true) {
                             nameElement.clear();
                             fakeServerEvent_personalListAdded(name);
+                            $view.removeClass("loading");
                             jQT.goBack();
                         } else {
                             throw ("Oooops!, something failed");
@@ -129,15 +246,46 @@
                     }
                 });
 
+                dojo.subscribe(Events.CreateNewPersonalListItemEvent, function ($form) {
+                    var nameElement = $("input[name='name']", $form);
+                    var countElement = $("input[name='count']", $form);
+
+                    var name = nameElement.val();
+                    var count = countElement.val();
+                    Net.put($form, function (data) {
+                        if (data['ok'] == true) {
+                            nameElement.clear();
+                            countElement.clear();
+                            fakeServerEvent_personalListItemAdded(seznam.personalLists.current.name, name);
+                            jQT.goBack();
+                        } else {
+                            throw ("Oooops!, something failed");
+                        }
+                    });
+
+                    function fakeServerEvent_personalListItemAdded(listName, name) {
+                        var url = '@Url.Action("Details", "List")/' + listName + '/' + name;
+                        Net.get(url, function (data) {
+                            dojo.publish(Events.PersonalListChangedEvent, [data]);
+                        });
+                    }
+                });
+
                 $("#add_list form").submit(function (e) {
                     dojo.publish(Events.CreateNewListEvent, [$(this)]);
                     e.preventDefault();
                     return false;
                 });
 
+                $("#add_list_item form").submit(function (e) {
+                    dojo.publish(Events.CreateNewPersonalListItemEvent, [$(this)]);
+                    e.preventDefault();
+                    return false;
+                });
+
                 $("#my_lists ul.rounded").delegate("li.arrow a", "click", function (e) {
                     var selectedList = getSelectedList(e.target);
-                    dojo.publish(Events.ShowPersonalListDetails, [selectedList]);
+                    dojo.publish(Events.ShowPersonalListDetailsEvent, [selectedList]);
                     e.preventDefault();
                     return false;
 

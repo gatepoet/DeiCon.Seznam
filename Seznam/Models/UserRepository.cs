@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Seznam.Models
@@ -21,6 +22,11 @@ namespace Seznam.Models
         public void Remove(string username)
         {
             _users.Remove(GetUser(username));
+        }
+
+        public bool Exists(string username)
+        {
+            return _users.Where(u => u.Username == username).Count() > 0;
         }
     }
 }

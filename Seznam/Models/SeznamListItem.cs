@@ -1,19 +1,28 @@
-﻿namespace Seznam.Models
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace Seznam.Models
 {
+    [Serializable]
     public class SeznamListItem
     {
+        public SeznamListItem()
+        {
+        }
+
         public SeznamListItem(string name)
         {
             Name = name;
         }
  
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public void ChangeName(string name)
         {
             Name = name;
         }
 
-        public int Count { get; private set; }
+        [IgnoreDataMember]
+        public int Count { get; set; }
         public void SetCount(int count)
         {
             Count = count;
@@ -35,7 +44,7 @@
             Count -= amount;
         }
 
-        public bool Completed { get; private set; }
+        public bool Completed { get; set; }
         public void Complete()
         {
             Completed = true;

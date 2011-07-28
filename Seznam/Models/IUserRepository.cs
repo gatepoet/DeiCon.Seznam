@@ -8,5 +8,6 @@ namespace Seznam.Models
         User GetUser(string username);
         void Add(User user);
         void Remove(string username);
+        bool Exists(string username);
     }
 }

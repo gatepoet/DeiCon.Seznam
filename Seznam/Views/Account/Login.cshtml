@@ -1,39 +1,57 @@
-﻿@model LoginViewModel
-<article class="form" id="login">
-    <script>
+﻿@if (false) {
+<script src="../../Scripts/jquery-1.5.2.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
+<script src="../../Scripts/dojo.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
+<script src="../../Scripts/Seznam.js" type="text/javascript"></script>
+<script src="../../Scripts/json2.js" type="text/javascript"></script>
+}
+
+<article data-role="page" id="login">
+    <script type="text/javascript">
         $(function () {
-            $("#login form:first").submit(function (o) {
+            var loginViewModel = {
+                username: ko.observable(),
+                password: ko.observable(),
 
-                jQT.submitForm(o, function (success) {
-                    if (!success) {
-                        jQT.goTo("#login_error");
-                    }
-                });
+                error: ko.observable(),
 
-                return false;
+                logIn: function () {
+                    this.error(null);
+                    dojo.publish(Events.LogIn, [this.username(), this.password()]);
+                }
+            }
+
+            ko.applyBindings(loginViewModel, $(Views.LogIn)[0]);
+
+
+            dojo.subscribe(Events.LoggedIn, function (userId) {
+                //set user id
+                $.mobile.changePage(Views.Main);
+            });
+
+            dojo.subscribe(Events.LoginFailed, function (reason) {
+                loginViewModel.error(reason);
             });
         });
     </script>
 
-    <div class="toolbar">
+    <section data-role="header">
         <a class="back" href="#home">Home</a>
         <h1>Log in</h1>
-    </div>
-    @{Html.BeginForm("Login", "Account", FormMethod.Post);}
-        <ul class="rounded">
-            <li>@Html.TextBoxFor(m => m.Username, new { placeholder = "Username" })</li>
-            <li>@Html.PasswordFor(m => m.Password, new { placeholder = "Password" })</li>
-            <li>Remember me <span class="toggle">@Html.CheckBoxFor(m => m.RembemberLogin)</span></li>
-        </ul>
-        <a class="submit whiteButton">Enter</a>
-    @{Html.EndForm();}
+    </section>
+
+    <section data-role="content">
+        <fieldset>
+            <div data-role="fieldcontain">
+                <label>Username</label> <input data-bind="value: username" />
+            </div>
+            <div data-role="fieldcontain">
+                <label>Password</label> <input type="password" data-bind="value: password" />
+            </div>
+            <input data-bind="click: logIn" type="button" value="Log in!" />
+            <p><span data-bind="text: error" style="color:Red"></span></p>
+        </fieldset>
+    </section>
 </article>
-<article id="login_error">
-    <div class="toolbar">
-        <h1>Login error</h1>
-        <a class="back" href="#login">Back</a>
-    </div>
-    <p class="info">
-        Could not log in. Please go back and try again!
-    </p>
-</article>
+
