@@ -37,7 +37,7 @@ namespace Seznam.Controllers
         {
             return View();
         }
-        //[HttpPut]
+        [HttpPost]
         public JsonNetResult Login(LoginViewModel viewModel)
         {
             var username = viewModel.Username;
@@ -51,12 +51,12 @@ namespace Seznam.Controllers
             return SignupResponse.Success(user.Username).ToJsonResult();
         }
 
-        [HttpGet]
-        public RedirectToRouteResult Logout()
+        [HttpPost]
+        public JsonNetResult Logout()
         {
             FormsAuthentication.SignOut();
             Session.Abandon();
-            return RedirectToAction("LoggedOut");
+            return SimpleResponse.Success().ToJsonResult();
         }
 
         [HttpGet]
@@ -65,7 +65,7 @@ namespace Seznam.Controllers
             return View();
         }
 
-        //[HttpPut]
+        [HttpPut]
         public JsonNetResult SignUp(SignupViewModel viewModel)
         {
             var username = viewModel.Username;
@@ -74,6 +74,7 @@ namespace Seznam.Controllers
                 return SignupResponse.Error("Username is taken. Try again!").ToJsonResult();
 
             var user = new User(username, viewModel.Password);
+            
             _userRepository.Add(user);
             
             _sessionContext.Username = username;
@@ -124,6 +125,29 @@ namespace Seznam.Controllers
 
         public bool Ok { get; set; }
         public string UserId { get; set; }
+        public string Message { get; set; }
+    }
+    public class SimpleResponse
+    {
+        public static SignupResponse Error(string message)
+        {
+            return new SignupResponse
+                       {
+                           Ok = false,
+                           Message = message
+                       };
+
+        }
+        public static SignupResponse Success()
+        {
+            return new SignupResponse
+                       {
+                           Ok = true,
+                       };
+
+        }
+
+        public bool Ok { get; set; }
         public string Message { get; set; }
     }
 

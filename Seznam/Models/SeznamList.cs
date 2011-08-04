@@ -20,10 +20,16 @@ namespace Seznam.Models
         public SeznamList(string name)
         {
             Name = name;
+            Id = Guid.NewGuid();
         }
 
         public SeznamList()
         {
+        }
+
+        public Guid Id
+        {
+            get; set;
         }
 
         public string Name

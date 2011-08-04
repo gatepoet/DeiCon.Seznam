@@ -3,9 +3,13 @@
 <script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
 <script src="../../Scripts/dojo.js" type="text/javascript"></script>
 <script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout.mapping.js" type="text/javascript"></script>
 <script src="../../Scripts/Seznam.js" type="text/javascript"></script>
-<script src="../../Scripts/json2.js" type="text/javascript"></script>
+
+<link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/site.css" rel="stylesheet" type="text/css" />
 }
+
 
 <article data-role="page" id="login">
     <script type="text/javascript">
@@ -18,16 +22,15 @@
 
                 logIn: function () {
                     this.error(null);
-                    dojo.publish(Events.LogIn, [this.username(), this.password()]);
+                    Util.publish(Events.LogIn, [{ username: this.username(), password: this.password()}]);
                 }
-            }
-
+            };
             ko.applyBindings(loginViewModel, $(Views.LogIn)[0]);
 
 
             dojo.subscribe(Events.LoggedIn, function (userId) {
-                //set user id
-                $.mobile.changePage(Views.Main);
+                loginViewModel.username(null);
+                loginViewModel.password(null);
             });
 
             dojo.subscribe(Events.LoginFailed, function (reason) {
@@ -50,7 +53,7 @@
                 <label>Password</label> <input type="password" data-bind="value: password" />
             </div>
             <input data-bind="click: logIn" type="button" value="Log in!" />
-            <p><span data-bind="text: error" style="color:Red"></span></p>
+            <p data-bind="text: error" class="errorMessage"></p>
         </fieldset>
     </section>
 </article>

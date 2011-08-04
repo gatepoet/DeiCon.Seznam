@@ -32,15 +32,16 @@ namespace Seznam.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var user = _userRepository.GetUser(_sessionContext.Username);
+            //var user = _userRepository.GetUser(_sessionContext.Username);
 
             
-            var viewModel = new ListHomeViewModel
-                                {
-                                    PersonalListCount = user.PersonalLists.Count(),
-                                    SharedListCount = user.SharedLists.Count()
-                                };
-            return View(viewModel);
+            //var viewModel = new ListHomeViewModel
+            //                    {
+            //                        PersonalListCount = user.PersonalLists.Count(),
+            //                        SharedListCount = user.SharedLists.Count()
+            //                    };
+            //return View(viewModel);
+            return View();
         }
         [HttpGet]
         public ViewResult Index2()
@@ -59,14 +60,41 @@ namespace Seznam.Controllers
         }
 
         [HttpGet]
-        public JsonResult All()
+        public MyJsonResult All()
         {
             var user = _userRepository.GetUser(_sessionContext.Username);
-            var message = new
+            var json = new
                               {
-                                  personalLists = user.PersonalLists.Select(l => new {name=l.Name, count=l.Count}).ToArray()
+                                  personalLists = user.PersonalLists.Select(l => new
+                                                                                     {
+                                                                                         name=l.Name,
+                                                                                         
+                                                                                     }).ToArray(),
+                                  sharedLists = user.SharedLists.Select(l => new
+                                                                                     {
+                                                                                         name=l.Name,
+                                                                                         
+                                                                                     }).ToArray(),
                               };
-            return Json(message, JsonRequestBehavior.AllowGet);
+            return new MyJsonResult(json);
+        }
+
+        public void test()
+        {
+            _userRepository.Add(new User("a", "a"));
+            var user = _userRepository.GetUser("a");
+            var json = new
+            {
+                personalLists = user.PersonalLists.Select(l => new
+                {
+                    name = l.Name,
+
+                }).ToArray()
+            };
+            Console.WriteLine(new MyJsonResult(json).ToString());
+            Console.WriteLine(new MyJsonResult(user).ToString());
+           
+
         }
 
         [HttpPut]
@@ -124,6 +152,11 @@ namespace Seznam.Controllers
             HttpResponseBase response = context.HttpContext.Response;
             response.ContentType = "application/json";
             response.Write(_data.ToJson());
+        }
+
+        public override string ToString()
+        {
+            return _data.ToJson();
         }
     }
 

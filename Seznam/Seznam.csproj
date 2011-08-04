@@ -91,6 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\10-medical.png" />
+    <Content Include="Content\images\ajax-loader.png" />
+    <Content Include="Content\images\icon-search-black.png" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
+    <Content Include="Content\site.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\dojo.js" />
     <Content Include="Scripts\dojo.js.uncompressed.js" />
@@ -100,19 +107,14 @@
     <Content Include="Content\icons-18-white.png" />
     <Content Include="Content\icons-36-black.png" />
     <Content Include="Content\icons-36-white.png" />
-    <Content Include="Scripts\jqtouch.js" />
-    <Content Include="Scripts\jqtouch.min.js" />
-    <Content Include="Scripts\jqtouch.transitions.js" />
-    <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.5.2.js" />
-    <Content Include="Scripts\jquery-1.5.js" />
-    <Content Include="Scripts\jquery-1.5.min.js" />
     <Content Include="Content\jquery.mobile-1.0b1.css" />
     <Content Include="Scripts\jquery.mobile-1.0b1.js" />
     <Content Include="Content\jquery.mobile-1.0b1.min.css" />
     <Content Include="Scripts\jquery.mobile-1.0b1.min.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\knockout-1.2.0.js" />
+    <Content Include="Scripts\knockout.mapping.js" />
     <Content Include="Scripts\Seznam.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -121,7 +123,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -168,7 +169,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55525</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -8,19 +8,28 @@
         <script src="@Url.Content("~/Scripts/jquery.mobile-1.0b1.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/dojo.js.uncompressed.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout-1.2.0.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/knockout.mapping.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/Seznam.js")" type="text/javascript"></script>
 
         <link href="@Url.Content("~/Content/jquery.mobile-1.0b1.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
 
         <script>
-            Url = new function () { }
+            Url = new function() { };
             Url.SignUp = "@Url.Action("SignUp", "Account")";
             Url.LogIn = "@Url.Action("LogIn", "Account")";
+            Url.LogOut = "@Url.Action("LogOut", "Account")";
+            Url.GetAllData = "@Url.Action("All", "List")";
 
+            $('body').live('pagecreate',function(event){
+                Util.lazyLoadAll();
+            });
         </script>
 </head>
 <body>
     @Html.Partial("MainActions")
+    @Html.Action("Index", "List", null)
+    @*<link rel="section" type="text/html" href="@Url.Action("Index", "List")"/>*@
 </body>
 </html>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Authentication;
 
@@ -18,6 +19,7 @@ namespace Seznam.Models
             Username = username;
             _password = password;
             _personalLists = new Dictionary<string, SeznamList>();
+            CreateNewList("Test");
             _sharedLists = new Dictionary<string, SeznamList>();
         }
 
@@ -29,13 +31,14 @@ namespace Seznam.Models
                 throw new AuthenticationException();
         }
 
-        public void CreateNewList(string name)
+        public SeznamList CreateNewList(string name)
         {
             if (_personalLists.ContainsKey(name))
-                return;
+                throw new ValidationException("Duplicate list name.");
 
             var list = new SeznamList { Name = name };
             _personalLists.Add(name, list);
+            return list;
         }
 
         public SeznamList GetPersonalList(string name)

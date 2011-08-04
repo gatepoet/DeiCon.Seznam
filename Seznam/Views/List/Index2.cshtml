@@ -80,10 +80,8 @@
 
             this.setPersonalListCount = function (count) {
                 $("#" + this.id + " ul li:first .counter").html(count);
-            }
-
-        }
-
+            };
+        };
         MainController = function (model, view) {
             this.model = model;
             this.view = view;
@@ -91,8 +89,7 @@
             dojo.subscribe(PersonalListCollection.CountChangedEvent, function (count) {
                 this.view.setPersonalListCount(count);
             });
-        }
-
+        };
         PersonalListsView = function (id, detailsViewId) {
             this.$ = $("#" + id);
             this.detailsViewId = detailsViewId;
@@ -102,8 +99,7 @@
                 var html = this._getRowHtml(list);
                 var $newItemRow = $("ul li:last", this.$);
                 $newItemRow.before(html);
-            }
-
+            };
             this.updateList = function (list) {
                 $("ul li", this.$).each(function ($item) {
                     var $idField = $(".name", $item);
@@ -111,8 +107,7 @@
                         $item.replace(this._getRowHtml(list));
                     }
                 });
-            }
-
+            };
             this._getRowHtml = function (list) {
                 var row = '<li class="arrow">';
                 row += '<a href="#' + this.detailsViewId + '">' + list.name + '</a> ';
@@ -120,8 +115,7 @@
                 row += '<input name="name" type="hidden" value="' + list.name + '" />';
                 row += '</li>\n';
                 return row;
-            }
-
+            };
             $("ul.rounded", this.$).delegate("li.arrow a", "click", function (e) {
                 var $row = $(e.target).parent();
                 if (this.showDetails) {
@@ -136,38 +130,38 @@
                 }
             });
 
-        }
-        PersonalListsRow = function ($row) {
+        };
+        PersonalListsRow = function($row) {
             this.$ = $row;
-            this.getId = function () {
+            this.getId = function() {
                 return $("input[name='id']", $row).val();
-            }
-        }
-        PersonalListsController = function (model, view) {
+            };
+        };
+        PersonalListsController = function(model, view) {
             this.model = model;
             this.view = new PersonalListsView("my_lists", "my_personal_lists"); ;
 
-            dojo.subscribe(PersonalListCollection.ItemAddedEvent, function (list) {
+            dojo.subscribe(PersonalListCollection.ItemAddedEvent, function(list) {
                 this.view.AddList(list);
             });
 
-            dojo.subscribe(PersonalList.ChangedEvent, function (list) {
+            dojo.subscribe(PersonalList.ChangedEvent, function(list) {
                 this.view.updateList(list);
             });
 
-            this.view_onShowDetails(name){
-                
-            }
-        }
+            this.view_onShowDetails = function(name) {
 
-        AddListView = function (id) {
-        }
+            };
+        };
 
-        AddListController = function (model, view) {
+        AddListView = function(id) {
+        };
+
+        AddListController = function(model, view) {
             this.model = model;
             this.view = view;
 
-        }
+        };
 
         $(function () {
             var seznam = new Seznam("loggedin_home", "my_lists", "personal_list_view");
@@ -182,7 +176,7 @@
                     for (i = 0; i < personalLists.length; i++) {
                         var l = personalLists[i];
                         var list = new PersonalList(l.name, l.count);
-                        lists.push(list)
+                        lists.push(list);
                     }
                     seznam.personalLists.addAll(lists);
                 });
@@ -264,7 +258,7 @@
                     });
 
                     function fakeServerEvent_personalListItemAdded(listName, name) {
-                        var url = '@Url.Action("Details", "List")/' + listName + '/' + name;
+                        var url = '@Url.Action("PersonalItemDetail", "List")/' + listName + '/' + name;
                         Net.get(url, function (data) {
                             dojo.publish(Events.PersonalListChangedEvent, [data]);
                         });
