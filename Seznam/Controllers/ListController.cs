@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Seznam.Models;
 using Seznam.Utilities;
+using System.Web.Helpers;
 
 namespace Seznam.Controllers
 {
@@ -52,58 +53,45 @@ namespace Seznam.Controllers
         [HttpGet]
         public ViewResult My()
         {
-            var user = _userRepository.GetUser(_sessionContext.Username);
-            var viewModel = new ListViewModel { 
-                                                Lists = user.PersonalLists,
-                                };
-            return View("List", viewModel);
+            return View("List");
         }
 
         [HttpGet]
-        public MyJsonResult All()
+        public JsonNetResult All()
         {
             var user = _userRepository.GetUser(_sessionContext.Username);
-            var json = new
-                              {
-                                  personalLists = user.PersonalLists.Select(l => new
-                                                                                     {
-                                                                                         name=l.Name,
-                                                                                         
-                                                                                     }).ToArray(),
-                                  sharedLists = user.SharedLists.Select(l => new
-                                                                                     {
-                                                                                         name=l.Name,
-                                                                                         
-                                                                                     }).ToArray(),
-                              };
-            return new MyJsonResult(json);
+            
+            return user.ToJsonResult();
         }
 
         public void test()
         {
-            _userRepository.Add(new User("a", "a"));
-            var user = _userRepository.GetUser("a");
+            var user = new User("k", "k");
+            _userRepository.Add(user);
             var json = new
             {
                 personalLists = user.PersonalLists.Select(l => new
                 {
                     name = l.Name,
+                    count = l.Count
 
-                }).ToArray()
+                }).ToArray(),
+                sharedLists = user.SharedLists.Select(l => new
+                {
+                    name = l.Name,
+
+                }).ToArray(),
             };
-            Console.WriteLine(new MyJsonResult(json).ToString());
-            Console.WriteLine(new MyJsonResult(user).ToString());
-           
-
+            Console.WriteLine(user.ToJsonResult().ToString());
         }
 
         [HttpPut]
-        public JsonResult Add(string name)
+        public JsonNetResult Create(NewList data)
         {
             var user = _userRepository.GetUser(_sessionContext.Username);
-            user.CreateNewList(name);
+            var list = user.CreateNewList(data.Name, data.Shared, data.Users);
 
-            return Json(new { ok = true });
+            return new { ok = true, id = list.Id.ToString() }.ToJsonResult();
         }
 
         [HttpPut]
@@ -114,62 +102,14 @@ namespace Seznam.Controllers
 
             return Json(new { ok = true });
         }
-
-        [HttpGet]
-        public MyJsonResult Detail(string name)
-        {
-            var user = _userRepository.GetUser(_sessionContext.Username);
-            var list = user.GetPersonalList(name);
-            var json = new
-                           {
-                               name = list.Name,
-                               items = list,
-                           };
-            return new MyJsonResult(json);
-            //return Json(json, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult PersonalItemDetail(string listName, string name)
-        {
-            var user = _userRepository.GetUser(_sessionContext.Username);
-            var item = user.GetPersonalList(listName).GetItem(name);
-            return Json(item, JsonRequestBehavior.AllowGet);
-        }
     }
 
-    public class MyJsonResult : ActionResult
+    public class NewList
     {
-        private readonly object _data;
+        public string Name { get; set; }
 
-        public MyJsonResult(object data)
-        {
-            _data = data;
-        }
+        public bool Shared { get; set; }
 
-        public override void ExecuteResult(ControllerContext context)
-        {
-            HttpResponseBase response = context.HttpContext.Response;
-            response.ContentType = "application/json";
-            response.Write(_data.ToJson());
-        }
-
-        public override string ToString()
-        {
-            return _data.ToJson();
-        }
-    }
-
-    public static class JsonExtensions
-    {
-        public static string ToJson(this object o)
-        {
-            return JsonConvert.SerializeObject(o,
-                Formatting.None,
-                new JsonSerializerSettings
-                    {ContractResolver = new CamelCasePropertyNamesContractResolver()}
-                );
-
-        }
+        public string[] Users { get; set; }
     }
 }

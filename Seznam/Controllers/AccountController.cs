@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Security.Authentication;
 using System.Text;
@@ -196,12 +197,17 @@ namespace Seznam.Controllers
             if (Data != null)
             {
                 JsonTextWriter writer = new JsonTextWriter(response.Output) { Formatting = Formatting };
-
+                
                 JsonSerializer serializer = JsonSerializer.Create(SerializerSettings);
                 serializer.Serialize(writer, Data);
 
                 writer.Flush();
             }
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(Data, Formatting, SerializerSettings);
         }
     }
 }

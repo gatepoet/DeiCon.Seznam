@@ -13,9 +13,11 @@ using Newtonsoft.Json.Serialization;
 namespace Seznam.Models
 {
     [Serializable]
+    [JsonObject]
     public class SeznamList : IEnumerable<SeznamListItem>
     {
         private readonly Dictionary<string, SeznamListItem> _list = new Dictionary<string, SeznamListItem>();
+        public string[] Users { get; set; }
 
         public SeznamList(string name)
         {
@@ -27,20 +29,13 @@ namespace Seznam.Models
         {
         }
 
-        public Guid Id
-        {
-            get; set;
-        }
+        public Guid Id { get; set; }
 
-        public string Name
-        {
-            get; set;
-        }
+        public string Name { get; set; }
 
-        public int Count
-        {
-            get { return _list.Count; }
-        }
+        public bool Shared { get; set; }
+
+        public int Count { get { return _list.Count; } }
 
         public void Add(SeznamListItem item)
         {
@@ -115,6 +110,7 @@ namespace Seznam.Models
             new JsonSerializer().Serialize(new StreamWriter(stream), jlist);
             Console.WriteLine("--");
             Console.WriteLine(reader.ReadToEnd());
+            Console.WriteLine(Json.Encode(list));
         }
     
     }

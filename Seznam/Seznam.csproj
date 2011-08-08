@@ -109,9 +109,11 @@
     <Content Include="Content\icons-36-white.png" />
     <Content Include="Scripts\jquery-1.5.2.js" />
     <Content Include="Content\jquery.mobile-1.0b1.css" />
+    <Content Include="Scripts\jquery-1.6.2.js" />
     <Content Include="Scripts\jquery.mobile-1.0b1.js" />
     <Content Include="Content\jquery.mobile-1.0b1.min.css" />
     <Content Include="Scripts\jquery.mobile-1.0b1.min.js" />
+    <Content Include="Scripts\jquery.tmpl.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\knockout-1.2.0.js" />
     <Content Include="Scripts\knockout.mapping.js" />

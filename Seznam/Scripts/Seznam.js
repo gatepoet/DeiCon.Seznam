@@ -20,7 +20,7 @@ Account = function (options) {
         Net.put(JSON.stringify(message), Url.SignUp, function (data) {
             var msg = null;
             if (!data)
-                msg = "An error occured. Please try again!";
+                msg = GENERAL_ERROR_MESSAGE;
             if (data && data.ok) {
                 Util.publish(Events.Authorized, [data.userId]);
                 Util.publish(Events.SignedUp, [data.userId]);
@@ -35,11 +35,10 @@ Account = function (options) {
         Net.post(JSON.stringify(message), Url.LogIn, function (data) {
             var msg = null;
             if (!data)
-                msg = "An error occured. Please try again!";
+                msg = GENERAL_ERROR_MESSAGE;
             if (data && data.ok) {
                 Util.publish(Events.Authorized, [data.userId]);
                 Util.publish(Events.LoggedIn, [data.userId]);
-
             }
             else
                 Util.publish(Events.LoginFailed, [msg ? msg : data.message]);
@@ -48,11 +47,11 @@ Account = function (options) {
 
 
     //Authorized
-    Util.subscribe(Events.Authorized, function (userId) {
+    Util.subscribe(Events.Authorized, this, function (userId, context) {
         //set user id
-        this.id = userId;
-        this.loggedIn = true;
-        $.mobile.changePage(Views.Main);
+        context.id = userId;
+        context.loggedIn = true;
+        $.mobile.changePage(Views.Main, { transition: "slideup" });
         $.mobile.showPageLoadingMsg();
         $.getJSON(Url.GetAllData, function (data) {
             Util.publish(Events.UpdateAllData, [data]);
@@ -68,6 +67,12 @@ Account = function (options) {
                 Util.publish(Events.LoggedOut);
         });
     });
+
+    //LoggedOut
+    Util.subscribe(Events.LoggedOut, function () {
+        $.mobile.changePage(Views.Home, { transition: "slidedown" });
+    });
+
 };
 
 Seznam = function (options) {
@@ -75,18 +80,34 @@ Seznam = function (options) {
     this.personalLists = new Array();
     this.sharedLists = new Array();
 
-    Util.subscribe(Events.UpdateAllData, function (data) {
-        $.extend(this, data);
+    //Initial update
+    Util.subscribe(Events.UpdateAllData, this, function (data, context) {
+        $.extend(context, data);
+    });
+
+    //Create list
+    Util.subscribe(Events.CreateList, this, function (list, context) {
+        if (list.shared)
+            list.count = 0;
+        context.personalLists.push(list);
+        
+        Net.put(JSON.stringify(list), Url.CreateList, function (data) {
+            if (data && data.ok) {
+                list.id = data.id;
+                Util.publish(Events.ListCreated, [list]);
+            }
+        });
+
+    });
+
+//    //List created on server
+    Util.subscribe(Events.ListCreated, this, function (list, context) {
+        //context.personalLists.push(list);
     });
 };
 
 
 Events = new Object();
-Events.CreateNewList = "createNewList";
-Events.PersonalListAdded = "personalListAdded";
-Events.ShowPersonalListDetails = "showPersonalListDetails";
-Events.CreateNewPersonalListItem = "createNewPersonalListItem";
-Events.PersonalListChanged = "personalListChanged";
 
 Events.SignUp = "signUp";
 Events.SignupFailed = "signUpFailed";
@@ -100,8 +121,12 @@ Events.Authorized = "authorized";
 Events.LogOut = "logOut";
 Events.LoggedOut = "loggedOut";
 
-Events.UpdateAllData = "updataAllData";
+Events.UpdateAllData = "updateAllData";
 
+Events.CreateList = "createList";
+Events.ListCreated = "listCreated";
+Events.ListUpdated = "listUpdated";
+Events.ViewListDetails = "viewListDetails";
 
 Views = new Object();
 Views.Main = "#main";
@@ -110,6 +135,8 @@ Views.LogIn = "#login";
 Views.LogOut = "#logout";
 Views.SignUp = "#signup";
 Views.PersonalLists = "#personal_lists";
+Views.PersonalListDetail = "#personal_list_detail";
+Views.CreateList = "#create_list";
 Views.SharedLists = "#shared_lists";
 
 
@@ -175,10 +202,18 @@ Util.publish = function (name, data) {
     dojo.publish(name, data);
 };
 
-Util.subscribe = function(name, action) {
-    dojo.subscribe(name, function (data) {
-        action(data);
+Util.subscribe = function (name, context, action) {
+    var handle = function (data) {
+        action(data, this);
         console.log("Event " + name + " handled.");
-    });
+    };
+    if (!action) {
+        action = context;
+        dojo.subscribe(name, handle);
+    }
+    else {
+        dojo.subscribe(name, context, handle);
+    }
 };
 
+var GENERAL_ERROR_MESSAGE = "An error occured. Please try again!";

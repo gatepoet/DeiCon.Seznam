@@ -2,10 +2,11 @@
 <html>
 <head>
         <meta charset="UTF-8" />
-        <title>Seznam &beta;</title>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> <title>Seznam &beta;</title>
 
-        <script src="@Url.Content("~/Scripts/jquery-1.5.2.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery-1.6.2.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/jquery.mobile-1.0b1.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.tmpl.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/dojo.js.uncompressed.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout-1.2.0.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout.mapping.js")" type="text/javascript"></script>
@@ -20,6 +21,7 @@
             Url.LogIn = "@Url.Action("LogIn", "Account")";
             Url.LogOut = "@Url.Action("LogOut", "Account")";
             Url.GetAllData = "@Url.Action("All", "List")";
+            Url.CreateList = "@Url.Action("Create", "List")";
 
             $('body').live('pagecreate',function(event){
                 Util.lazyLoadAll();
@@ -29,6 +31,7 @@
 <body>
     @Html.Partial("MainActions")
     @Html.Action("Index", "List", null)
+    @Html.Action("My", "List", null)
     @*<link rel="section" type="text/html" href="@Url.Action("Index", "List")"/>*@
 </body>
 </html>

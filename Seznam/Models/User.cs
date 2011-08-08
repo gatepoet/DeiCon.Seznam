@@ -11,15 +11,15 @@ namespace Seznam.Models
         private readonly string _password;
         private readonly Dictionary<string, SeznamList> _personalLists;
         private readonly Dictionary<string, SeznamList> _sharedLists;
-        public IEnumerable<SeznamList> PersonalLists { get { return _personalLists.Values; } }
-        public IEnumerable<SeznamList> SharedLists { get { return _sharedLists.Values; } }
+        public SeznamList[] PersonalLists { get { return _personalLists.Values.ToArray(); } }
+        public SeznamList[] SharedLists { get { return _sharedLists.Values.ToArray(); } }
 
         public User(string username, string password)
         {
             Username = username;
             _password = password;
             _personalLists = new Dictionary<string, SeznamList>();
-            CreateNewList("Test");
+            CreateNewList("Test", true, new[] {"jan", "stra"});
             _sharedLists = new Dictionary<string, SeznamList>();
         }
 
@@ -44,6 +44,20 @@ namespace Seznam.Models
         public SeznamList GetPersonalList(string name)
         {
             return _personalLists[name];
+        }
+
+        public SeznamList CreateNewList(string name, bool shared, string[] users)
+        {
+            if (_personalLists.ContainsKey(name))
+                throw new ValidationException("Duplicate list name.");
+
+            var list = new SeznamList(name)
+                           {
+                               Shared = shared,
+                               Users = users
+                           };
+            _personalLists.Add(name, list);
+            return list;
         }
     }
 }
