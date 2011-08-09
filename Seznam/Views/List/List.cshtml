@@ -19,9 +19,13 @@
                 lists: ko.observableArray(),
                 shared: ko.observable(false),
                 users: ko.observable(),
-                
+
                 add: function () {
                     $.mobile.changePage(Views.CreateList, { transition: "slideup" });
+                },
+                listUpdated: function() {
+                    this.lists.valueHasMutated();
+                    $(Views.PersonalLists + " section[data-role='content'] ul").listview("refresh");
                 }
             };
 
@@ -32,6 +36,10 @@
                     personalListsViewModel.lists(data.personalLists);
             });
 
+            Util.subscribe(Events.ListCreated, this, function (list) {
+                personalListsViewModel.listUpdated();
+                $.mobile.changePage(Views.PersonalLists, { transition: "slidedown" });
+            });
         });
     </script>
     <script id="listTemplate" type="text/html">

@@ -91,7 +91,7 @@ namespace Seznam.Controllers
             var user = _userRepository.GetUser(_sessionContext.Username);
             var list = user.CreateNewList(data.Name, data.Shared, data.Users);
 
-            return new { ok = true, id = list.Id.ToString() }.ToJsonResult();
+            return list.ToJsonResult();
         }
 
         [HttpPut]

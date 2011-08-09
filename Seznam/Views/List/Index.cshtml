@@ -26,6 +26,9 @@
             },
             logOut: function () {
                 dojo.publish(Events.LogOut);
+            },
+            personalListsUpdated: function () {
+                this.personalLists.valueHasMutated();
             }
         };
         mainViewModel.personalListCount = ko.dependentObservable(function () {
@@ -36,12 +39,15 @@
         }, mainViewModel);
 
         ko.applyBindings(mainViewModel, $(Views.Main)[0]);
-        
+
         Util.subscribe(Events.UpdateAllData, function (data) {
             if (data.personalLists)
                 mainViewModel.personalLists(data.personalLists);
             if (data.sharedLists)
                 mainViewModel.sharedLists(data.sharedLists);
+        });
+        Util.subscribe(Events.ListCreated, this, function (list) {
+            mainViewModel.personalListsUpdated();
         });
     });
 </script>

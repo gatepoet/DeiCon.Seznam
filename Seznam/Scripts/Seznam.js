@@ -89,20 +89,16 @@ Seznam = function (options) {
     Util.subscribe(Events.CreateList, this, function (list, context) {
         if (list.shared)
             list.count = 0;
-        context.personalLists.push(list);
+        //context.personalLists.push(list);
         
         Net.put(JSON.stringify(list), Url.CreateList, function (data) {
-            if (data && data.ok) {
-                list.id = data.id;
-                Util.publish(Events.ListCreated, [list]);
+            if (data) {
+                Util.publish(Events.ListCreated, [data]);
             }
         });
-
     });
-
-//    //List created on server
     Util.subscribe(Events.ListCreated, this, function (list, context) {
-        //context.personalLists.push(list);
+        context.personalLists.push(list);
     });
 };
 
