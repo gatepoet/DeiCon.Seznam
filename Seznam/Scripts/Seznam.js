@@ -1,6 +1,7 @@
 ﻿/// <reference path="jquery-1.5.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
+/// <reference path="../Views/Home/Index.cshtml" />
 
 var account;
 var seznam;
@@ -90,7 +91,7 @@ Seznam = function (options) {
         if (list.shared)
             list.count = 0;
         //context.personalLists.push(list);
-        
+
         Net.put(JSON.stringify(list), Url.CreateList, function (data) {
             if (data) {
                 Util.publish(Events.ListCreated, [data]);
@@ -100,6 +101,54 @@ Seznam = function (options) {
     Util.subscribe(Events.ListCreated, this, function (list, context) {
         context.personalLists.push(list);
     });
+    //Create list item
+    Util.subscribe(Events.CreatePersonalListItem, this, function (item, context) {
+        Net.put(JSON.stringify(item), Url.CreatePersonalListItem, function (data) {
+            if (data) {
+                Util.publish(Events.PersonalListItemCreated, [data]);
+            }
+        });
+    });
+    Util.subscribe(Events.PersonalListItemCreated, this, function (message, context) {
+        for (var i = 0; i < context.personalLists.length; i++) {
+            var list = context.personalLists[i];
+            if (list.id == message.listId) {
+                list.items.push(message);
+                break;
+            }
+        }
+    });
+    Util.subscribe(Events.TogglePersonalListItem, this, function (message, context) {
+        Net.post(JSON.stringify(message), Url.TogglePersonalListItem, function (message) {
+            if (message) {
+                Util.publish(Events.PersonalListItemToggled, [message]);
+            }
+        });
+    });
+    Util.subscribe(Events.PersonalListItemToggled, this, function (message, context) {
+        var list = context.getPersonalList(context.personalLists, message.listId);
+        var item = context.getListItem(list.items, message.itemName);
+        item.completed = message.itemCompleted;
+    });
+    this.getListItem = function (list, name) {
+        for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            if (item.name == name) {
+                return item;
+            }
+        }
+        return null;
+
+    };
+    this.getPersonalList = function (lists, id) {
+        for (var i = 0; i < lists.length; i++) {
+            var list = lists[i];
+            if (list.id == id) {
+                return list;
+            }
+        }
+        return null;
+    };
 };
 
 
@@ -123,6 +172,12 @@ Events.CreateList = "createList";
 Events.ListCreated = "listCreated";
 Events.ListUpdated = "listUpdated";
 Events.ViewListDetails = "viewListDetails";
+Events.CreatePersonalListItem = "createPersonalListItem";
+Events.PersonalListItemCreated = "personalListItemCreated";
+Events.TogglePersonalListItem = "togglePersonalListItem";
+Events.PersonalListItemToggled = "personalListItemtoggled";
+
+
 
 Views = new Object();
 Views.Main = "#main";
@@ -158,6 +213,7 @@ Net.ajax = function(data, url, success, method) {
             url: url,
             dataType: 'json',
             data: data,
+            cache: false,
             contentType: 'application/json; charset=utf-8',
             processData: false,
             success: success,
@@ -193,7 +249,7 @@ Util.lazyLoadCategory = function(category) {
 Util.publish = function (name, data) {
     var msg = "Event " + name + " fired.";
     if (data)
-        msg += " [" + data.toString() + "]";
+        msg += " [" + JSON.stringify(data) + "]";
     console.log(msg);
     dojo.publish(name, data);
 };

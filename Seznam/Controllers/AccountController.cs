@@ -8,28 +8,32 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Seznam.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Seznam.Data.Services.User;
+using Seznam.Data.Services.User.Contracts;
 using Seznam.Models;
 using Seznam.Utilities;
+using User = Seznam.Models.User;
 
 
 namespace Seznam.Controllers
 {
     public class AccountController : BaseController
     {
-        private static IUserRepository _userRepository;
-        private ISessionContext _sessionContext;
+        private readonly IUserService _userService;
+        private readonly ISessionContext _sessionContext;
 
         public AccountController()
         {
-            _userRepository = new UserRepository();
+            _userService = new UserService();
             _sessionContext = SessionContext.Current;
         }
 
-        public AccountController(IUserRepository userRepository, ISessionContext sessionContext)
+        public AccountController(IUserService userService, ISessionContext sessionContext)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _sessionContext = sessionContext;
         }
 
@@ -41,15 +45,27 @@ namespace Seznam.Controllers
         [HttpPost]
         public JsonNetResult Login(LoginViewModel viewModel)
         {
-            var username = viewModel.Username;
-            
-            var user = _userRepository.GetUser(username);
-            user.Authenticate(viewModel.Password);
+            try
+            {
+                var username = viewModel.Username;
+                var userId = _userService.Authenticate(username, viewModel.Password);
 
+                SetUser(userId, username);
+
+                return SignupResponse.Success(username).ToJsonResult();
+            }
+            catch (AuthenticationException exception)
+            {
+                return SignupResponse.Error(exception.Message).ToJsonResult();
+            }
+
+        }
+
+        private void SetUser(string userId, string username)
+        {
             _sessionContext.Username = username;
-            FormsAuthentication.SetAuthCookie(username, viewModel.RembemberLogin);
-
-            return SignupResponse.Success(user.Username).ToJsonResult();
+            _sessionContext.UserId = userId;
+            FormsAuthentication.SetAuthCookie(userId, false);
         }
 
         [HttpPost]
@@ -71,22 +87,16 @@ namespace Seznam.Controllers
         {
             var username = viewModel.Username;
 
-            if (_userRepository.Exists(username))
+            try
+            {
+                var userId = _userService.CreateUser(viewModel.Username, viewModel.Password);
+                SetUser(userId, username);
+                return SignupResponse.Success(username).ToJsonResult();
+            }
+            catch (UserExistsException exception)
+            {
                 return SignupResponse.Error("Username is taken. Try again!").ToJsonResult();
-
-            var user = new User(username, viewModel.Password);
-            
-            _userRepository.Add(user);
-            
-            _sessionContext.Username = username;
-            FormsAuthentication.SetAuthCookie(username, false);
-
-            return SignupResponse.Success(username).ToJsonResult();
-        }
-
-        private RedirectToRouteResult RedirectToListHome()
-        {
-            return RedirectToAction("Index2", "List");
+            }
         }
 
         public ActionResult LoggedOut()

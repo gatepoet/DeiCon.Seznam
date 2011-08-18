@@ -10,9 +10,10 @@ namespace Seznam.Models
         {
         }
 
-        public SeznamListItem(string name)
+        public SeznamListItem(string name, int count)
         {
             Name = name;
+            Count = count;
         }
  
         public string Name { get; set; }
@@ -21,7 +22,6 @@ namespace Seznam.Models
             Name = name;
         }
 
-        [IgnoreDataMember]
         public int Count { get; set; }
         public void SetCount(int count)
         {

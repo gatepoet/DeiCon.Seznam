@@ -1,3 +1,13 @@
 ﻿.errorMessage {
     color: red;
 }
+.textbox-inline 
+{
+    display: inline !important;
+    width: 60% !important;
+}
+.number-inline 
+{
+    display: inline !important;
+    width: 13% !important;
+}

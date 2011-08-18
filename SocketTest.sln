@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seznam", "Seznam\Seznam.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socket.IO", "Socket.IO\Socket.IO.csproj", "{FF274B2E-9B51-48C9-ABDB-D76E765D4917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{9EAF563E-6DF7-4F03-AAC2-BB188A713423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF274B2E-9B51-48C9-ABDB-D76E765D4917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EAF563E-6DF7-4F03-AAC2-BB188A713423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAF563E-6DF7-4F03-AAC2-BB188A713423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAF563E-6DF7-4F03-AAC2-BB188A713423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAF563E-6DF7-4F03-AAC2-BB188A713423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

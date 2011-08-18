@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NLog;
+using Seznam.Data;
+using Seznam.Models;
 
 namespace Seznam
 {
@@ -45,9 +48,11 @@ namespace Seznam
             var ex = Server.GetLastError();
             Debug.WriteLine("ERROR:");
             Debug.WriteLine("Url: " + Request.Url);
-            Debug.WriteLine("Message: " + ex.Message);
+            Debug.WriteLine("Message: " + ex);
             Debug.WriteLine(ex.StackTrace);
             Server.ClearError();
+            var logger = new LogFactory().GetLogger("file");
+            logger.Error(ex);
         }
         
         protected void Application_Start()
@@ -58,6 +63,7 @@ namespace Seznam
             RegisterRoutes(RouteTable.Routes);
 
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+            
         }
     }
 }

@@ -19,6 +19,7 @@
             personalLists: ko.observableArray(),
             sharedLists: ko.observableArray(),
             viewPersonal: function () {
+                console.log("personal");
                 $.mobile.changePage(Views.PersonalLists);
             },
             viewShared: function () {
@@ -45,10 +46,19 @@
                 mainViewModel.personalLists(data.personalLists);
             if (data.sharedLists)
                 mainViewModel.sharedLists(data.sharedLists);
+            $(Views.Main + " section[data-role='content'] ul").listview("refresh");
         });
         Util.subscribe(Events.ListCreated, this, function (list) {
             mainViewModel.personalListsUpdated();
         });
+
+        ko.bindingHandlers.jClick = {
+            init: function (element, valueAccessor) {
+                $(element).click(function () {
+                    valueAccessor();
+                });
+            }
+        };
     });
 </script>
     <section data-role="header" data-position="inline">
@@ -58,7 +68,7 @@
 
     <section data-role="content">
         <ul data-role="listview" data-inset="true" data-theme="a">
-            <li><a data-bind="click: viewPersonal">My lists</a> <span data-bind="text: personalListCount"  class="ui-li-count"></span></li>
+            <li><a onclick="console.log('aiii')" data-bind="click: viewPersonal">My lists</a> <span data-bind="text: personalListCount"  class="ui-li-count"></span></li>
             <li><a data-bind="click: viewShared">Shared lists</a> <span data-bind="text: sharedListCount" class="ui-li-count"></span></li>
         </ul> 
     </section>

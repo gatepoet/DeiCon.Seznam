@@ -15,50 +15,61 @@
 <article data-role="page" id="personal_lists"> 
     <script type="text/javascript">
         $(function () {
+            $('#personal_lists').live('pagebeforeshow', function (event) {
+                $(Views.PersonalLists + " section[data-role='content'] ul").listview("refresh");
+            });
             var personalListsViewModel = {
                 lists: ko.observableArray(),
                 shared: ko.observable(false),
                 users: ko.observable(),
 
-                add: function () {
+                addList: function () {
                     $.mobile.changePage(Views.CreateList, { transition: "slideup" });
                 },
-                listUpdated: function() {
+                listUpdated: function () {
                     this.lists.valueHasMutated();
-                    $(Views.PersonalLists + " section[data-role='content'] ul").listview("refresh");
+                },
+                viewList: function (e) {
+                    var index = $(e.srcElement).closest("li").index();
+                    var list = this.lists()[index];
+                    Util.publish(Events.ViewListDetails, [list]);
+                    console.log("View list ", list.name, " (", list.id, ") ");
                 }
             };
 
             ko.applyBindings(personalListsViewModel, $(Views.PersonalLists)[0]);
 
             Util.subscribe(Events.UpdateAllData, function (data) {
-                if (data.personalLists)
+                if (data.personalLists) {
                     personalListsViewModel.lists(data.personalLists);
+                    personalListsViewModel.listUpdated();
+                }
             });
 
             Util.subscribe(Events.ListCreated, this, function (list) {
                 personalListsViewModel.listUpdated();
+                
                 $.mobile.changePage(Views.PersonalLists, { transition: "slidedown" });
             });
         });
     </script>
     <script id="listTemplate" type="text/html">
         {{each lists}}
-        <li><a>${ name }</a> <span class="ui-li-count">${ count }</span></li>
+        <li><a data-bind="click: viewList">${ name }</a> <span class="ui-li-count">${ items.length }</span></li>
         {{/each}}
     </script>
 
     <section data-role="header"> 
         <a class="back" href="#main">Home</a>
         <h1>My lists</h1> 
-        <a data-role="button" data-bind="click: add">Add</a> 
+        <a data-role="button" data-bind="click: addList">Add</a> 
     </section>
 
     <section data-role="content">
         <ul data-bind="template: 'listTemplate'" data-role="listview" data-inset="true" data-theme="a">
         </ul>
 
-        <button data-bind="click: add" data-icon="plus" data-iconpos="right">Add</button>
+        <a data-role="button" data-bind="click: addList" data-icon="plus" data-iconpos="right">Add</a>
     </section>
 </article> 
 
@@ -80,7 +91,7 @@
                     Util.publish(Events.CreateList, [msg]);
                 },
                 update: function () {
-                    //$(Views.CreateList).trigger("refresh");
+                    $(Views.CreateList).trigger("refresh");
                 }
             };
             createListViewModel.allowCreate = ko.dependentObservable(function () {
@@ -94,7 +105,67 @@
                     $(element).button(value ? "enable" : "disable");
                 }
             };
+            ko.bindingHandlers.jQueryTextBoxEnable = {
+                init: function (element, valueAccessor) {
+                    var deviceAgent = navigator.userAgent.toLowerCase();
+                    var agentID = true; //deviceAgent.match("android");
+                    if (agentID)
+                        $(element).children().each(function () {
+                            if (valueAccessor()())
+                                $(this).removeAttr('disabled');
+                            else
+                                $(this).attr('disabled', 'disabled');
+                            //$(this).get().disable = !valueAccessor()();
+                        });
 
+
+                    else {
+                        var value = ko.utils.unwrapObservable(valueAccessor());
+                        $(element).toggle(value);
+                    }
+                },
+                update: function (element, valueAccessor) {
+                    //ko.bindingHandlers.visible.update(element, valueAccessor);
+                    var agentID = true; //deviceAgent.match("android");
+                    if (agentID)
+                        $(element).children().each(function () {
+                            if (valueAccessor()())
+                                $(this).removeAttr('disabled');
+                            else
+                                $(this).attr('disabled', 'disabled');
+
+                            //                            $(this).get().disable = !valueAccessor()();
+                        });
+
+
+                    else {
+                        var value = ko.utils.unwrapObservable(valueAccessor());
+                        $(element).toggle(value);
+                    }
+                    //                    var value = ko.utils.unwrapObservable(valueAccessor());
+                    //                    if (value)
+                    //                        $(element).slideDown();
+                    //                    else
+                    //                        $(element).slideUp();
+                }
+            };
+            ko.bindingHandlers.show = {
+                init: function (element, valueAccessor) {
+                    var value = ko.utils.unwrapObservable(valueAccessor());
+                    if (value)
+                        $(element).show();
+                    else
+                        $(element).hide();
+                },
+                update: function (element, valueAccessor) {
+                    var va = valueAccessor();
+                    var value = ko.utils.unwrapObservable(va);
+                    if (value)
+                        $(element).show();
+                    else
+                        $(element).hide();
+                }
+            };
             // my checkboxes handler
             ko.bindingHandlers.jqmCheck = {
                 init: function (element, valueAccessor) {
@@ -118,6 +189,7 @@
                     // Now manipulate the DOM element to toggle check mark
 
                     $(element).prop("checked", !valueUnwrapped);
+                    //value.valueHasMutated();
                     //$(element).find("input[type='checkbox']").prop("checked", !valueUnwrapped);
                     if (valueUnwrapped) {
 
@@ -139,7 +211,7 @@
     <section data-role="header"> 
         <a href="#main">Home</a>
         <h1>Add list</h1> 
-        <a href="#my_lists">Cancel</a> 
+        <a href="#personal_lists">Cancel</a> 
     </section>
     <section data-role="content">
         <form>
@@ -151,11 +223,114 @@
                 <div data-bind="jqmCheck: shared"><input type="checkbox" name="checkbox" id="checkbox" class="custom" /></div>
 		        <label for="checkbox">Shared</label>
             </div>
-            <div data-role="fieldcontain" data-bind="visible: shared">
+            <div data-role="fieldcontain" data-bind="jQueryTextBoxEnable: shared">
                 <label for="users" title="Comma separated">Users</label>
                 <input type="text" name="users" data-bind="value: users" />
             </div>
-            <button data-bind="click: create, jQueryButtonEnable: allowCreate">Create</button>
+            <button data-bind="click: create">Create</button>
         </form>
+    </section>
+</article>
+
+
+<article data-role="page" id="personal_list_detail">
+    <script type="text/javascript">
+        $(function () {
+            var personalListDetailViewModel = {
+                list: ko.observable(),
+                items: ko.observableArray(),
+                newItemName: ko.observable(""),
+                currentItem: ko.observable(),
+                count: ko.observable(0),
+                addItem: function () {
+                    var message = { listId: this.list().id, name: this.newItemName(), count: this.count() };
+                    Util.publish(Events.CreatePersonalListItem, [message]);
+                },
+                toggleListItem: function (e) {
+                    var index = $(e.srcElement).closest("li").index();
+                    var item = this.items()[index];
+                    var message = { listId: this.list().id, itemName: item.name, itemCompleted: !item.completed };
+                    Util.publish(Events.TogglePersonalListItem, [message]);
+                },
+                viewContextMenu: function (e) {
+                    var index = $(e.srcElement).closest("li").index();
+                    var item = this.items()[index];
+
+
+                },
+                listUpdated: function () {
+                    this.items.valueHasMutated();
+                },
+                refreshList: function () {
+                    $(Views.PersonalListDetail + " section[data-role='content'] ul").listview("refresh");
+                },
+                getTheme: function (complete) {
+                    return complete ? 'e' : 'b';
+                }
+
+            };
+            personalListDetailViewModel.name = ko.dependentObservable(function () {
+                if (this.list())
+                    return this.list().name;
+                return "";
+            }, personalListDetailViewModel);
+
+            ko.bindingHandlers.longClick = {
+                init: function (element, valueAccessor) {
+                    ko.utils.registerEventHandler(element, "taphold", function () {
+                        console.log("hold");
+                        valueAccessor()();
+                    });
+                }
+            };
+
+            ko.applyBindings(personalListDetailViewModel, $(Views.PersonalListDetail)[0]);
+
+            Util.subscribe(Events.ViewListDetails, function (list) {
+                personalListDetailViewModel.list(list);
+                var items = list.items;
+                items.getTheme = personalListDetailViewModel.getTheme;
+                personalListDetailViewModel.items(list.items);
+                $.mobile.changePage(Views.PersonalListDetail);
+                personalListDetailViewModel.refreshList();
+
+            });
+
+            Util.subscribe(Events.PersonalListItemCreated, function () {
+                personalListDetailViewModel.listUpdated();
+                personalListDetailViewModel.refreshList();
+
+            });
+            Util.subscribe(Events.PersonalListItemToggled, function () {
+                personalListDetailViewModel.listUpdated();
+                personalListDetailViewModel.refreshList();
+            });
+        });
+    </script>
+    <script id="listItemTemplate" type="text/html">
+        {{each items()}}
+        <li data-theme="${ getTheme(completed) }">
+            <a data-bind="event: {taphold: toggleListItem}" >${ name }</a>
+            {{if count > 0}}
+            <span class="ui-li-count">${ count }</span>
+            {{/if}}
+            <a data-bind="click: viewContextMenu" data-icon="gear" data-theme="c">Edit</a>
+        </li>
+        {{/each}}
+        
+    </script>
+    <section data-role="header">
+        <a href="#main" data-icon="home" data-iconpos="notext"></a>
+        <h1 data-bind="text: name"></h1>
+        <a href="#personal_lists" data-icon="back" data-iconpos="notext"></a>
+    </section>
+    <section data-role="content">
+        <ul data-role="listview" data-bind="template: 'listItemTemplate'" data-inset="true" data-split-theme="a"></ul>
+        <span data-bind="visible: items().length === 0">No Items!</span> 
+            <div data-role="fieldcontain">
+                <input type="text" data-bind="value: newItemName" class="textbox-inline" data-inline="true"/>
+                <a data-role="button" data-bind="click: addItem" data-icon="plus" data-inline="true" data-iconpos="notext" style="vertical-align: bottom"></a>
+                <input type="number" data-input="number" data-bind="value: count" class="number-inline"/>
+            </div>
     </section>
 </article>

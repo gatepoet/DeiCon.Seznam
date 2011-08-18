@@ -62,9 +62,11 @@ namespace Seznam.Models
             return _list[name];
         }
 
-        public void CreateNewItem(string name)
+        public SeznamListItem CreateNewItem(string name, int count)
         {
-            _list.Add(name, new SeznamListItem(name));
+            var listItem = new SeznamListItem(name, count);
+            _list.Add(name, listItem);
+            return listItem;
         }
     }
     
@@ -72,7 +74,7 @@ namespace Seznam.Models
     {
         public void t()
         {
-            var o = new SeznamListItem("asdasd") {Completed = true};
+            var o = new SeznamListItem("asdasd", 0) {Completed = true};
             var stream = new MemoryStream();
 
             new XmlSerializer(typeof(SeznamListItem)).Serialize(stream, o);
@@ -86,8 +88,8 @@ namespace Seznam.Models
         {
             var list = new SeznamList("aiiii")
                            {
-                               new SeznamListItem("iasd"),
-                               new SeznamListItem("lksjdft")
+                               new SeznamListItem("iasd", 0),
+                               new SeznamListItem("lksjdft", 2)
                            };
 
 
