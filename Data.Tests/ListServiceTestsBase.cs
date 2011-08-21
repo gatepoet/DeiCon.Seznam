@@ -184,6 +184,27 @@ namespace Seznam.Data.Tests
 
             Assert.Throws<DataExistsException>(() => service.CreateList(list));
         }
+
+        [Test]
+        public void GivenListAndItemPresent_WhenDeletingItem_ShouldDeleteItem()
+        {
+            var service = CreateService();
+            var list = new SeznamList("Id", "Name", false);
+            var item = list.AddItem("item", 2);
+            using (var session = DocumentStore.OpenSession())
+            {
+                session.Store(list);
+                session.SaveChanges();
+            }
+
+            service.DeleteItem(list.Id, item.Name);
+
+            using (var session = DocumentStore.OpenSession())
+            {
+                var l = session.Load<SeznamList>(list.Id);
+                Assert.That(l.Items.Any(i => i.Name == item.Name), Is.False);
+            }
+        }
     }
 
     [TestFixture]
