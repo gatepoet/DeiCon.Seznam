@@ -74,5 +74,10 @@ namespace Seznam.Data.Services.List
         {
             return _repository.TogglePersonalListItem(listId, name, completed);
         }
+
+        public void DeleteItem(string listId, string name)
+        {
+            _repository.DeleteItem(listId, name);
+        }
     }
 }

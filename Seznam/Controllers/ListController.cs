@@ -81,6 +81,15 @@ namespace Seznam.Controllers
             return i.ToJsonResult();
         }
 
+        [HttpDelete]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public JsonNetResult DeletePersonalListItem(DeletePersonalListItemMessage message)
+        {
+            _listService.DeleteItem(message.ListId, message.Name);
+
+            return SimpleResponse.Success().ToJsonResult();
+        }
+
         [HttpPost]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public JsonNetResult UpdatePersonalListItem(NewListItem data)
@@ -93,36 +102,12 @@ namespace Seznam.Controllers
         {
             var item = _listService.TogglePersonalListItem(data.ListId, data.ItemName, data.ItemCompleted);
 
-            return new
+            return DataResponse<dynamic>.Success(new
                        {
                            listId = item.ListId,
                            itemName = item.Name,
                            itemCompleted = item.Completed
-                       }.ToJsonResult();
+                       }).ToJsonResult();
         }
-    }
-
-    public class ToggleData
-    {
-        public string ListId { get; set; }
-        public string ItemName { get; set; }
-        public bool ItemCompleted { get; set; }
-    }
-
-    public class NewList
-    {
-        public string Name { get; set; }
-
-        public bool Shared { get; set; }
-
-        public string[] Users { get; set; }
-    }
-    public class NewListItem
-    {
-        public string ListId { get; set; }
-
-        public string Name { get; set; }
-
-        public int Count { get; set; }
     }
 }

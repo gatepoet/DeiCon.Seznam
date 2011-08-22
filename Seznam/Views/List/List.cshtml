@@ -258,6 +258,11 @@
 
 
                 },
+                deleteItem: function (e) {
+                    var index = $(e.srcElement).closest("li").index();
+                    var item = this.items()[index];
+                    Util.publish(Events.DeletePersonalListItem, [item]);
+                },
                 listUpdated: function () {
                     this.items.valueHasMutated();
                 },
@@ -305,6 +310,10 @@
                 personalListDetailViewModel.listUpdated();
                 personalListDetailViewModel.refreshList();
             });
+            Util.subscribe(Events.PersonalListItemDeleted, function () {
+                personalListDetailViewModel.listUpdated();
+                personalListDetailViewModel.refreshList();
+            });
         });
     </script>
     <script id="listItemTemplate" type="text/html">
@@ -314,7 +323,7 @@
             {{if count > 0}}
             <span class="ui-li-count">${ count }</span>
             {{/if}}
-            <a data-bind="click: viewContextMenu" data-icon="gear" data-theme="c">Edit</a>
+            <a data-bind="click: deleteItem" data-icon="gear" data-theme="c">Edit</a>
         </li>
         {{/each}}
         

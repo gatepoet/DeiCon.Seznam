@@ -1,7 +1,8 @@
 ﻿/// <reference path="jquery-1.5.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
-/// <reference path="../Views/Home/Index.cshtml" />
+
+
 
 var account;
 var seznam;
@@ -101,6 +102,7 @@ Seznam = function (options) {
     Util.subscribe(Events.ListCreated, this, function (list, context) {
         context.personalLists.push(list);
     });
+
     //Create list item
     Util.subscribe(Events.CreatePersonalListItem, this, function (item, context) {
         Net.put(JSON.stringify(item), Url.CreatePersonalListItem, function (data) {
@@ -118,10 +120,47 @@ Seznam = function (options) {
             }
         }
     });
+
+    // Delete list item
+    Util.subscribe(Events.DeletePersonalListItem, this, function (item, context) {
+        Net.destroy(JSON.stringify(item), Url.DeletePersonalListItem, function (message) {
+            if (message.ok) {
+                Util.publish(Events.PersonalListItemDeleted, [$.parseJSON(this.data)]);
+            }
+            else {
+                console.log(data.message);
+            }
+        });
+    });
+    Util.subscribe(Events.PersonalListItemDeleted, this, function (message, context) {
+        var list = context.getList(context.personalLists, message.listId);
+        context.removeItem(list.items, message.name);
+    });
+    
+    this.getList = function (coll, listId) {
+        for (var i = 0; i < coll.length; i++) {
+            var list = coll[i];
+            if (list.id == listId) {
+                return list;
+            }
+        }
+        return null;
+    };
+    this.removeItem = function (list, name) {
+        for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            if (item.name == name) {
+                list.remove(i);
+                break;
+            }
+        }
+        return null;
+    };
+    
     Util.subscribe(Events.TogglePersonalListItem, this, function (message, context) {
         Net.post(JSON.stringify(message), Url.TogglePersonalListItem, function (message) {
-            if (message) {
-                Util.publish(Events.PersonalListItemToggled, [message]);
+            if (message.ok) {
+                Util.publish(Events.PersonalListItemToggled, [message.data]);
             }
         });
     });
@@ -174,6 +213,8 @@ Events.ListUpdated = "listUpdated";
 Events.ViewListDetails = "viewListDetails";
 Events.CreatePersonalListItem = "createPersonalListItem";
 Events.PersonalListItemCreated = "personalListItemCreated";
+Events.DeletePersonalListItem = "deletePersonalListItem";
+Events.PersonalListItemDeleted = "personalListItemDeleted";
 Events.TogglePersonalListItem = "togglePersonalListItem";
 Events.PersonalListItemToggled = "personalListItemtoggled";
 
@@ -194,6 +235,7 @@ Views.SharedLists = "#shared_lists";
 Net = new Object();
 Net.put = function(data, url, success) { Net.ajax(data, url, success, 'PUT'); };
 Net.post = function(data, url, success) { Net.ajax(data, url, success, 'POST'); };
+Net.destroy = function(data, url, success) { Net.ajax(data, url, success, 'DELETE'); };
 Net.get = function (url, success) {
     $.ajax({
         type: "GET",
@@ -269,3 +311,14 @@ Util.subscribe = function (name, context, action) {
 };
 
 var GENERAL_ERROR_MESSAGE = "An error occured. Please try again!";
+
+
+
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function (from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+};
+

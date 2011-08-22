@@ -75,8 +75,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DataResponse.cs" />
+    <Compile Include="Controllers\DeletePersonalListItemMessage.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JsonNetExtensions.cs" />
+    <Compile Include="Controllers\JsonNetResult.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\NewList.cs" />
+    <Compile Include="Controllers\NewListItem.cs" />
+    <Compile Include="Controllers\SignupResponse.cs" />
+    <Compile Include="Controllers\SimpleResponse.cs" />
+    <Compile Include="Controllers\ToggleData.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

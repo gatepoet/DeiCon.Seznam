@@ -118,5 +118,19 @@ namespace Seznam.Data
                 return item;
             }
         }
+
+        public void DeleteItem(string listId, string name)
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                var list = session.Load<SeznamList>(listId);
+                if (list == null)
+                    throw new ListNotFoundException(string.Format("List '{0}' not found when deleting item '{1}", listId, name));
+
+                var item = list.Items.Single(i => i.Name == name);
+                list.Items.Remove(item);
+                session.SaveChanges();
+            }
+        }
     }
 }
