@@ -1,28 +1,29 @@
 namespace Seznam.Controllers
 {
-    public class DataResponse<TData>
+    public class DataResponse
     {
-        public static DataResponse<TData> Error(string message)
+        public static JsonNetResult Error(string message)
         {
-            return new DataResponse<TData>
+            
+            return new DataResponse
                        {
                            Ok = false,
                            Message = message
-                       };
+                       }.ToJsonResult();
 
         }
-        public static DataResponse<TData> Success(TData data)
+        public static JsonNetResult Success(object data)
         {
-            return new DataResponse<TData>
+            return new DataResponse
                        {
                            Ok = true,
                            Data = data
-                       };
+                       }.ToJsonResult();
 
         }
 
         public bool Ok { get; set; }
         public string Message { get; set; }
-        public TData Data { get; set; }
+        public object Data { get; set; }
     }
 }

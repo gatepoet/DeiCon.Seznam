@@ -1,0 +1,70 @@
+﻿@if (false) {
+<script src="../../Scripts/jquery-1.6.2.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.tmpl.js" type="text/javascript"></script>
+<script src="../../Scripts/dojo.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout.mapping.js" type="text/javascript"></script>
+<script src="../../Scripts/Seznam.js" type="text/javascript"></script>
+
+<link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/site.css" rel="stylesheet" type="text/css" />
+}
+
+<article data-role="page" id="shared_lists"> 
+    <script type="text/javascript">
+        $(function () {
+            $('#shared_lists').live('pagebeforeshow', function (event) {
+                $(Views.SharedLists + " section[data-role='content'] ul").listview("refresh");
+            });
+            var sharedListsViewModel = {
+                lists: ko.observableArray(),
+                shared: ko.observable(false),
+                users: ko.observable(),
+
+                listUpdated: function () {
+                    this.lists.valueHasMutated();
+                },
+                viewList: function (e) {
+                    var index = $(e.srcElement).closest("li").index();
+                    var list = this.lists()[index];
+                    Util.publish(Events.ViewListDetails, [list]);
+                }
+            };
+
+            ko.applyBindings(sharedListsViewModel, $(Views.SharedLists)[0]);
+
+            Util.subscribe(Events.UpdateAllData, function (data) {
+                if (data.sharedLists) {
+                    sharedListsViewModel.lists(data.sharedLists);
+                    sharedListsViewModel.listUpdated();
+                }
+            });
+
+            Util.subscribe(Events.ListCreated, this, function (list) {
+                sharedListsViewModel.listUpdated();
+
+                $.mobile.changePage(Views.SharedLists, { transition: "slidedown" });
+            });
+        });
+    </script>
+    <script id="listTemplate" type="text/html">
+        {{each lists}}
+        <li><a data-bind="click: viewList">${ name }</a> <span class="ui-li-count">${ items.length }</span></li>
+        {{/each}}
+    </script>
+
+    <section data-role="header"> 
+        <a class="back" href="#main">Home</a>
+        <h1>My lists</h1> 
+        <a data-role="button" data-bind="click: addList">Add</a> 
+    </section>
+
+    <section data-role="content">
+        <ul data-bind="template: 'listTemplate'" data-role="listview" data-inset="true" data-theme="a">
+        </ul>
+
+        <a data-role="button" data-bind="click: addList" data-icon="plus" data-iconpos="right">Add</a>
+    </section>
+</article> 
+

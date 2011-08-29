@@ -1,6 +1,6 @@
 namespace Seznam.Controllers
 {
-    public class SimpleResponse
+    public class SimpleResponse : JsonNetResult
     {
         public static SimpleResponse Error(string message)
         {

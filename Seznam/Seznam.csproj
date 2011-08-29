@@ -76,14 +76,17 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ConsoleLogger.cs" />
     <Compile Include="Controllers\DataResponse.cs" />
     <Compile Include="Controllers\DeletePersonalListItemMessage.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ILogger.cs" />
     <Compile Include="Controllers\JsonNetExtensions.cs" />
     <Compile Include="Controllers\JsonNetResult.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\NewList.cs" />
     <Compile Include="Controllers\NewListItem.cs" />
+    <Compile Include="Controllers\NullLogger.cs" />
     <Compile Include="Controllers\SignupResponse.cs" />
     <Compile Include="Controllers\SimpleResponse.cs" />
     <Compile Include="Controllers\ToggleData.cs" />
@@ -117,6 +120,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\all.js" />
+    <Content Include="Scripts\Account.js" />
+    <Content Include="Scripts\Util.js" />
     <Content Include="Scripts\dojo.js" />
     <Content Include="Scripts\dojo.js.uncompressed.js" />
     <Content Include="Content\ajax-loader.png" />
@@ -177,6 +182,7 @@
     <Content Include="Views\List\List.cshtml" />
     <Content Include="Views\List\List2.cshtml" />
     <Content Include="Views\List\Index2.cshtml" />
+    <Content Include="Views\List\Shared.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">

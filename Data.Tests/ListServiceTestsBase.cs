@@ -135,6 +135,21 @@ namespace Seznam.Data.Tests
             }
         }
         [Test]
+        public void GivenListAndItemWithSameNamePresent_WhenCreatingListItem_ShouldThrow()
+        {
+            var service = CreateService();
+            var list = new SeznamList("Id", "Name", true);
+            using (var session = DocumentStore.OpenSession())
+            {
+                session.Store(list);
+                session.SaveChanges();
+            }
+
+            service.CreateListItem(list.Id, "Test", 0);
+
+            Assert.Throws<ListItemExistsException>(() => service.CreateListItem(list.Id, "Test", 0));
+        }
+        [Test]
         public void GivenListAndItemPresent_WhenTogglingItem_ShouldToggleItem()
         {
             var service = CreateService();
@@ -205,6 +220,24 @@ namespace Seznam.Data.Tests
                 Assert.That(l.Items.Any(i => i.Name == item.Name), Is.False);
             }
         }
+        [Test]
+        public void GivenIsSharedWith_WhenGettingSummary_ShouldReturnSharedList()
+        {
+            var service = CreateService();
+            var list = new SeznamList("User1", "Name", true, "User2");
+            list.AddItem("item", 2);
+            using (var session = DocumentStore.OpenSession())
+            {
+                session.Store(list);
+                session.SaveChanges();
+            }
+
+            var summary = service.GetSummary("User2");
+
+            Assert.That(summary, Is.Not.Null);
+            Assert.That(summary.SharedLists, Contains.Item(list));
+        }
+
     }
 
     [TestFixture]

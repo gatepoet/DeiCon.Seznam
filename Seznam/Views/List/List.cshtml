@@ -237,6 +237,7 @@
     <script type="text/javascript">
         $(function () {
             var personalListDetailViewModel = {
+                error: ko.observable(),
                 list: ko.observable(),
                 items: ko.observableArray(),
                 newItemName: ko.observable(""),
@@ -268,6 +269,7 @@
                 },
                 refreshList: function () {
                     $(Views.PersonalListDetail + " section[data-role='content'] ul").listview("refresh");
+                    this.error(null);
                 },
                 getTheme: function (complete) {
                     return complete ? 'e' : 'b';
@@ -299,6 +301,10 @@
                 $.mobile.changePage(Views.PersonalListDetail);
                 personalListDetailViewModel.refreshList();
 
+            });
+
+            Util.subscribe(Events.CreatePersonalListItemFailed, function (message) {
+                personalListDetailViewModel.error(message);
             });
 
             Util.subscribe(Events.PersonalListItemCreated, function () {
@@ -336,10 +342,11 @@
     <section data-role="content">
         <ul data-role="listview" data-bind="template: 'listItemTemplate'" data-inset="true" data-split-theme="a"></ul>
         <span data-bind="visible: items().length === 0">No Items!</span> 
-            <div data-role="fieldcontain">
-                <input type="text" data-bind="value: newItemName" class="textbox-inline" data-inline="true"/>
-                <a data-role="button" data-bind="click: addItem" data-icon="plus" data-inline="true" data-iconpos="notext" style="vertical-align: bottom"></a>
-                <input type="number" data-input="number" data-bind="value: count" class="number-inline"/>
-            </div>
+        <div data-role="fieldcontain">
+            <input type="text" data-bind="value: newItemName" class="textbox-inline" data-inline="true"/>
+            <a data-role="button" data-bind="click: addItem" data-icon="plus" data-inline="true" data-iconpos="notext" style="vertical-align: bottom"></a>
+            <input type="number" data-input="number" data-bind="value: count" class="number-inline"/>
+        </div>
+        <p data-bind="text: error" class="errorMessage"></p>
     </section>
 </article>

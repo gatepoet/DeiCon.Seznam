@@ -29,7 +29,14 @@ namespace Seznam.Data.Tests
 
         protected override UserService CreateServiceWithUser(string username, string password)
         {
-            var service = CreateServiceWithNoUsers();
+            Config.SetCurrent(new TestConfig { Host = "localhost", Port = 8081 });
+            var service = new UserService();
+            DocumentStore = GetDocumentstore(service);
+            using (var session = DocumentStore.OpenSession())
+            {
+                session.Store(new User{Username = username, Password = password});
+                session.SaveChanges();
+            }
             service.CreateUser(username, password);
             
             return service;

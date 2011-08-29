@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Seznam.Data;
 using Seznam.Data.Services.List;
 using Seznam.Data.Services.List.Contracts;
 using Seznam.Data.Services.User;
@@ -22,17 +23,20 @@ namespace Seznam.Controllers
     {
         private readonly IListService _listService;
         private readonly ISessionContext _sessionContext;
+        private ILogger _logger;
 
         public ListController()
         {
+            _logger = new NullLogger();
             _listService = new ListService();
             _sessionContext = SessionContext.Current;
         }
 
-        public ListController(IListService listService, ISessionContext sessionContext)
+        public ListController(IListService listService, ISessionContext sessionContext, ILogger logger)
         {
             _listService = listService;
             _sessionContext = sessionContext;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -59,7 +63,7 @@ namespace Seznam.Controllers
         {
             var user = _listService.GetSummary(_sessionContext.UserId);
             
-            return user.ToJsonResult();
+            return DataResponse.Success(user);
         }
 
 
@@ -76,9 +80,16 @@ namespace Seznam.Controllers
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public JsonNetResult CreatePersonalListItem(NewListItem item)
         {
-            var i = _listService.CreateListItem(item.ListId, item.Name, item.Count);
-
-            return i.ToJsonResult();
+            try
+            {
+                var i = _listService.CreateListItem(item.ListId, item.Name, item.Count);
+                return DataResponse.Success(i);
+            }
+            catch (ListItemExistsException ex)
+            {
+                _logger.Error(ex);
+                return DataResponse.Error(ex.Message);
+            }
         }
 
         [HttpDelete]
@@ -87,7 +98,7 @@ namespace Seznam.Controllers
         {
             _listService.DeleteItem(message.ListId, message.Name);
 
-            return SimpleResponse.Success().ToJsonResult();
+            return SimpleResponse.Success();
         }
 
         [HttpPost]
@@ -102,12 +113,7 @@ namespace Seznam.Controllers
         {
             var item = _listService.TogglePersonalListItem(data.ListId, data.ItemName, data.ItemCompleted);
 
-            return DataResponse<dynamic>.Success(new
-                       {
-                           listId = item.ListId,
-                           itemName = item.Name,
-                           itemCompleted = item.Completed
-                       }).ToJsonResult();
+            return DataResponse.Success(item);
         }
     }
 }

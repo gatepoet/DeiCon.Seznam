@@ -76,6 +76,9 @@ namespace Seznam.Data.Services.List.Contracts
 
         public SeznamListItem AddItem(string name, int count)
         {
+            if (Items.Any(i => i.Name == name))
+                throw new ListItemExistsException(string.Format("Item with name '{0}' already exists in list '{1}'.", name, Name));
+
             var item = new SeznamListItem(Id, name, count);
             Items.Add(item);
             return item;

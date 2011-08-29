@@ -72,6 +72,7 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ListenerProtocol.cs" />
+    <Compile Include="ListItemExistsException.cs" />
     <Compile Include="ListNotFoundException.cs" />
     <Compile Include="Services\List\Contracts\DataExistsException.cs" />
     <Compile Include="Services\List\Contracts\IListService.cs" />
