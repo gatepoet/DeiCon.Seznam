@@ -33,7 +33,7 @@ namespace Seznam.Data.Tests
         {
             var service = CreateService();
 
-            var summary = service.GetSummary("");
+            var summary = service.GetSummary("", "");
 
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.PersonalLists, Is.Not.Null);
@@ -42,7 +42,43 @@ namespace Seznam.Data.Tests
             Assert.That(summary.SharedLists, Is.Empty);
         }
 
+        [Test]
+        public void GivenStoredList_WhenGettingSummary_ShouldReturnList()
+        {
+            var service = CreateService();
+            SeznamList list = new SeznamList("Id", "Test", false, string.Empty);
+            SeznamList result = service.CreateList(list);
+            
+            var summary = service.GetSummary(list.UserId, "");
+            Assert.That(summary, Is.Not.Null);
+            Assert.That(summary.PersonalLists, Is.Not.Null);
+            Assert.That(summary.PersonalLists, Is.Not.Empty);
+            Assert.That(summary.PersonalLists, Contains.Item(result));
+        }
         protected abstract IListService CreateService();
+
+        [Test]
+        public void GivenTwoStoredLists_WhenGettingSummary_ShouldReturnBothLists()
+        {
+            var service = CreateService();
+            var userId = "Id";
+            var list1 = new SeznamList(userId, "Test", false, string.Empty);
+            var list2 = new SeznamList(userId, "Test2", true, "John, Meyer, Ciber");
+            using (var session = DocumentStore.OpenSession())
+            {
+                session.Store(list1);
+                session.Store(list2);
+                session.SaveChanges();
+            }
+            
+            var summary = service.GetSummary(list1.UserId, "");
+            Assert.That(summary, Is.Not.Null);
+            Assert.That(summary.PersonalLists, 
+                Is.Not.Null.
+                And.Not.Empty.
+                And.Contains(list1).
+                And.Contains(list2));
+        }
 
         [Test]
         public void ShouldBeAbleToCreateNewList()
@@ -70,42 +106,7 @@ namespace Seznam.Data.Tests
 
             Assert.Throws<DataExistsException>(() => service.CreateList(list));
         }
-        [Test]
-        public void GivenStoredList_WhenGettingSummary_ShouldReturnList()
-        {
-            var service = CreateService();
-            SeznamList list = new SeznamList("Id", "Test", false, string.Empty);
-            SeznamList result = service.CreateList(list);
-            
-            var summary = service.GetSummary(list.UserId);
-            Assert.That(summary, Is.Not.Null);
-            Assert.That(summary.PersonalLists, Is.Not.Null);
-            Assert.That(summary.PersonalLists, Is.Not.Empty);
-            Assert.That(summary.PersonalLists, Contains.Item(result));
-        }
 
-        [Test]
-        public void GivenTwoStoredLists_WhenGettingSummary_ShouldReturnBothLists()
-        {
-            var service = CreateService();
-            var userId = "Id";
-            var list1 = new SeznamList(userId, "Test", false, string.Empty);
-            var list2 = new SeznamList(userId, "Test2", true, "John, Meyer, Ciber");
-            using (var session = DocumentStore.OpenSession())
-            {
-                session.Store(list1);
-                session.Store(list2);
-                session.SaveChanges();
-            }
-            
-            var summary = service.GetSummary(list1.UserId);
-            Assert.That(summary, Is.Not.Null);
-            Assert.That(summary.PersonalLists, 
-                Is.Not.Null.
-                And.Not.Empty.
-                And.Contains(list1).
-                And.Contains(list2));
-        }
 
         [Test]
         public void GivenNoListPresent_WhenCreatingListItem_ShouldThrow()
@@ -149,6 +150,7 @@ namespace Seznam.Data.Tests
 
             Assert.Throws<ListItemExistsException>(() => service.CreateListItem(list.Id, "Test", 0));
         }
+
         [Test]
         public void GivenListAndItemPresent_WhenTogglingItem_ShouldToggleItem()
         {
@@ -232,7 +234,7 @@ namespace Seznam.Data.Tests
                 session.SaveChanges();
             }
 
-            var summary = service.GetSummary("User2");
+            var summary = service.GetSummary("", "User2");
 
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.SharedLists, Contains.Item(list));

@@ -1,22 +1,21 @@
 namespace Seznam.Controllers
 {
-    public class SimpleResponse : JsonNetResult
+    public class SimpleResponse
     {
-        public static SimpleResponse Error(string message)
+        public static JsonNetResult Error(string message)
         {
             return new SimpleResponse
                        {
                            Ok = false,
-                           Message = message
-                       };
+                       }.ToJsonResult();
 
         }
-        public static SimpleResponse Success()
+        public static JsonNetResult Success()
         {
             return new SimpleResponse
                        {
                            Ok = true,
-                       };
+                       }.ToJsonResult();
 
         }
 

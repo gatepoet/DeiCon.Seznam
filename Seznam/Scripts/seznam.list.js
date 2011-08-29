@@ -43,7 +43,7 @@ Seznam = function (options) {
                     Util.publish(Events.PersonalListItemCreated, [message.data]);
                 else {
                     Util.publish(Events.CreatePersonalListItemFailed, [message.message]);
-                    
+
                 }
             }
         });
@@ -73,7 +73,7 @@ Seznam = function (options) {
         var list = context.getList(context.personalLists, message.listId);
         context.removeItem(list.items, message.name);
     });
-    
+
     this.getList = function (coll, listId) {
         for (var i = 0; i < coll.length; i++) {
             var list = coll[i];
@@ -93,7 +93,7 @@ Seznam = function (options) {
         }
         return null;
     };
-    
+
     Util.subscribe(Events.TogglePersonalListItem, this, function (message, context) {
         Net.post(JSON.stringify(message), Url.TogglePersonalListItem, function (message) {
             if (message.ok) {

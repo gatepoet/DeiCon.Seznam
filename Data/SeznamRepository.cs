@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using Raven.Client;
 using Seznam.Data.Services.List.Contracts;
+using Seznam.Data.Services.User;
 
 
 namespace Seznam.Data
@@ -81,6 +83,30 @@ namespace Seznam.Data
                 return data;
             }
         }
+    }
+
+    public class UserRepository : SeznamRepository
+    {
+        public UserRepository(IDocumentStore documentStore) : base(documentStore)
+        {
+        }
+
+        public string Authenticate(string username, string password)
+        {
+            using (var documentSession = _documentStore.OpenSession())
+            {
+                var data = documentSession
+                    .Query<User>()
+                    .Customize(c => c.WaitForNonStaleResultsAsOfNow());
+
+                var user = data.SingleOrDefault(db => db.Username == username);
+                if (user != null && password.Equals(user.Password))
+                    return user.Id;
+                else
+                    throw new AuthenticationException(string.Format("User {0} failed to log in.", username));
+            }
+        }
+
     }
 
     public class ListRepository : SeznamRepository

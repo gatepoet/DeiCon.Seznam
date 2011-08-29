@@ -55,8 +55,8 @@ Account = function (options) {
         context.loggedIn = true;
         $.mobile.changePage(Views.Main, { transition: "slideup" });
         $.mobile.showPageLoadingMsg();
-        $.getJSON(Url.GetAllData, function (data) {
-            Util.publish(Events.UpdateAllData, [data]);
+        $.getJSON(Url.GetAllData, function (message) {
+            Util.publish(Events.UpdateAllData, [message.data]);
             $.mobile.hidePageLoadingMsg();
         });
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using Raven.Client.Document;
 using Seznam.Data.Services.User.Contracts;
@@ -7,9 +9,9 @@ namespace Seznam.Data.Services.User
 {
     public class UserService : IUserService, IDisposable
     {
-        private readonly SeznamRepository _repository;
+        private readonly UserRepository _repository;
 
-        public UserService(SeznamRepository repository)
+        public UserService(UserRepository repository)
         {
             _repository = repository;
         }
@@ -18,10 +20,14 @@ namespace Seznam.Data.Services.User
         {
             var config = Config.Current;
             var url = BuildUrl(config.Host, config.Port);
-            var documentStore = new DocumentStore { Url = url, DefaultDatabase = "Seznam.Users" };
-            documentStore.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
+            var documentStore = new DocumentStore
+                                    {
+                                        Url = url,
+                                        DefaultDatabase = "Seznam.Users",
+                                        Conventions = {DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites}
+                                    };
             documentStore.Initialize();
-            _repository = new SeznamRepository(documentStore);
+            _repository = new UserRepository(documentStore);
         }
 
         private static string BuildUrl(string host, int port)
@@ -50,12 +56,19 @@ namespace Seznam.Data.Services.User
 
         public string Authenticate(string username, string password)
         {
-            var user = _repository.GetByCriteria<User>(u => u.Username == username);
-            
-            if (user != null && password.Equals(user.Password))
-                return user.Id;
-            else
-                throw new AuthenticationException(string.Format("User {0} failed to log in.",username));
+            return _repository.Authenticate(username, password);
+            //var user = _repository.GetByCriteria<User>(u => u.Username == username);
+
+            //if (user != null && password.Equals(user.Password))
+            //    return user.Id;
+            //else
+            //    throw new AuthenticationException(string.Format("User {0} failed to log in.",username));
+        }
+
+        public IEnumerable<string> GetUserIds(IEnumerable<string> usernames)
+        {
+            var users = _repository.GetAllByCriteria<User>(u => usernames.Any(n => n == u.Username));
+            return users.Select(u => u.Id);
         }
 
         public void Dispose()

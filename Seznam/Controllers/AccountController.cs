@@ -94,9 +94,17 @@ namespace Seznam.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult LoggedOut()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonNetResult Ids(string[] usernames)
+        {
+            var ids = _userService.GetUserIds(usernames);
+            return DataResponse.Success(ids);
         }
     }
 }

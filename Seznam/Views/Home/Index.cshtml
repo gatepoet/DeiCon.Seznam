@@ -11,9 +11,10 @@
         <script src="@Url.Content("~/Scripts/dojo.js.uncompressed.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout-1.2.0.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout.mapping.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/Util.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/Account.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/Seznam.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.util.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.account.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.list.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.knockout.js")" type="text/javascript"></script>
 
         <link href="@Url.Content("~/Content/jquery.mobile-1.0b2.css")" rel="stylesheet" type="text/css" />
         <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
@@ -38,6 +39,7 @@
     @Html.Partial("MainActions")
     @Html.Action("Index", "List", null)
     @Html.Action("My", "List", null)
+    @Html.Action("Shared", "List", null)
     @*<link rel="section" type="text/html" href="@Url.Action("Index", "List")"/>*@
 </body>
 </html>

@@ -46,10 +46,10 @@ namespace Seznam.Data.Services.List
             _repository.Dispose();
         }
 
-        public SeznamSummmary GetSummary(string userId)
+        public SeznamSummmary GetSummary(string userId, string username)
         {
             var personal = _repository.GetAllByCriteria<SeznamList>(l => l.UserId == userId);
-            var shared = _repository.GetAllByCriteria<SeznamList>(l => l.Users.Contains(userId));
+            var shared = _repository.GetAllByCriteria<SeznamList>(l => l.Users.Contains(username));
 
             return new SeznamSummmary
                        {

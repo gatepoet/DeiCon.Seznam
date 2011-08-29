@@ -18,7 +18,7 @@ namespace Seznam.Data.Tests
             DocumentStore = new EmbeddableDocumentStore { RunInMemory = true };
             DocumentStore.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
             DocumentStore.Initialize();
-            var service = new UserService(new SeznamRepository(DocumentStore));
+            var service = new UserService(new UserRepository(DocumentStore));
             return service;
         }
 
@@ -33,7 +33,7 @@ namespace Seznam.Data.Tests
                 session.Store(new User{Username = username, Password = password});
                 session.SaveChanges();
             }
-            var service = new UserService(new SeznamRepository(DocumentStore));
+            var service = new UserService(new UserRepository(DocumentStore));
 
             return service;
         }

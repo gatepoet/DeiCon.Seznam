@@ -117,11 +117,12 @@
     <Content Include="Content\images\icons-36-white.png" />
     <Content Include="Content\jquery.mobile-1.0b2.css" />
     <Content Include="Content\site.css" />
+    <Content Include="Scripts\seznam.knockout.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\all.js" />
-    <Content Include="Scripts\Account.js" />
-    <Content Include="Scripts\Util.js" />
+    <Content Include="Scripts\seznam.account.js" />
+    <Content Include="Scripts\seznam.util.js" />
     <Content Include="Scripts\dojo.js" />
     <Content Include="Scripts\dojo.js.uncompressed.js" />
     <Content Include="Content\ajax-loader.png" />
@@ -141,7 +142,7 @@
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\knockout-1.2.0.js" />
     <Content Include="Scripts\knockout.mapping.js" />
-    <Content Include="Scripts\Seznam.js" />
+    <Content Include="Scripts\seznam.list.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
