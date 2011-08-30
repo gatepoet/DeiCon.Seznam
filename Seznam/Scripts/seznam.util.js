@@ -48,6 +48,7 @@ Views.PersonalLists = "#personal_lists";
 Views.PersonalListDetail = "#personal_list_detail";
 Views.CreateList = "#create_list";
 Views.SharedLists = "#shared_lists";
+Views.SharedListDetail = "#shared_list_detail";
 
 
 Net = new Object();
