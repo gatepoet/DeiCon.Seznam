@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,9 +20,15 @@ namespace Seznam.Controllers
 {
     public class ListController : Controller
     {
+        protected override void Dispose(bool disposing)
+        {
+            _listService.Dispose();
+            base.Dispose(disposing);
+        }
         private readonly IListService _listService;
         private readonly ISessionContext _sessionContext;
         private ILogger _logger;
+        private Bus _bus;
 
         public ListController()
         {
@@ -31,7 +36,11 @@ namespace Seznam.Controllers
             _listService = new ListService();
             _sessionContext = SessionContext.Current;
         }
-
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+            _bus = new Bus(Url.Content("~/request.ashx"));
+        }
         public ListController(IListService listService, ISessionContext sessionContext, ILogger logger)
         {
             _listService = listService;
@@ -67,44 +76,49 @@ namespace Seznam.Controllers
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public JsonNetResult All()
         {
-            var user = _listService.GetSummary(_sessionContext.UserId, _sessionContext.Username);
+            var user = _listService.GetSummary(_sessionContext.UserId);
             
             return DataResponse.Success(user);
         }
 
-
         [HttpPut]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonNetResult Create(NewList data)
+        public void Create(NewList data)
         {
             var list = _listService.CreateList(new SeznamList(_sessionContext.UserId, data.Name, data.Shared, data.Users));
+            if (list.Shared)
+            {
+                _bus.Publish(new SharedListCreatedMessage(list, _sessionContext.Username), list.Users);
+            }
 
-            return list.ToJsonResult();
+            _bus.Publish(new ListCreatedMessage(list), _sessionContext.UserId);
         }
+
 
         [HttpPut]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonNetResult CreatePersonalListItem(NewListItem item)
+        public void CreatePersonalListItem(NewListItem item)
         {
-            try
+            var data = _listService.CreateListItem(item.ListId, item.Name, item.Count);
+            if (data.List.Shared)
             {
-                var i = _listService.CreateListItem(item.ListId, item.Name, item.Count);
-                return DataResponse.Success(i);
+                _bus.Publish(new SharedItemCreatedMessage(data.Item, _sessionContext.Username), data.List.Users);
             }
-            catch (ListItemExistsException ex)
-            {
-                _logger.Error(ex);
-                return DataResponse.Error(ex.Message);
-            }
+
+            _bus.Publish(new ItemCreatedMessage(data.Item), _sessionContext.UserId);
         }
 
         [HttpDelete]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonNetResult DeletePersonalListItem(DeletePersonalListItemMessage message)
+        public void DeletePersonalListItem(DeletePersonalListItemMessage message)
         {
-            _listService.DeleteItem(message.ListId, message.Name);
+            var data  = _listService.DeleteItem(message.ListId, message.Name);
 
-            return SimpleResponse.Success();
+            if (data.List.Shared)
+            {
+                _bus.Publish(new SharedItemDeletedMessage(data.Item, _sessionContext.Username), data.List.Users);
+            }
+            _bus.Publish(new ItemDeletedMessage(data.Item, _sessionContext.Username), data.List.UserId);
         }
 
         [HttpPost]
@@ -115,11 +129,199 @@ namespace Seznam.Controllers
         }
         [HttpPost]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public JsonNetResult TogglePersonalListItem(ToggleData data)
+        public void TogglePersonal(ToggleData td)
         {
-            var item = _listService.TogglePersonalListItem(data.ListId, data.ItemName, data.ItemCompleted);
+            var data = _listService.TogglePersonalItem(td.ListId, td.ItemName, td.ItemCompleted);
 
-            return DataResponse.Success(item);
+            if (data.List.Shared)
+            {
+                _bus.Publish(new SharedItemToggledMessage(data.Item, _sessionContext.Username), data.List.Users);
+            }
+            _bus.Publish(new ItemToggledMessage(data.Item, _sessionContext.Username), data.List.UserId);
+        }
+
+        [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public void ToggleShared(ToggleData td)
+        {
+            var data = _listService.ToggleSharedItem(td.ListId, td.ItemName, td.ItemCompleted);
+
+            if (data.List.Shared)
+            {
+                _bus.Publish(new SharedItemToggledMessage(data.Item, _sessionContext.Username), data.List.Users);
+            }
+            _bus.Publish(new ItemToggledMessage(data.Item, _sessionContext.Username), data.List.UserId);
+        }
+
+        [HttpPut]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public void CreateSharedItem(NewListItem item)
+        {
+            var data = _listService.CreateListItem(item.ListId, item.Name, item.Count);
+            if (data.List.Shared)
+            {
+                _bus.Publish(new SharedItemCreatedMessage(data.Item, _sessionContext.Username), data.List.Users);
+            }
+
+            _bus.Publish(new ItemCreatedMessage(data.Item), data.List.UserId);
+        }
+
+    }
+
+    public class ItemCreatedMessage
+    {
+        public ItemCreatedMessage(SeznamListItem item)
+        {
+            Item = item;
+        }
+
+        public string EventType { get { return "itemCreated"; } }
+        public SeznamListItem Item { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(ItemCreatedMessage m)
+        {
+            return m.ToString();
+        }
+    }
+    public class SharedItemCreatedMessage
+    {
+        public SharedItemCreatedMessage(SeznamListItem item, string username)
+        {
+            Item = item;
+            Username = username;
+        }
+
+        public string EventType { get { return "sharedItemCreated"; } }
+        public SeznamListItem Item { get; set; }
+        public string Username { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(SharedItemCreatedMessage m)
+        {
+            return m.ToString();
+        }
+    }
+    public class ListCreatedMessage
+    {
+        public ListCreatedMessage(SeznamList list)
+        {
+            List = list;
+        }
+
+        public string EventType { get { return "listCreated"; } }
+        public SeznamList List { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(ListCreatedMessage m)
+        {
+            return m.ToString();
+        }
+    }
+
+    public class SharedListCreatedMessage
+    {
+        public SharedListCreatedMessage(SeznamList list, string userName)
+        {
+            List = list;
+            Username = userName;
+        }
+
+        public string EventType { get { return "sharedListCreated"; } }
+        public SeznamList List { get; set; }
+        public string Username { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(SharedListCreatedMessage m)
+        {
+            return m.ToString();
+        }
+    }
+
+    public class SharedItemToggledMessage
+    {
+        public SharedItemToggledMessage(SeznamListItem item, string username)
+        {
+            Item = item;
+            Username = username;
+        }
+
+        public string EventType { get { return "sharedItemToggled"; } }
+        public string Username { get; set; }
+        public SeznamListItem Item { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(SharedItemToggledMessage m)
+        {
+            return m.ToString();
+        }
+    }
+    public class ItemToggledMessage
+    {
+        public ItemToggledMessage(SeznamListItem item, string name)
+        {
+            Item = item;
+        }
+
+        public string EventType { get { return "itemToggled"; } }
+        public string Username { get; set; }
+        public SeznamListItem Item { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(ItemToggledMessage m)
+        {
+            return m.ToString();
+        }
+    }
+    public class SharedItemDeletedMessage
+    {
+        public SharedItemDeletedMessage(SeznamListItem item, string username)
+        {
+            Item = item;
+            Username = username;
+        }
+
+        public string EventType { get { return "sharedItemDeleted"; } }
+        public string Username { get; set; }
+        public SeznamListItem Item { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(SharedItemDeletedMessage m)
+        {
+            return m.ToString();
+        }
+    }
+    public class ItemDeletedMessage
+    {
+        public ItemDeletedMessage(SeznamListItem item, string name)
+        {
+            Item = item;
+        }
+
+        public string EventType { get { return "itemDeleted"; } }
+        public string Username { get; set; }
+        public SeznamListItem Item { get; set; }
+        public override string ToString()
+        {
+            return this.ToJsonString();
+        }
+        public static implicit operator string(ItemDeletedMessage m)
+        {
+            return m.ToString();
         }
     }
 }

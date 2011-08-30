@@ -9,6 +9,8 @@
 <script src="../../Scripts/seznam.list.js" type="text/javascript"></script>
 <script src="../../Scripts/seznam.account.js" type="text/javascript"></script>
 <script src="../../Scripts/seznam.knockout.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.app.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.vars.js" type="text/javascript"></script>
 
 <link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/site.css" rel="stylesheet" type="text/css" />
@@ -43,15 +45,15 @@
                     sharedListsViewModel.listUpdated();
                 }
             });
-
-            Util.subscribe(Events.ListCreated, this, function (list) {
+            Util.subscribe(Events.SharedListCreated, this, function () {
                 sharedListsViewModel.listUpdated();
-
-                $.mobile.changePage(Views.SharedLists, { transition: "slidedown" });
+                var currentPageId = "#" + $.mobile.activePage.attr('id');
+                if (currentPageId == Views.SharedLists)
+                    $(Views.SharedLists + " section[data-role=content] ul[data-role=listview]").listview("refresh");
             });
         });
     </script>
-    <script id="listTemplate" type="text/html">
+    <script id="sharedListTemplate" type="text/html">
         {{each lists}}
         <li><a data-bind="click: viewList">${ name }</a> <span class="ui-li-count">${ items.length }</span></li>
         {{/each}}
@@ -64,7 +66,7 @@
 
     <section data-role="content">
         <span data-bind="visible: lists().length === 0">No shared lists!</span> 
-        <ul data-bind="template: 'listTemplate'" data-role="listview" data-inset="true" data-theme="a">
+        <ul data-bind="template: 'sharedListTemplate'" data-role="listview" data-inset="true" data-theme="a">
         </ul>
     </section>
 </article> 
@@ -82,13 +84,13 @@
                 count: ko.observable(0),
                 addItem: function () {
                     var message = { listId: this.list().id, name: this.newItemName(), count: this.count() };
-                    Util.publish(Events.CreateSharedListItem, [message]);
+                    Util.publish(Events.CreateSharedItem, [message]);
                 },
                 toggleListItem: function (e) {
                     var index = $(e.srcElement).closest("li").index();
                     var item = this.items()[index];
                     var message = { listId: this.list().id, itemName: item.name, itemCompleted: !item.completed };
-                    Util.publish(Events.ToggleSharedListItem, [message]);
+                    Util.publish(Events.ToggleSharedItem, [message]);
                 },
                 listUpdated: function () {
                     this.items.valueHasMutated();
@@ -111,7 +113,7 @@
 
             ko.applyBindings(sharedListDetailViewModel, $(Views.SharedListDetail)[0]);
 
-            Util.subscribe(Events.ViewListDetails, function (list) {
+            Util.subscribe(Events.ViewSharedListDetails, function (list) {
                 sharedListDetailViewModel.list(list);
                 var items = list.items;
                 items.getTheme = sharedListDetailViewModel.getTheme;
@@ -121,26 +123,26 @@
 
             });
 
-            Util.subscribe(Events.CreateSharedListItemFailed, function (message) {
+            Util.subscribe(Events.CreateSharedItemFailed, function (message) {
                 sharedListDetailViewModel.error(message);
             });
 
-            Util.subscribe(Events.SharedListItemCreated, function () {
+            Util.subscribe(Events.SharedItemCreated, function () {
                 sharedListDetailViewModel.listUpdated();
                 sharedListDetailViewModel.refreshList();
 
             });
-            Util.subscribe(Events.SharedListItemToggled, function () {
+            Util.subscribe(Events.SharedItemToggled, function () {
                 sharedListDetailViewModel.listUpdated();
                 sharedListDetailViewModel.refreshList();
             });
-            Util.subscribe(Events.SharedListItemDeleted, function () {
+            Util.subscribe(Events.SharedItemDeleted, function () {
                 sharedListDetailViewModel.listUpdated();
                 sharedListDetailViewModel.refreshList();
             });
         });
     </script>
-    <script id="listItemTemplate" type="text/html">
+    <script id="sharedListItemTemplate" type="text/html">
         {{each items()}}
         <li data-theme="${ getTheme(completed) }">
             <a data-bind="event: {taphold: toggleListItem}" >${ name }</a>
@@ -157,7 +159,7 @@
         <a href="#shared_lists" data-icon="back" data-iconpos="notext"></a>
     </section>
     <section data-role="content">
-        <ul data-role="listview" data-bind="template: 'listItemTemplate'" data-inset="true" data-split-theme="a"></ul>
+        <ul data-role="listview" data-bind="template: 'sharedListItemTemplate'" data-inset="true" data-split-theme="a"></ul>
         <span data-bind="visible: items().length === 0">No Items!</span> 
         <div data-role="fieldcontain">
             <input type="text" data-bind="value: newItemName" class="textbox-inline" data-inline="true"/>

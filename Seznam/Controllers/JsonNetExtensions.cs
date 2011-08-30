@@ -13,6 +13,11 @@ namespace Seznam.Controllers
                            Data = data,
                            SerializerSettings = new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()}
                        };
+        }        
+        public static string ToJsonString(this object data)
+        {
+            var result = data.ToJsonResult();
+            return result.ToString();
         }
     }
 }

@@ -7,7 +7,7 @@ using Seznam.Data.Services.User.Contracts;
 
 namespace Seznam.Data.Services.User
 {
-    public class UserService : IUserService, IDisposable
+    public class UserService : IUserService
     {
         private readonly UserRepository _repository;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,11 @@ namespace Seznam.Controllers
 {
     public class AccountController : BaseController
     {
+        protected override void Dispose(bool disposing)
+        {
+            _userService.Dispose();
+            base.Dispose(disposing);
+        }
         private readonly IUserService _userService;
         private readonly ISessionContext _sessionContext;
 
@@ -47,11 +53,11 @@ namespace Seznam.Controllers
 
                 SetUser(userId, username);
 
-                return SignupResponse.Success(username).ToJsonResult();
+                return SignupResponse.Success(userId, username);
             }
             catch (AuthenticationException exception)
             {
-                return SignupResponse.Error(exception.Message).ToJsonResult();
+                return SignupResponse.Error(exception.Message);
             }
 
         }
@@ -67,7 +73,7 @@ namespace Seznam.Controllers
         public JsonNetResult Logout()
         {
             FormsAuthentication.SignOut();
-            Session.Abandon();
+            Session.Clear();
             return SimpleResponse.Success().ToJsonResult();
         }
 
@@ -86,7 +92,7 @@ namespace Seznam.Controllers
             {
                 var userId = _userService.CreateUser(viewModel.Username, viewModel.Password);
                 SetUser(userId, username);
-                return SignupResponse.Success(username).ToJsonResult();
+                return SignupResponse.Success(userId, username).ToJsonResult();
             }
             catch (UserExistsException exception)
             {
@@ -101,9 +107,13 @@ namespace Seznam.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Ids(string[] usernames)
+        public JsonNetResult Ids(string usernames)
         {
-            var ids = _userService.GetUserIds(usernames);
+            var names = usernames
+                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(u => u.Trim());
+            var ids = _userService.GetUserIds(names);
+
             return DataResponse.Success(ids);
         }
     }

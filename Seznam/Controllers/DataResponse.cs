@@ -8,22 +8,22 @@ namespace Seznam.Controllers
             return new DataResponse
                        {
                            Ok = false,
-                           Message = message
+                           ErrorMessage = message
                        }.ToJsonResult();
 
         }
-        public static JsonNetResult Success(object data)
+        public static JsonNetResult Success(object message)
         {
             return new DataResponse
                        {
                            Ok = true,
-                           Data = data
+                           Message = message
                        }.ToJsonResult();
 
         }
 
         public bool Ok { get; set; }
-        public string Message { get; set; }
-        public object Data { get; set; }
+        public string ErrorMessage { get; set; }
+        public object Message { get; set; }
     }
 }

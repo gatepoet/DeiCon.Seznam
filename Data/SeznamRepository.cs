@@ -115,7 +115,7 @@ namespace Seznam.Data
         {
         }
 
-        public SeznamListItem CreateNewListItem(string listId, string name, int count)
+        public ItemChangedData CreateNewListItem(string listId, string name, int count)
         {
             using (var session = _documentStore.OpenSession())
             {
@@ -125,11 +125,11 @@ namespace Seznam.Data
 
                 var item = list.AddItem(name, count);
                 session.SaveChanges();
-                return item;
+                return new ItemChangedData { List = list, Item = item };
             }
         }
 
-        public SeznamListItem TogglePersonalListItem(string listId, string name, bool completed)
+        public ItemChangedData ToggleItem(string listId, string name, bool completed)
         {
             using (var session = _documentStore.OpenSession())
             {
@@ -141,11 +141,11 @@ namespace Seznam.Data
                 item.Completed = completed;
                 session.SaveChanges();
 
-                return item;
+                return new ItemChangedData { List = list, Item = item };
             }
         }
 
-        public void DeleteItem(string listId, string name)
+        public ItemChangedData DeleteItem(string listId, string name)
         {
             using (var session = _documentStore.OpenSession())
             {
@@ -156,7 +156,15 @@ namespace Seznam.Data
                 var item = list.Items.Single(i => i.Name == name);
                 list.Items.Remove(item);
                 session.SaveChanges();
+
+                return new ItemChangedData { List = list, Item = item };
             }
         }
+    }
+
+    public class ItemChangedData
+    {
+        public SeznamList List { get; set; }
+        public SeznamListItem Item { get; set; }
     }
 }

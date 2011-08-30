@@ -2,27 +2,38 @@ namespace Seznam.Controllers
 {
     public class SignupResponse
     {
-        public static SignupResponse Error(string message)
+        public static JsonNetResult Error(string message)
         {
             return new SignupResponse
                        {
                            Ok = false,
-                           Message = message
-                       };
+                           ErrorMessage = message
+                       }.ToJsonResult();
 
         }
-        public static SignupResponse Success(string userId)
+        public static JsonNetResult Success(string userId, string username)
         {
             return new SignupResponse
                        {
                            Ok = true,
-                           UserId = userId
-                       };
+                           Message =new SignedUpMessage
+                               {
+                                   UserId = userId,
+                                   Username = username
+                               }
+                       }.ToJsonResult();
 
         }
 
         public bool Ok { get; set; }
+        public SignedUpMessage Message { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
+    public class SignedUpMessage
+    {
         public string UserId { get; set; }
-        public string Message { get; set; }
+
+        public string Username { get; set; }
     }
 }

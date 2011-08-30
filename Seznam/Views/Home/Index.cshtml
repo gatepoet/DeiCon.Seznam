@@ -1,6 +1,23 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+@if (false) {
+<script src="../../Scripts/jquery-1.6.2.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery.tmpl.js" type="text/javascript"></script>
+<script src="../../Scripts/dojo.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
+<script src="../../Scripts/knockout.mapping.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.util.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.list.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.account.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.knockout.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.app.js" type="text/javascript"></script>
+<script src="../../Scripts/seznam.vars.js" type="text/javascript"></script>
+
+<link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/site.css" rel="stylesheet" type="text/css" />
+}
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> <title>Seznam &beta;</title>
 
@@ -15,24 +32,26 @@
         <script src="@Url.Content("~/Scripts/seznam.account.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.list.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.knockout.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/client.ashx")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.socket.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.app.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/seznam.vars.js")" type="text/javascript"></script>
 
         <link href="@Url.Content("~/Content/jquery.mobile-1.0b2.css")" rel="stylesheet" type="text/css" />
         <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
 
         <script>
-            Url = new function() { };
             Url.SignUp = "@Url.Action("SignUp", "Account")";
             Url.LogIn = "@Url.Action("LogIn", "Account")";
             Url.LogOut = "@Url.Action("LogOut", "Account")";
             Url.GetAllData = "@Url.Action("All", "List")";
+            Url.GetUserIds = "@Url.Action("Ids", "Account")";
             Url.CreateList = "@Url.Action("Create", "List")";
-            Url.CreatePersonalListItem = "@Url.Action("CreatePersonalListItem", "List")";
-            Url.DeletePersonalListItem = "@Url.Action("DeletePersonalListItem", "List")";
-            Url.TogglePersonalListItem = "@Url.Action("TogglePersonalListItem", "List")";
-
-            $('body').live('pagecreate',function(event){
-                Util.lazyLoadAll();
-            });
+            Url.CreateItem = "@Url.Action("CreatePersonalListItem", "List")";
+            Url.DeleteItem = "@Url.Action("DeletePersonalListItem", "List")";
+            Url.ToggleItem = "@Url.Action("TogglePersonal", "List")";
+            Url.CreateSharedItem = "@Url.Action("CreateSharedItem", "List")";
+            Url.ToggleSharedItem = "@Url.Action("ToggleShared", "List")";
         </script>
 </head>
 <body>

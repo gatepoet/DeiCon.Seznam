@@ -30,6 +30,9 @@
             },
             personalListsUpdated: function () {
                 this.personalLists.valueHasMutated();
+            },
+            sharedListsUpdated: function () {
+                this.sharedLists.valueHasMutated();
             }
         };
         mainViewModel.personalListCount = ko.dependentObservable(function () {
@@ -50,6 +53,9 @@
         });
         Util.subscribe(Events.ListCreated, this, function (list) {
             mainViewModel.personalListsUpdated();
+        });
+        Util.subscribe(Events.SharedListCreated, this, function () {
+            mainViewModel.sharedListsUpdated();
         });
 
         ko.bindingHandlers.jClick = {

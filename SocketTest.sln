@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "Data.Tests\Data.Tests.csproj", "{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socket", "Socket\Socket.csproj", "{C8A4644B-CB65-40CD-9AD7-A6305D82E40A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3D4CE9-82C8-4E80-8A54-475CD0882FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8A4644B-CB65-40CD-9AD7-A6305D82E40A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8A4644B-CB65-40CD-9AD7-A6305D82E40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8A4644B-CB65-40CD-9AD7-A6305D82E40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8A4644B-CB65-40CD-9AD7-A6305D82E40A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

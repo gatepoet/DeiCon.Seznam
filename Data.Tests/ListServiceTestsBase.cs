@@ -33,7 +33,7 @@ namespace Seznam.Data.Tests
         {
             var service = CreateService();
 
-            var summary = service.GetSummary("", "");
+            var summary = service.GetSummary("");
 
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.PersonalLists, Is.Not.Null);
@@ -49,7 +49,7 @@ namespace Seznam.Data.Tests
             SeznamList list = new SeznamList("Id", "Test", false, string.Empty);
             SeznamList result = service.CreateList(list);
             
-            var summary = service.GetSummary(list.UserId, "");
+            var summary = service.GetSummary(list.UserId);
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.PersonalLists, Is.Not.Null);
             Assert.That(summary.PersonalLists, Is.Not.Empty);
@@ -71,7 +71,7 @@ namespace Seznam.Data.Tests
                 session.SaveChanges();
             }
             
-            var summary = service.GetSummary(list1.UserId, "");
+            var summary = service.GetSummary(list1.UserId);
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.PersonalLists, 
                 Is.Not.Null.
@@ -163,9 +163,9 @@ namespace Seznam.Data.Tests
                 session.SaveChanges();
             }
 
-            var toggledItem = service.TogglePersonalListItem(list.Id, item.Name, true);
+            var toggleData = service.TogglePersonalItem(list.Id, item.Name, true);
 
-            Assert.That(toggledItem.Completed, Is.Not.EqualTo(item.Completed));
+            Assert.That(toggleData.Item.Completed, Is.Not.EqualTo(item.Completed));
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace Seznam.Data.Tests
                 session.SaveChanges();
             }
 
-            var summary = service.GetSummary("", "User2");
+            var summary = service.GetSummary("");
 
             Assert.That(summary, Is.Not.Null);
             Assert.That(summary.SharedLists, Contains.Item(list));

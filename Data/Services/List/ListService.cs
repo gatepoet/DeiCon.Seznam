@@ -7,7 +7,7 @@ using Seznam.Data.Services.List.Contracts;
 
 namespace Seznam.Data.Services.List
 {
-    public class ListService : IListService, IDisposable
+    public class ListService : IListService
     {
         private readonly ListRepository _repository;
 
@@ -46,10 +46,10 @@ namespace Seznam.Data.Services.List
             _repository.Dispose();
         }
 
-        public SeznamSummmary GetSummary(string userId, string username)
+        public SeznamSummmary GetSummary(string userId)
         {
             var personal = _repository.GetAllByCriteria<SeznamList>(l => l.UserId == userId);
-            var shared = _repository.GetAllByCriteria<SeznamList>(l => l.Users.Contains(username));
+            var shared = _repository.GetAllByCriteria<SeznamList>(l => l.Shared && l.Users.Contains(userId));
 
             return new SeznamSummmary
                        {
@@ -65,19 +65,24 @@ namespace Seznam.Data.Services.List
             return created;
         }
 
-        public SeznamListItem CreateListItem(string listId, string name, int count)
+        public ItemChangedData CreateListItem(string listId, string name, int count)
         {
             return _repository.CreateNewListItem(listId, name, count);
         }
 
-        public SeznamListItem TogglePersonalListItem(string listId, string name, bool completed)
+        public ItemChangedData TogglePersonalItem(string listId, string name, bool completed)
         {
-            return _repository.TogglePersonalListItem(listId, name, completed);
+            return _repository.ToggleItem(listId, name, completed);
         }
 
-        public void DeleteItem(string listId, string name)
+        public ItemChangedData ToggleSharedItem(string listId, string name, bool completed)
         {
-            _repository.DeleteItem(listId, name);
+            return _repository.ToggleItem(listId, name, completed);
+        }
+
+        public ItemChangedData DeleteItem(string listId, string name)
+        {
+            return _repository.DeleteItem(listId, name);
         }
     }
 }

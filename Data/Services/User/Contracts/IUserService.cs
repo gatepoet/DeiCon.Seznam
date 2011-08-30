@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace Seznam.Data.Services.User.Contracts
 {
-    public interface IUserService
+    public interface IUserService : IDisposable
     {
         string CreateUser(string username, string password);
         string Authenticate(string username, string password);

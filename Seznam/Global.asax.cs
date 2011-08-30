@@ -24,11 +24,17 @@ namespace Seznam
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{resource}.ashx");
 
             routes.MapRoute(
                 "PersonalListItem", // Route name
                 "List/Details/{listName}/{name}", // URL with parameters
                 new { controller = "List", action = "PersonalItemDetail"} // Parameter defaults
+            );
+            routes.MapRoute(
+                "GetIds", // Route name
+                "Account/Ids/{usernames}", // URL with parameters
+                new { controller = "Account", action = "Ids"} // Parameter defaults
             );
 
             routes.MapRoute(

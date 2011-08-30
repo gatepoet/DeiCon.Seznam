@@ -1,19 +1,17 @@
 ﻿/// <reference path="jquery-1.5.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
-/// <reference path="Util.js" />
+/// <reference path="seznam.util.js" />
+/// <reference path="seznam.app.js" />
 
 
 
 
-var account;
-$(function() {
-    account = new Account();
-});
 
 Account = function (options) {
     this.options = $.extend(this.defaults, options);
     this.id = null;
+    this.name = null;
     this.loggedIn = false;
 
 
@@ -39,24 +37,27 @@ Account = function (options) {
             if (!data)
                 msg = GENERAL_ERROR_MESSAGE;
             if (data && data.ok) {
-                Util.publish(Events.Authorized, [data.userId]);
-                Util.publish(Events.LoggedIn, [data.userId]);
+                Util.publish(Events.Authorized, [data.message]);
+                Util.publish(Events.LoggedIn, [data.message.userId]);
             }
             else
-                Util.publish(Events.LoginFailed, [msg ? msg : data.message]);
+                Util.publish(Events.LoginFailed, [msg ? msg : data.errorMessage]);
         });
     });
 
 
     //Authorized
-    Util.subscribe(Events.Authorized, this, function (userId, context) {
+    Util.subscribe(Events.Authorized, this, function (message, context) {
         //set user id
-        context.id = userId;
+        context.id = message.userId;
+        context.name = message.username;
         context.loggedIn = true;
+        
         $.mobile.changePage(Views.Main, { transition: "slideup" });
         $.mobile.showPageLoadingMsg();
-        $.getJSON(Url.GetAllData, function (message) {
-            Util.publish(Events.UpdateAllData, [message.data]);
+        
+        $.getJSON(Url.GetAllData, function (data) {
+            Util.publish(Events.UpdateAllData, [data.message]);
             $.mobile.hidePageLoadingMsg();
         });
 
@@ -64,8 +65,8 @@ Account = function (options) {
 
     //LogOut
     Util.subscribe(Events.LogOut, function () {
-        Net.post(null, Url.LogOut, function (data) {
-            if (data && data.ok)
+        Net.post(null, Url.LogOut, function (message) {
+            if (message && message.data && message.data.ok)
                 Util.publish(Events.LoggedOut);
         });
     });

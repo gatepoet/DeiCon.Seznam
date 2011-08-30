@@ -25,16 +25,18 @@ Events.ListCreated = "listCreated";
 Events.ListUpdated = "listUpdated";
 Events.ViewListDetails = "viewListDetails";
 Events.ViewSharedListDetails = "viewSharedListDetails";
-Events.CreatePersonalListItem = "createPersonalListItem";
-Events.CreateSharedListItem = "createSharedListItem";
-Events.CreatePersonalListItemFailed = "createPersonalListItemFailed";
-Events.CreateSharedListItemFailed = "createSharedListItemFailed";
-Events.PersonalListItemCreated = "personalListItemCreated";
-Events.SharedListItemCreated = "sharedListItemCreated";
-Events.DeletePersonalListItem = "deletePersonalListItem";
-Events.PersonalListItemDeleted = "personalListItemDeleted";
-Events.TogglePersonalListItem = "togglePersonalListItem";
-Events.PersonalListItemToggled = "personalListItemtoggled";
+Events.CreateItem = "createPersonalListItem";
+Events.CreateSharedItem = "createSharedListItem";
+Events.CreateItemFailed = "createPersonalListItemFailed";
+Events.CreateSharedItemFailed = "createSharedListItemFailed";
+Events.ItemCreated = "personalListItemCreated";
+Events.SharedItemCreated = "sharedListItemCreated";
+Events.ToggleSharedItem = "toggleSharedItem";
+Events.SharedItemToggled = "sharedItemToggled";
+Events.DeleteItem = "deletePersonalListItem";
+Events.ItemDeleted = "personalListItemDeleted";
+Events.ToggleItem = "togglePersonalListItem";
+Events.ItemToggled = "personalListItemtoggled";
 
 
 
@@ -60,6 +62,20 @@ Net.get = function (url, success) {
         type: "GET",
         url: url,
         contentType: 'text/html',
+        processData: false,
+        success: success,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            throw ("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+        }
+    });
+};
+Net.getJSON = function (url, success) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: 'json',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
         processData: false,
         success: success,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
