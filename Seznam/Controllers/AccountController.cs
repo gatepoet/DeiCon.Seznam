@@ -48,8 +48,8 @@ namespace Seznam.Controllers
         {
             try
             {
-                var username = viewModel.Username;
-                var userId = _userService.Authenticate(username, viewModel.Password);
+                var username = viewModel.Username.Trim();
+                var userId = _userService.Authenticate(username, viewModel.Password.Trim());
 
                 SetUser(userId, username);
 
@@ -86,11 +86,11 @@ namespace Seznam.Controllers
         [HttpPut]
         public JsonNetResult SignUp(SignupViewModel viewModel)
         {
-            var username = viewModel.Username;
+            var username = viewModel.Username.Trim();
 
             try
             {
-                var userId = _userService.CreateUser(viewModel.Username, viewModel.Password);
+                var userId = _userService.CreateUser(username, viewModel.Password.Trim());
                 SetUser(userId, username);
                 return SignupResponse.Success(userId, username).ToJsonResult();
             }
