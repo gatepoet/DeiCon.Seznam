@@ -16,78 +16,36 @@ Seznam = function (options) {
     });
 
     //Create list
-    Util.subscribe(Events.CreateList, this, function (list, context) {
-        if (list.shared)
-            list.count = 0;
-
-        Net.getJSON(Url.GetUserIds + "/" + list.users, function (data) {
+    Util.subscribe(Events.CreateList, function (list) {
+        var url = Url.GetUserIds + "/" + list.users;
+        Net.getJSON(url, function (data) {
             if (data && data.ok) {
                 list.users = data.message;
-
                 Net.put(JSON.stringify(list), Url.CreateList);
             }
         });
+    });
+    Util.subscribe(Events.CreateItem, function (item)           { Net.put(JSON.stringify(item), Url.CreateItem); });
+    Util.subscribe(Events.CreateSharedItem, function (item)     { Net.put(JSON.stringify(item), Url.CreateSharedItem); });
+    Util.subscribe(Events.DeleteItem, function (item)           { Net.destroy(JSON.stringify(item), Url.DeleteItem); });
+    Util.subscribe(Events.ToggleItem, function (message)        { Net.post(JSON.stringify(message), Url.ToggleItem); });
+    Util.subscribe(Events.ToggleSharedItem, function (message)  { Net.post(JSON.stringify(message), Url.ToggleSharedItem); });
+        
+    Util.subscribe(Events.ListCreated, this, function (message, context)        { context.personalLists.push(message.list); });
+    Util.subscribe(Events.ItemCreated, this, function (message, context)        { context.createItem(context.personalLists, message.item); });
+    Util.subscribe(Events.ItemDeleted, this, function (message, context)        { context.deleteItem(context.personalLists, message.item); });
+    Util.subscribe(Events.ItemToggled, this, function (message, context)        { context.toggle(context.personalLists, message.item); });
 
+    Util.subscribe(Events.SharedListCreated, this, function (message, context)  { context.sharedLists.push(message.list); });
+    Util.subscribe(Events.SharedItemCreated, this, function (message, context)  { context.createItem(context.sharedLists, message.item); });
+    Util.subscribe(Events.SharedItemDeleted, this, function (message, context)  { context.deleteItem(context.sharedLists, message.item); });
+    Util.subscribe(Events.SharedItemToggled, this, function (message, context)  { context.toggle(context.sharedLists, message.item); });
 
-    });
-    Util.subscribe(Events.ListCreated, this, function (message, context) {
-        context.personalLists.push(message.list);
-    });
-
-    Util.subscribe(Events.SharedListCreated, this, function (message, context) {
-        context.sharedLists.push(message.list);
-    });
-
-    //Create list item
-    Util.subscribe(Events.CreateItem, this, function (item, context) {
-        Net.put(JSON.stringify(item), Url.CreateItem);
-    });
-    Util.subscribe(Events.CreateSharedItem, this, function (item, context) {
-        Net.put(JSON.stringify(item), Url.CreateSharedItem);
-    });
-    Util.subscribe(Events.SharedItemCreated, this, function (message, context) {
-        var item = message.item;
-        for (var i = 0; i < context.sharedLists.length; i++) {
-            var list = context.sharedLists[i];
-            if (list.id == item.listId) {
-                list.items.push(item);
-                break;
-            }
-        }
-    });
-    Util.subscribe(Events.ItemCreated, this, function (message, context) {
-        var item = message.item;
-        for (var i = 0; i < context.personalLists.length; i++) {
-            var list = context.personalLists[i];
-            if (list.id == item.listId) {
-                list.items.push(item);
-                break;
-            }
-        }
-    });
-
-    // Delete list item
-    Util.subscribe(Events.DeleteItem, this, function (item, context) {
-        Net.destroy(JSON.stringify(item), Url.DeleteItem, function (message) {
-            if (message.ok) {
-                Util.publish(Events.ItemDeleted, [$.parseJSON(this.data)]);
-            }
-            else {
-                console.log(data.message);
-            }
-        });
-    });
-    Util.subscribe(Events.ItemDeleted, this, function (message, context) {
-        var item = message.item;
-        var list = context.getList(context.personalLists, item.listId);
-        context.removeItem(list.items, item.name);
-    });
-    Util.subscribe(Events.SharedItemDeleted, this, function (message, context) {
-        var item = message.item;
-        var list = context.getList(context.sharedLists, item.listId);
-        context.removeItem(list.items, item.name);
-    });
-
+    this.toggle = function (coll, data) {
+        var list = this.getList(coll, data.listId);
+        var item = this.getItem(list.items, data.name);
+        item.completed = data.completed;
+    };
     this.getList = function (coll, listId) {
         for (var i = 0; i < coll.length; i++) {
             var list = coll[i];
@@ -97,27 +55,7 @@ Seznam = function (options) {
         }
         return null;
     };
-    this.removeItem = function (list, name) {
-        for (var i = 0; i < list.length; i++) {
-            var item = list[i];
-            if (item.name == name) {
-                list.remove(i);
-                break;
-            }
-        }
-        return null;
-    };
-
-    Util.subscribe(Events.ToggleItem, this, function (message, context) {
-        Net.post(JSON.stringify(message), Url.ToggleItem);
-    });
-    Util.subscribe(Events.ItemToggled, this, function (message, context) {
-        var data = message.item;
-        var list = context.getList(context.personalLists, data.listId);
-        var item = context.getListItem(list.items, data.name);
-        item.completed = data.completed;
-    });
-    this.getListItem = function (list, name) {
+    this.getItem = function (list, name) {
         for (var i = 0; i < list.length; i++) {
             var item = list[i];
             if (item.name == name) {
@@ -127,23 +65,22 @@ Seznam = function (options) {
         return null;
 
     };
-    this.getList = function (lists, id) {
-        for (var i = 0; i < lists.length; i++) {
-            var list = lists[i];
-            if (list.id == id) {
-                return list;
+    this.getItemIndex = function (list, name) {
+        for (var i = 0; i < list.length; i++) {
+            var item = list[i];
+            if (item.name == name) {
+                return i;
             }
         }
-        return null;
+        return -1;
     };
-    Util.subscribe(Events.ToggleSharedItem, this, function (message, context) {
-        Net.post(JSON.stringify(message), Url.ToggleSharedItem);
-    });
-
-    Util.subscribe(Events.SharedItemToggled, this, function (message, context) {
-        var mi = message.item;
-        var list = context.getList(context.sharedLists, mi.listId);
-        var item = context.getListItem(list.items, mi.name);
-        item.completed = mi.completed;
-    });
+    this.createItem = function (coll, item) {
+        var list = this.getList(coll, item.listId);
+        list.items.push(item);
+    };
+    this.deleteItem = function (coll, item) {
+        var list = this.getList(coll, item.listId);
+        var i = this.getItemIndex(list.items, item.name);
+        list.items.remove(i);
+    };
 };

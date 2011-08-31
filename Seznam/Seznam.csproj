@@ -152,6 +152,15 @@
     <Content Include="Scripts\knockout.mapping.js" />
     <Content Include="Scripts\seznam.list.js" />
     <Content Include="Scripts\seznam.vars.js" />
+    <Content Include="Scripts\ViewModels\sharedListDetail.js" />
+    <Content Include="Scripts\ViewModels\sharedLists.js" />
+    <Content Include="Scripts\ViewModels\listDetail.js" />
+    <Content Include="Scripts\ViewModels\createList.js" />
+    <Content Include="Scripts\ViewModels\personalLists.js" />
+    <Content Include="Scripts\ViewModels\main.js" />
+    <Content Include="Scripts\ViewModels\home.js" />
+    <Content Include="Scripts\ViewModels\signup.js" />
+    <Content Include="Scripts\ViewModels\login.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -193,6 +202,7 @@
     <Content Include="Views\List\List2.cshtml" />
     <Content Include="Views\List\Index2.cshtml" />
     <Content Include="Views\List\Shared.cshtml" />
+    <Content Include="Views\List\Templates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">

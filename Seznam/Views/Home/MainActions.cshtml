@@ -10,17 +10,7 @@
 }
 
 <article data-role="page" id="home">
-    <script type="text/javascript">
-
-        $(function () {
-            var homeViewModel = {
-                logIn: function() { $.mobile.changePage(Views.LogIn); },
-                signUp: function() { $.mobile.changePage(Views.SignUp); }
-            };
-
-            ko.applyBindings(homeViewModel, $(Views.Home)[0]);
-        });
-    </script>
+    <script src="@Url.Content("~/Scripts/ViewModels/home.js")" type="text/javascript"></script>
 
 	<section data-role="header">
         <h1>Seznam</h1> 
