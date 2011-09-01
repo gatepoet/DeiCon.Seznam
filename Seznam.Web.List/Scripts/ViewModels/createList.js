@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿$(function(){
     var createListViewModel = {
         name: ko.observable(),
         shared: ko.observable(false),

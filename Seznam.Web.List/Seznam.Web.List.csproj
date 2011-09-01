@@ -67,11 +67,6 @@
     <Compile Include="Models\NewListItem.cs" />
     <Compile Include="Models\SessionContext.cs" />
     <Compile Include="Models\ToggleData.cs" />
-    <Compile Include="Models\ListHomeViewModel.cs" />
-    <Compile Include="Models\ListViewModel.cs" />
-    <Compile Include="Models\SeznamList.cs" />
-    <Compile Include="Models\SeznamListItem.cs" />
-    <Compile Include="Models\ShoppingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +132,9 @@
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{9EAF563E-6DF7-4F03-AAC2-BB188A713423}</Project>
-      <Name>Data</Name>
+    <ProjectReference Include="..\Seznam.List\Seznam.List.csproj">
+      <Project>{CCB910CD-7659-44E6-9BBE-B7FDDBAF0085}</Project>
+      <Name>Seznam.List</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web.Common\Seznam.Web.Common.csproj">
       <Project>{C1363C5B-E2CB-4149-8D32-036299D4E43E}</Project>

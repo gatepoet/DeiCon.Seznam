@@ -67,9 +67,9 @@
     <EmbeddedResource Include="Views\Account\Signup.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{9EAF563E-6DF7-4F03-AAC2-BB188A713423}</Project>
-      <Name>Data</Name>
+    <ProjectReference Include="..\Seznam.User\Seznam.User.csproj">
+      <Project>{095F7A82-C712-4CCF-A5A0-BB60B0A74418}</Project>
+      <Name>Seznam.User</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web.Common\Seznam.Web.Common.csproj">
       <Project>{C1363C5B-E2CB-4149-8D32-036299D4E43E}</Project>

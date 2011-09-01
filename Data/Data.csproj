@@ -72,28 +72,12 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ListenerProtocol.cs" />
-    <Compile Include="ListItemExistsException.cs" />
-    <Compile Include="ListNotFoundException.cs" />
-    <Compile Include="Services\List\Contracts\DataExistsException.cs" />
-    <Compile Include="Services\List\Contracts\IListService.cs" />
-    <Compile Include="Services\List\Contracts\SeznamList.cs" />
-    <Compile Include="Services\List\Contracts\SeznamListItem.cs" />
-    <Compile Include="Services\List\Contracts\SeznamSummmary.cs" />
-    <Compile Include="Services\List\ListService.cs" />
-    <Compile Include="Services\User\Contracts\IUserService.cs" />
-    <Compile Include="Services\User\Contracts\UserExistsException.cs" />
-    <Compile Include="Services\User\User.cs" />
-    <Compile Include="Services\User\UserService.cs" />
-    <Compile Include="SeznamRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="ListService\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

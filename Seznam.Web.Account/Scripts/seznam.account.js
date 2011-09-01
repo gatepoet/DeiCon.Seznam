@@ -12,8 +12,8 @@
             if (!data)
                 msg = GENERAL_ERROR_MESSAGE;
             if (data && data.ok) {
-                Util.publish(Events.Authorized, [data.userId]);
-                Util.publish(Events.SignedUp, [data.userId]);
+                Util.publish(Events.Authorized, [data.message]);
+                Util.publish(Events.SignedUp, [data.message.userId]);
             }
             else
                 Util.publish(Events.SignupFailed, [msg ? msg : data.message]);
@@ -56,7 +56,7 @@
     //LogOut
     Util.subscribe(Events.LogOut, function () {
         Net.post(null, Url.LogOut, function (message) {
-            if (message && message.data && message.data.ok)
+            if (message && message.ok)
                 Util.publish(Events.LoggedOut);
         });
     });

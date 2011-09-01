@@ -3,8 +3,8 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Web.Mvc;
 using System.Web.Security;
-using Seznam.Data.Services.User;
-using Seznam.Data.Services.User.Contracts;
+using Seznam.User;
+using Seznam.User.Contracts;
 using Seznam.Web.Account.Models;
 using Seznam.Web.Common;
 
@@ -67,7 +67,7 @@ namespace Seznam.Web.Account.Controllers
         {
             FormsAuthentication.SignOut();
             Session.Clear();
-            return SimpleResponse.Success().ToJsonResult();
+            return SimpleResponse.Success();
         }
 
 
@@ -80,11 +80,11 @@ namespace Seznam.Web.Account.Controllers
             {
                 var userId = _userService.CreateUser(username, viewModel.Password.Trim());
                 SetUser(userId, username);
-                return SignupResponse.Success(userId, username).ToJsonResult();
+                return SignupResponse.Success(userId, username);
             }
             catch (UserExistsException exception)
             {
-                return SignupResponse.Error("Username is taken. Try again!").ToJsonResult();
+                return SignupResponse.Error("Username is taken. Try again!");
             }
         }
 

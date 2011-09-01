@@ -1,6 +1,6 @@
 using System.Web.Mvc;
-using Seznam.Data.Services.List;
-using Seznam.Data.Services.List.Contracts;
+using Seznam.List;
+using Seznam.List.Contracts;
 using Seznam.Web.Common;
 using Seznam.Web.List.Models;
 using Seznam.Web.List.Models.Messages;

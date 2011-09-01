@@ -14,6 +14,7 @@
     <AssemblyName>Seznam.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>true</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -145,10 +146,6 @@
     <Content Include="Views\Home\MainActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{9EAF563E-6DF7-4F03-AAC2-BB188A713423}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Seznam.Web.Account\Seznam.Web.Account.csproj">
       <Project>{A52A5439-C6DB-4E1C-83B8-5C8EA76EDBD0}</Project>
       <Name>Seznam.Web.Account</Name>

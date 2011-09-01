@@ -41,6 +41,7 @@
     Util.subscribe(Events.ListCreated, this, function () {
         personalListsViewModel.listUpdated();
         var activeId = "#" + $.mobile.activePage.attr("id");
+        console.log(activeId + Views.CreateList);
         if (activeId == Views.CreateList)
             $.mobile.changePage(Views.PersonalLists, { transition: "slidedown" });
         else if (activeId == Views.PersonalLists)

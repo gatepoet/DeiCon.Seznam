@@ -16,11 +16,11 @@
                 <div data-bind="jqmCheck: shared"><input type="checkbox" name="checkbox" id="checkbox" class="custom" /></div>
 		        <label for="checkbox">Shared</label>
             </div>
-            <div data-role="fieldcontain" data-bind="jQueryTextBoxEnable: shared">
+            <div data-role="fieldcontain">
                 <label for="users" title="Comma separated">Users</label>
-                <input type="text" name="users" data-bind="value: users" />
+                <input type="text" name="users" data-bind="value: users, jQueryTextBoxEnable: shared" />
             </div>
-            <button data-bind="click: create">Create</button>
+            <a data-role="button" data-bind="click: create">Create</a>
         </form>
     </section>
 </article>

@@ -67,22 +67,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ListServiceTestsBase.cs" />
-    <Compile Include="SeznamUserserviceTestsBase.cs" />
-    <Compile Include="SeznamUserserviceTests_Integration.cs" />
-    <Compile Include="SeznamUserserviceTests_Unit.cs" />
-    <Compile Include="TestConfig.cs" />
-    <Compile Include="TestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeznamDataServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{9EAF563E-6DF7-4F03-AAC2-BB188A713423}</Project>
-      <Name>Data</Name>
+    <ProjectReference Include="..\Seznam.List\Seznam.List.csproj">
+      <Project>{CCB910CD-7659-44E6-9BBE-B7FDDBAF0085}</Project>
+      <Name>Seznam.List</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Seznam.User\Seznam.User.csproj">
+      <Project>{095F7A82-C712-4CCF-A5A0-BB60B0A74418}</Project>
+      <Name>Seznam.User</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

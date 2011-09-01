@@ -2,16 +2,16 @@
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
 
-$(function() {
+$(function () {
     ko.bindingHandlers.longClick = {
-        init: function(element, valueAccessor) {
-            ko.utils.registerEventHandler(element, "taphold", function() {
+        init: function (element, valueAccessor) {
+            ko.utils.registerEventHandler(element, "taphold", function () {
                 console.log("hold");
                 valueAccessor()();
             });
         }
     };
-    
+
     ko.bindingHandlers.jQueryButtonEnable = {
         update: function (element, valueAccessor) {
             ko.bindingHandlers.enable.update(element, valueAccessor);
@@ -19,52 +19,51 @@ $(function() {
             $(element).button(value ? "enable" : "disable");
         }
     };
-    
+
     ko.bindingHandlers.jQueryTextBoxEnable = {
-        init: function (element, valueAccessor) {
-            var deviceAgent = navigator.userAgent.toLowerCase();
-            var agentID = true; //deviceAgent.match("android");
-            if (agentID)
-                $(element).children().each(function () {
-                    if (valueAccessor()())
-                        $(this).removeAttr('disabled');
-                    else
-                        $(this).attr('disabled', 'disabled');
-                    //$(this).get().disable = !valueAccessor()();
-                });
+        //        init: function (element, valueAccessor) {
+        //            var deviceAgent = navigator.userAgent.toLowerCase();
+        //            var agentID = true; //deviceAgent.match("android");
+        //            if (agentID)
+        //                $(element).children().each(function () {
+        //                    if (valueAccessor()())
+        //                        $(this).removeAttr('disabled');
+        //                    else
+        //                        $(this).attr('disabled', 'disabled');
+        //                    //$(this).get().disable = !valueAccessor()();
+        //                });
 
 
-            else {
-                var value = ko.utils.unwrapObservable(valueAccessor());
-                $(element).toggle(value);
-            }
-        },
+        //            else {
+        //                var value = ko.utils.unwrapObservable(valueAccessor());
+        //                $(element).toggle(value);
+        //            }
+        //        },
         update: function (element, valueAccessor) {
-            //ko.bindingHandlers.visible.update(element, valueAccessor);
-            var agentID = true; //deviceAgent.match("android");
-            if (agentID)
-                $(element).children().each(function () {
-                    if (valueAccessor()())
-                        $(this).removeAttr('disabled');
-                    else
-                        $(this).attr('disabled', 'disabled');
+            var value = ko.utils.unwrapObservable(valueAccessor());
+//            $(element).textinput(value ? "enable" : "disable");
+//            $(element).each(function () {
+//                var $this = $(this);
+//                if (valueAccessor()()) {
+//                    $this.removeAttr('disabled');
+//                    $this.removeClass('ui-disabled');
+//                    console.log("disabling");
+//                }
+//                else {
+//                    $(this).attr('disabled', 'disabled');
+//                    $this.addClass('ui-disabled');
+//                    console.log("enabling");
+//                }
 
-                    //                            $(this).get().disable = !valueAccessor()();
-                });
-
-
-            else {
-                var value = ko.utils.unwrapObservable(valueAccessor());
-                $(element).toggle(value);
-            }
-            //                    var value = ko.utils.unwrapObservable(valueAccessor());
-            //                    if (value)
-            //                        $(element).slideDown();
-            //                    else
-            //                        $(element).slideUp();
+//            });
+//            //                    var value = ko.utils.unwrapObservable(valueAccessor());
+                                if (value)
+                                    $(element).slideDown();
+                                else
+                                    $(element).slideUp();
         }
     };
-    
+
     ko.bindingHandlers.show = {
         init: function (element, valueAccessor) {
             var value = ko.utils.unwrapObservable(valueAccessor());
@@ -82,7 +81,7 @@ $(function() {
                 $(element).hide();
         }
     };
-    
+
     // my checkboxes handler
     ko.bindingHandlers.jqmCheck = {
         init: function (element, valueAccessor) {
