@@ -1,0 +1,35 @@
+﻿@if (false){
+    <link href="../../../Seznam/Content/jquery.mobile-1.0b2.css" rel="stylesheet" type="text/css" />
+    <link href="../../../Seznam/Content/site.css" rel="stylesheet" type="text/css" />
+}
+<script id="listTemplate" type="text/html">
+    {{each lists}}
+        <li data-theme="${ getTheme($value) }">
+            <a data-bind="click: viewList">${ name }</a>
+            <span class="ui-li-count">${ items.length }</span>
+        </li>
+    {{/each}}
+</script>
+
+<script id="itemTemplate" type="text/html">
+    {{each items()}}
+        <li data-theme="${ getTheme(completed) }">
+            <a data-bind="event: {taphold: toggleListItem}" >${ name }</a>
+            {{if count > 0}}
+            <span class="ui-li-count">${ count }</span>
+            {{/if}}
+            <a data-bind="click: deleteItem" data-icon="delete" data-theme="c">Edit</a>
+        </li>
+    {{/each}}
+</script>
+
+<script id="sharedItemTemplate" type="text/html">
+    {{each items()}}
+        <li data-theme="${ getTheme(completed) }">
+            <a data-bind="event: {taphold: toggleListItem}" >${ name }</a>
+            {{if count > 0}}
+            <span class="ui-li-count">${ count }</span>
+            {{/if}}
+        </li>
+    {{/each}}
+</script>

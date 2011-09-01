@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9DD2A8AC-CA34-466B-9B5A-2EE4C065D862}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Seznam.Web.List</RootNamespace>
+    <AssemblyName>Seznam.Web.List</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FM.WebSync.Core">
+      <HintPath>..\..\..\..\..\..\..\..\Workbench\WebSync\FM.WebSync.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib">
+      <HintPath>..\Lib\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\Bus.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="ListRegistration.cs" />
+    <Compile Include="Models\DeletePersonalListItemMessage.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonalController.cs" />
+    <Compile Include="Models\ISessionContext.cs" />
+    <Compile Include="Models\Messages\ItemCreatedMessage.cs" />
+    <Compile Include="Models\Messages\ItemDeletedMessage.cs" />
+    <Compile Include="Models\Messages\ItemToggledMessage.cs" />
+    <Compile Include="Models\Messages\ListCreatedMessage.cs" />
+    <Compile Include="Models\Messages\SharedItemCreatedMessage.cs" />
+    <Compile Include="Models\Messages\SharedItemDeletedMessage.cs" />
+    <Compile Include="Models\Messages\SharedItemToggledMessage.cs" />
+    <Compile Include="Models\Messages\SharedListCreatedMessage.cs" />
+    <Compile Include="Models\NewList.cs" />
+    <Compile Include="Models\NewListItem.cs" />
+    <Compile Include="Models\SessionContext.cs" />
+    <Compile Include="Models\ToggleData.cs" />
+    <Compile Include="Models\ListHomeViewModel.cs" />
+    <Compile Include="Models\ListViewModel.cs" />
+    <Compile Include="Models\SeznamList.cs" />
+    <Compile Include="Models\SeznamListItem.cs" />
+    <Compile Include="Models\ShoppingList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Seznam\Content\jquery.mobile-1.0b2.css">
+      <Link>Content\jquery.mobile-1.0b2.css</Link>
+    </Content>
+    <Content Include="..\Seznam\Content\site.css">
+      <Link>Content\site.css</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\dojo.js.uncompressed.js">
+      <Link>Scripts\dojo.js.uncompressed.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\jquery-1.6.2.js">
+      <Link>Scripts\jquery-1.6.2.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\jquery.mobile-1.0b2.js">
+      <Link>Scripts\jquery.mobile-1.0b2.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\jquery.tmpl.js">
+      <Link>Scripts\jquery.tmpl.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\json2.js">
+      <Link>Scripts\json2.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\knockout-1.2.0.js">
+      <Link>Scripts\knockout-1.2.0.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\knockout.mapping.js">
+      <Link>Scripts\knockout.mapping.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\seznam.app.js">
+      <Link>Scripts\seznam.app.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\seznam.knockout.js">
+      <Link>Scripts\seznam.knockout.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\seznam.socket.js">
+      <Link>Scripts\seznam.socket.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\seznam.util.js">
+      <Link>Scripts\seznam.util.js</Link>
+    </Content>
+    <Content Include="..\Seznam\Scripts\seznam.vars.js">
+      <Link>Scripts\seznam.vars.js</Link>
+    </Content>
+    <EmbeddedResource Include="Scripts\seznam.list.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\createList.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\listDetail.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\main.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\personalLists.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\sharedListDetail.js" />
+    <EmbeddedResource Include="Scripts\ViewModels\sharedLists.js" />
+    <EmbeddedResource Include="Views\Home\Index.cshtml" />
+    <EmbeddedResource Include="Views\Personal\Create.cshtml" />
+    <EmbeddedResource Include="Views\Personal\Detail.cshtml" />
+    <EmbeddedResource Include="Views\Personal\Index.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Detail.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Index.cshtml" />
+    <EmbeddedResource Include="Views\Home\Templates.cshtml" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{9EAF563E-6DF7-4F03-AAC2-BB188A713423}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web.Common\Seznam.Web.Common.csproj">
+      <Project>{C1363C5B-E2CB-4149-8D32-036299D4E43E}</Project>
+      <Name>Seznam.Web.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

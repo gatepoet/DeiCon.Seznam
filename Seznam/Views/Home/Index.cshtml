@@ -14,7 +14,7 @@
 <script src="../../Scripts/seznam.knockout.js" type="text/javascript"></script>
 <script src="../../Scripts/seznam.app.js" type="text/javascript"></script>
 <script src="../../Scripts/seznam.vars.js" type="text/javascript"></script>
-
+        
 <link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/site.css" rel="stylesheet" type="text/css" />
 }
@@ -29,10 +29,12 @@
         <script src="@Url.Content("~/Scripts/knockout-1.2.0.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/knockout.mapping.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.util.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/seznam.account.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/seznam.list.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/seznam.knockout.js")" type="text/javascript"></script>
+@* ReSharper disable Html.PathError *@
+        <script src="@Url.Content("~/Account/Scripts/scripts.seznam.account.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/List/Scripts/scripts.seznam.list.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/client.ashx")" type="text/javascript"></script>
+@* ReSharper restore Html.PathError *@
+        <script src="@Url.Content("~/Scripts/seznam.knockout.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.socket.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.app.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/seznam.vars.js")" type="text/javascript"></script>
@@ -40,26 +42,33 @@
         <link href="@Url.Content("~/Content/jquery.mobile-1.0b2.css")" rel="stylesheet" type="text/css" />
         <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
 
-        <script>
-            Url.SignUp = "@Url.Action("SignUp", "Account")";
-            Url.LogIn = "@Url.Action("LogIn", "Account")";
-            Url.LogOut = "@Url.Action("LogOut", "Account")";
-            Url.GetAllData = "@Url.Action("All", "List")";
-            Url.GetUserIds = "@Url.Action("Ids", "Account")";
-            Url.CreateList = "@Url.Action("Create", "List")";
-            Url.CreateItem = "@Url.Action("CreatePersonalListItem", "List")";
-            Url.DeleteItem = "@Url.Action("DeletePersonalListItem", "List")";
-            Url.ToggleItem = "@Url.Action("TogglePersonal", "List")";
-            Url.CreateSharedItem = "@Url.Action("CreateSharedItem", "List")";
-            Url.ToggleSharedItem = "@Url.Action("ToggleShared", "List")";
+        <script type="text/javascript">
+
+            Url.GetUserIds = "@Url.Action("Ids", "Account", new{area="Account" })";
+            Url.SignUp = "@Url.RouteUrl("Account", new {controller="Account", action = "Signup" })";
+            Url.LogIn = "@Url.RouteUrl("Account",new {controller="Account", action="LogIn"})";
+            Url.LogOut = "@Url.RouteUrl("Account",new {controller="Account", action="LogOut"})";
+            Url.GetAllData = "@Url.RouteUrl("ListBase",new {action="Summary"})";
+            Url.CreateList = "@Url.RouteUrl("List",new {controller="Personal", action="Create"})";
+            Url.CreateItem = "@Url.RouteUrl("List",new {controller="Personal", action="CreateItem"})";
+            Url.DeleteItem = "@Url.RouteUrl("List", new { controller = "Personal", action = "DeleteItem" })";
+            Url.ToggleItem = "@Url.RouteUrl("List", new { controller = "Personal", action = "Toggle" })";
+            Url.CreateSharedItem =  "@Url.RouteUrl("List", new { controller = "Shared", action = "CreateItem" })";
+            Url.ToggleSharedItem =  "@Url.RouteUrl("List", new { controller = "Shared", action = "Toggle" })";
         </script>
 </head>
 <body>
     @Html.Partial("MainActions")
-    @Html.Action("Index", "List", null)
-    @Html.Action("My", "List", null)
-    @Html.Action("Shared", "List", null)
-    @*<link rel="section" type="text/html" href="@Url.Action("Index", "List")"/>*@
+    @Html.Action("Login", "Account", new{area="Account"})
+    @Html.Action("Signup", "Account", new{area="Account"})
+    <link rel="page" type="text/html" href="@Url.RouteUrl("Account", new { action = "LoggedOut" })"/>
+    <link rel="content" type="text/html" href="@Url.RouteUrl("List", new { action = "Templates" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { action = "Index" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Personal", action = "Index" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Personal", action = "Create" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Personal", action = "Detail" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Shared", action = "Index" })"/>
+    <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Shared", action = "Detail" })"/>
 </body>
 </html>
 

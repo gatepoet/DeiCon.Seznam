@@ -1,15 +1,4 @@
-﻿@if (false) {
-<script src="../../Scripts/jquery-1.6.2.js" type="text/javascript"></script>
-<script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
-<script src="../../Scripts/dojo.js" type="text/javascript"></script>
-<script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
-<script src="../../Scripts/Seznam.js" type="text/javascript"></script>
-
-<link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
-<link href="../../Content/site.css" rel="stylesheet" type="text/css" />
-}
-
-<article data-role="page" id="home">
+﻿<article data-role="page" id="home">
     <script src="@Url.Content("~/Scripts/ViewModels/home.js")" type="text/javascript"></script>
 
 	<section data-role="header">
@@ -23,6 +12,3 @@
 	</section>
 
 </article>
-
-@Html.Action("Login", "Account", null)
-@Html.Action("Signup", "Account", null)

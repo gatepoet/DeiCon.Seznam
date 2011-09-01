@@ -1,15 +1,13 @@
-﻿/// <reference path="jquery-1.5.2.js" />
+﻿/// <reference path="jquery-1.6.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
-/// <reference path="seznam.account.js" />
-/// <reference path="seznam.list.js" />
 /// <reference path="seznam.util.js" />
 /// <reference path="seznam.socket.js" />
 
 $('body').live('pagecreate', function (event) {
     Util.lazyLoadAll();
 });
-
+$.mobile.page.prototype.options.domCache = true;
 var account;
 var seznam;
 var socket;

@@ -1,0 +1,14 @@
+﻿<article data-role="page" id="shared_lists"> 
+    <script src="@Url.Content("~/List/ViewModels/sharedLists.js")" type="text/javascript"></script>
+    
+    <section data-role="header"> 
+        <a class="back" href="#main">Home</a>
+        <h1>My lists</h1> 
+    </section>
+
+    <section data-role="content">
+        <span data-bind="visible: lists().length === 0">No shared lists!</span> 
+        <ul data-bind="template: 'listTemplate'" data-role="listview" data-inset="true" data-theme="a">
+        </ul>
+    </section>
+</article> 

@@ -1,0 +1,20 @@
+﻿<article data-role="page" id="signup">
+    <script src="@Url.Content("~/Account/ViewModels/signup.js")" type="text/javascript"></script>
+    <section data-role="header">
+        <a href="#home">Home</a>
+        <h1>Sign up</h1>
+    </section>
+
+    <section data-role="content">
+        <fieldset>
+            <div data-role="fieldcontain">
+                <label>Username</label> <input type="text" data-bind="value: username" />
+            </div>
+            <div data-role="fieldcontain">
+                <label>Password</label> <input type="password" data-bind="value: password" />
+            </div>
+            <input data-bind="click: signUp" type="button" value="Sign up!" />
+            <p><span data-bind="text: error" style="color:Red"></span></p>
+        </fieldset>
+    </section>
+</article>

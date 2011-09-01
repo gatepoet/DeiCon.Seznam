@@ -1,8 +1,7 @@
-﻿/// <reference path="jquery-1.5.2.js" />
+﻿/// <reference path="jquery-1.6.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
 /// <reference path="seznam.util.js" />
-/// <reference path="client.js" />
 
 
 Socket = function (options) {

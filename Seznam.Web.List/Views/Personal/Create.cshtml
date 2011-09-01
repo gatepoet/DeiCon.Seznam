@@ -1,0 +1,26 @@
+﻿<article data-role="page" id="create_list">
+    <script src="@Url.Content("~/List/ViewModels/createList.js")" type="text/javascript"></script>
+
+    <section data-role="header"> 
+        <a href="#main">Home</a>
+        <h1>Add list</h1> 
+        <a href="#personal_lists">Cancel</a> 
+    </section>
+    <section data-role="content">
+        <form>
+            <div data-role="fieldcontain">
+                <label for="name">List name</label>
+                <input type="text" name="name" data-bind="value: name" placeholder="New list"/>
+            </div>
+            <div data-role="fieldcontain" >
+                <div data-bind="jqmCheck: shared"><input type="checkbox" name="checkbox" id="checkbox" class="custom" /></div>
+		        <label for="checkbox">Shared</label>
+            </div>
+            <div data-role="fieldcontain" data-bind="jQueryTextBoxEnable: shared">
+                <label for="users" title="Comma separated">Users</label>
+                <input type="text" name="users" data-bind="value: users" />
+            </div>
+            <button data-bind="click: create">Create</button>
+        </form>
+    </section>
+</article>

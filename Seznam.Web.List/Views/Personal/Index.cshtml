@@ -1,0 +1,16 @@
+﻿<article data-role="page" id="personal_lists"> 
+    <script src="@Url.Content("~/List/ViewModels/personalLists.js")" type="text/javascript"></script>
+
+    <section data-role="header"> 
+        <a class="back" href="#main">Home</a>
+        <h1>My lists</h1> 
+        <a data-role="button" data-bind="click: addList">Add</a> 
+    </section>
+
+    <section data-role="content">
+        <ul data-bind="template: 'listTemplate'" data-role="listview" data-inset="true" data-theme="a">
+        </ul>
+
+        <a data-role="button" data-bind="click: addList" data-icon="plus" data-iconpos="right">Add</a>
+    </section>
+</article> 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FM.WebSync.Core;
 
-namespace Seznam.Controllers
+namespace Seznam.Web.Controllers
 {
     public class Bus
     {

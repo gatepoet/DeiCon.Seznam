@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MvcContrib.UI.InputBuilder;
 using NLog;
-using Seznam.Data;
-using Seznam.Models;
+using Seznam.Web.Controllers;
 
-namespace Seznam
+namespace Seznam.Web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -27,20 +24,11 @@ namespace Seznam
             routes.IgnoreRoute("{resource}.ashx");
 
             routes.MapRoute(
-                "PersonalListItem", // Route name
-                "List/Details/{listName}/{name}", // URL with parameters
-                new { controller = "List", action = "PersonalItemDetail"} // Parameter defaults
-            );
-            routes.MapRoute(
-                "GetIds", // Route name
-                "Account/Ids/{usernames}", // URL with parameters
-                new { controller = "Account", action = "Ids"} // Parameter defaults
-            );
-
-            routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{json}", // URL with parameters
-                new { controller = "Home", action = "Index", json = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Home", action = "Index", json = UrlParameter.Optional },
+                new[] { typeof(HomeController).Namespace }
+
             );
         }
 
@@ -67,9 +55,10 @@ namespace Seznam
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+            InputBuilder.BootStrap();
 
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
-            
+            //RouteDebug.RouteDebugger.RewriteRoutesForTesting(RouteTable.Routes);
         }
     }
 }

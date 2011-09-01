@@ -1,0 +1,20 @@
+﻿<article data-role="page" id="personal_list_detail">
+    <script src="@Url.Content("~/List/ViewModels/listDetail.js")" type="text/javascript"></script>
+
+    <section data-role="header">
+        <a href="#main" data-icon="home" data-iconpos="notext"></a>
+        <h1 data-bind="text: name"></h1>
+        <a href="#personal_lists" data-icon="back" data-iconpos="notext"></a>
+    </section>
+
+    <section data-role="content">
+        <ul data-role="listview" data-bind="template: 'itemTemplate'" data-inset="true" data-split-theme="a"></ul>
+        <span data-bind="visible: items().length === 0">No Items!</span> 
+        <div data-role="fieldcontain">
+            <input type="text" data-bind="value: newItemName" class="textbox-inline" data-inline="true"/>
+            <a data-role="button" data-bind="click: addItem" data-icon="plus" data-inline="true" data-iconpos="notext" style="vertical-align: bottom"></a>
+            <input type="number" data-input="number" data-bind="value: count" class="number-inline"/>
+        </div>
+        <p data-bind="text: error" class="errorMessage"></p>
+    </section>
+</article>

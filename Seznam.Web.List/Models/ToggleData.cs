@@ -1,0 +1,9 @@
+namespace Seznam.Web.List.Models
+{
+    public class ToggleData
+    {
+        public string ListId { get; set; }
+        public string ItemName { get; set; }
+        public bool ItemCompleted { get; set; }
+    }
+}

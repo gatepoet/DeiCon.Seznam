@@ -1,57 +1,6 @@
-﻿/// <reference path="jquery-1.5.2.js" />
+﻿/// <reference path="jquery-1.6.2.js" />
 /// <reference path="dojo.js.uncompressed.js" />
 /// <reference path="json2.js" />
-
-
-
-Events = new Object();
-
-Events.SignUp = "signUp";
-Events.SignupFailed = "signUpFailed";
-Events.SignedUp = "signedUp";
-
-Events.LogIn = "logIn";
-Events.LoginFailed = "logInFailed";
-Events.LoggedIn = "loggedIn";
-Events.Authorized = "authorized";
-
-Events.LogOut = "logOut";
-Events.LoggedOut = "loggedOut";
-
-Events.UpdateAllData = "updateAllData";
-
-Events.CreateList = "createList";
-Events.ListCreated = "listCreated";
-Events.ListUpdated = "listUpdated";
-Events.ViewListDetails = "viewListDetails";
-Events.ViewSharedListDetails = "viewSharedListDetails";
-Events.CreateItem = "createPersonalListItem";
-Events.CreateSharedItem = "createSharedListItem";
-Events.CreateItemFailed = "createPersonalListItemFailed";
-Events.CreateSharedItemFailed = "createSharedListItemFailed";
-Events.ItemCreated = "personalListItemCreated";
-Events.SharedItemCreated = "sharedListItemCreated";
-Events.ToggleSharedItem = "toggleSharedItem";
-Events.SharedItemToggled = "sharedItemToggled";
-Events.DeleteItem = "deletePersonalListItem";
-Events.ItemDeleted = "personalListItemDeleted";
-Events.ToggleItem = "togglePersonalListItem";
-Events.ItemToggled = "personalListItemtoggled";
-
-
-
-Views = new Object();
-Views.Main = "#main";
-Views.Home = "#home";
-Views.LogIn = "#login";
-Views.LogOut = "#logout";
-Views.SignUp = "#signup";
-Views.PersonalLists = "#personal_lists";
-Views.PersonalListDetail = "#personal_list_detail";
-Views.CreateList = "#create_list";
-Views.SharedLists = "#shared_lists";
-Views.SharedListDetail = "#shared_list_detail";
-
 
 Net = new Object();
 Net.put = function(data, url, success) { Net.ajax(data, url, success, 'PUT'); };
@@ -102,15 +51,20 @@ Net.ajax = function(data, url, success, method) {
 
 Util = new Object();
 Util.lazyLoadAll = function () {
-    $('link[rel="section"][type="text/html"]').each(function () {
+    $('link[rel="content"][type="text/html"]').each(function () {
         var $section = $(this);
         var url = $section.attr("href");
         console.log("Lazy loading '" + url + "'.");
-        var o = $.mobile.loadPage(url);
+        Net.get(url, function (html) {
+            $section.replaceWith(html);
+        });
+    });
+    $('link[rel="page"][type="text/html"]').each(function () {
+        var $section = $(this);
+        var url = $section.attr("href");
+        console.log("Lazy loading '" + url + "'.");
+        $.mobile.loadPage(url);
         $section.remove();
-        //        Net.get(url, function (html) {
-        //            $(html).appendTo(".ui-page").trigger("create");
-        //        });
     });
 };
 Util.lazyLoadCategory = function(category) {
