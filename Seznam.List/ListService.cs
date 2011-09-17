@@ -6,7 +6,22 @@ namespace Seznam.List
 {
     public class ListService : IListService
     {
-        private readonly ListRepository _repository;
+        private ListRepository _repository;
+        private ListRepository Repository { get { return _repository ?? (_repository = CreateRepository()); } }
+
+        private ListRepository CreateRepository()
+        {
+            var config = Config.Current;
+            var url = BuildUrl(config.Host, config.Port);
+            var documentStore = new DocumentStore
+            {
+                Url = url,
+                DefaultDatabase = "Seznam.Users",
+                Conventions = { DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites }
+            };
+            documentStore.Initialize();
+            return new ListRepository(documentStore);
+        }
 
         public ListService(ListRepository repository)
         {
@@ -15,16 +30,6 @@ namespace Seznam.List
 
         public ListService()
         {
-            var config = Config.Current;
-            var url = BuildUrl(config.Host, config.Port);
-            var documentStore = new DocumentStore
-                                    {
-                                        Url = url,
-                                        DefaultDatabase = "Seznam.Lists",
-                                        Conventions = {DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites}
-                                    };
-            documentStore.Initialize();
-            _repository = new ListRepository(documentStore);
         }
 
         private static string BuildUrl(string host, int port)
@@ -40,13 +45,14 @@ namespace Seznam.List
 
         public void Dispose()
         {
-            _repository.Dispose();
+            if (_repository != null)
+                _repository.Dispose();
         }
 
         public SeznamSummmary GetSummary(string userId)
         {
-            var personal = _repository.GetAllByCriteria<SeznamList>(l => l.UserId == userId);
-            var shared = _repository.GetAllByCriteria<SeznamList>(l => l.Shared && l.Users.Contains(userId));
+            var personal = Repository.GetAllByCriteria<SeznamList>(l => l.UserId == userId);
+            var shared = Repository.GetAllByCriteria<SeznamList>(l => l.Shared && l.Users.Contains(userId));
 
             return new SeznamSummmary
                        {
@@ -57,29 +63,29 @@ namespace Seznam.List
 
         public SeznamList CreateList(SeznamList list)
         {
-            var created = _repository.StoreSafe(list, l => l.UserId == list.UserId && l.Name == list.Name);
+            var created = Repository.StoreSafe(list, l => l.UserId == list.UserId && l.Name == list.Name);
 
             return created;
         }
 
         public ItemChangedData CreateListItem(string listId, string name, int count)
         {
-            return _repository.CreateNewListItem(listId, name, count);
+            return Repository.CreateNewListItem(listId, name, count);
         }
 
         public ItemChangedData TogglePersonalItem(string listId, string name, bool completed)
         {
-            return _repository.ToggleItem(listId, name, completed);
+            return Repository.ToggleItem(listId, name, completed);
         }
 
         public ItemChangedData ToggleSharedItem(string listId, string name, bool completed)
         {
-            return _repository.ToggleItem(listId, name, completed);
+            return Repository.ToggleItem(listId, name, completed);
         }
 
         public ItemChangedData DeleteItem(string listId, string name)
         {
-            return _repository.DeleteItem(listId, name);
+            return Repository.DeleteItem(listId, name);
         }
     }
 }

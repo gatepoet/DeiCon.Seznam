@@ -38,7 +38,7 @@
       <HintPath>..\..\..\..\..\..\..\..\Workbench\RavenDB\EmbeddedClient\Raven.Client.Embedded.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\Data.Tests\bin\Debug\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\..\RavenDB\Client\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Storage.Esent">
       <HintPath>..\..\..\..\..\..\..\..\Workbench\RavenDB\Server\Raven.Storage.Esent.dll</HintPath>
