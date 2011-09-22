@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using System.Web;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using Raven.Client.Document;
 using Seznam.List.Contracts;
 
@@ -9,15 +12,26 @@ namespace Seznam.List
         private ListRepository _repository;
         private ListRepository Repository { get { return _repository ?? (_repository = CreateRepository()); } }
 
+        private static string GetRandomEnpoint()
+        {
+            //var endpoints = RoleEnvironment.Roles["Raven"].Instances.Select(i => i.InstanceEndpoints["Raven"]).ToArray();
+
+            //var r = new Random();
+
+            //var endpoint = endpoints[r.Next(endpoints.Count() - 1)].IPEndpoint;
+            //var url = String.Format("tcp://{0}:{1}/", endpoint.Address, 8081);
+            //var url = BuildUrl(endpoint.Address.ToString(), endpoint.Port);
+            var host = HttpContext.Current.Request.Headers["Host"].Split(':')[0];
+            var url = BuildUrl(host, Config.Current.Port); 
+            return url;
+        }
+
         private ListRepository CreateRepository()
         {
-            var config = Config.Current;
-            var url = BuildUrl(config.Host, config.Port);
             var documentStore = new DocumentStore
             {
-                Url = url,
-                DefaultDatabase = "Seznam.Users",
-                Conventions = { DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites }
+                Url = GetRandomEnpoint(),
+                DefaultDatabase = "Seznam.Lists",
             };
             documentStore.Initialize();
             return new ListRepository(documentStore);
@@ -30,6 +44,7 @@ namespace Seznam.List
 
         public ListService()
         {
+           
         }
 
         private static string BuildUrl(string host, int port)

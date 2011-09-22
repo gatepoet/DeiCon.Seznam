@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FM.WebSync.Core;
+using FM.WebSync.Server;
 
 namespace Seznam.Web.Controllers
 {
@@ -18,15 +19,15 @@ namespace Seznam.Web.Controllers
         }
         public void Publish(string json, string userId)
         {
-            var p = CreatePublisher();
-            p.Publish(string.Format("/user/{0}", userId), json);
+            //var p = CreatePublisher();
+            RequestHandler.Publish(string.Format("/user/{0}", userId), json);
         }
         public void Publish(string json, IEnumerable<string> userIds)
         {
-            var p = CreatePublisher();
+            //var p = CreatePublisher();
             foreach (var userId in userIds)
             {
-                p.Publish(string.Format("/user/{0}", userId), json);
+                RequestHandler.Publish(string.Format("/user/{0}", userId), json);
             }
         }
 

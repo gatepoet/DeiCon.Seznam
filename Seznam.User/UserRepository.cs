@@ -22,7 +22,7 @@ namespace Seznam.User
             {
                 var existing = documentSession
                     .Query<Account>()
-                    .Customize(c => c.WaitForNonStaleResultsAsOfLastWrite())
+                    .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                     .Any(a => a.Username == account.Username);
 
                 if (existing)

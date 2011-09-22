@@ -4,32 +4,34 @@
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="Endpoint1" endpointName="Web" />
-          <Binding name="Endpoint2" endpointName="Socket" />
+          <Binding name="Endpoint1" endpointName="HttpIn" />
         </Bindings>
       </Site>
     </Sites>
     <Endpoints>
-      <InputEndpoint name="Web" protocol="http" port="80" />
-      <InputEndpoint name="Socket" protocol="http" port="8080" />
+      <InputEndpoint name="HttpIn" protocol="http" port="80" />
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <Certificates>
+    </Certificates>
+    <LocalResources>
+    </LocalResources>
   </WebRole>
   <WebRole name="Seznam.Storage">
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="Endpoint1" endpointName="Endpoint1" />
+          <Binding name="Endpoint1" endpointName="Raven" />
         </Bindings>
       </Site>
     </Sites>
+    <Endpoints>
+      <InputEndpoint name="Raven" protocol="http" port="8081" localPort="8081" />
+    </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
-    <Endpoints>
-      <InternalEndpoint name="Endpoint1" protocol="http" port="8081" />
-    </Endpoints>
   </WebRole>
 </ServiceDefinition>

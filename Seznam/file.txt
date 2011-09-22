@@ -9992,3 +9992,176 @@ PipelineStepManager.ResumeSteps => HttpApplication.RaiseOnError => MvcApplicatio
    at System.Web.Mvc.MvcHandler.<>c__DisplayClasse.<EndProcessRequest>b__d()
    at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
    at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+HttpApplication.RaiseOnError => EventHandler.Invoke => MvcApplication.Application_Error System.Web.HttpException (0x80004005): The file '/client.ashx' does not exist.
+   at System.Web.UI.Util.CheckVirtualFileExists(VirtualPath virtualPath)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResult(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean ensureIsUpToDate)
+   at System.Web.UI.SimpleHandlerFactory.System.Web.IHttpHandlerFactory2.GetHandler(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   at System.Web.HttpApplication.MapHttpHandler(HttpContext context, String requestType, VirtualPath path, String pathTranslated, Boolean useAppConfig)
+   at System.Web.HttpApplication.MapHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+HttpApplication.RaiseOnError => EventHandler.Invoke => MvcApplication.Application_Error System.Web.HttpException (0x80004005): The file '/client.ashx' does not exist.
+   at System.Web.UI.Util.CheckVirtualFileExists(VirtualPath virtualPath)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   at System.Web.Compilation.BuildManager.GetVPathBuildResult(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean ensureIsUpToDate)
+   at System.Web.UI.SimpleHandlerFactory.System.Web.IHttpHandlerFactory2.GetHandler(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   at System.Web.HttpApplication.MapHttpHandler(HttpContext context, String requestType, VirtualPath path, String pathTranslated, Boolean useAppConfig)
+   at System.Web.HttpApplication.MapHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+HttpApplication.BeginProcessRequestNotification => PipelineStepManager.ResumeSteps => HttpApplication.RaiseOnError System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 127.0.0.1:8081
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Int32 timeout, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetResponse()
+   at Raven.Client.Connection.HttpJsonRequest.ReadStringInternal(Func`1 getResponse) in c:\Builds\raven\Raven.Client.Lightweight\Connection\HttpJsonRequest.cs:line 167
+   at Raven.Client.Connection.HttpJsonRequest.ReadResponseString() in c:\Builds\raven\Raven.Client.Lightweight\Connection\HttpJsonRequest.cs:line 131
+   at Raven.Client.Connection.ServerClient.DirectGet(String serverUrl, String key) in c:\Builds\raven\Raven.Client.Lightweight\Connection\ServerClient.cs:line 212
+   at Raven.Client.Connection.ServerClient.<>c__DisplayClass1.<Get>b__0(String u) in c:\Builds\raven\Raven.Client.Lightweight\Connection\ServerClient.cs:line 97
+   at Raven.Client.Connection.ServerClient.TryOperation[T](Func`2 operation, String operationUrl, Boolean avoidThrowing, T& result) in c:\Builds\raven\Raven.Client.Lightweight\Connection\ServerClient.cs:line 178
+   at Raven.Client.Connection.ServerClient.ExecuteWithReplication[T](String method, Func`2 operation) in c:\Builds\raven\Raven.Client.Lightweight\Connection\ServerClient.cs:line 142
+   at Raven.Client.Connection.ServerClient.Get(String key) in c:\Builds\raven\Raven.Client.Lightweight\Connection\ServerClient.cs:line 97
+   at Raven.Client.Extensions.MultiTenancyExtensions.EnsureDatabaseExists(IDatabaseCommands self, String name) in c:\Builds\raven\Raven.Client.Lightweight\Extensions\MultiTenancyExtensions.cs:line 46
+   at Raven.Client.Document.DocumentStore.Initialize() in c:\Builds\raven\Raven.Client.Lightweight\Document\DocumentStore.cs:line 453
+   at Seznam.User.UserService.CreateRepository() in C:\Workbench\DeiCon.Seznam\SocketTest\Seznam.User\UserService.cs:line 29
+   at Seznam.User.UserService.get_Repository() in C:\Workbench\DeiCon.Seznam\SocketTest\Seznam.User\UserService.cs:line 17
+   at Seznam.User.UserService.Authenticate(String username, String password) in C:\Workbench\DeiCon.Seznam\SocketTest\Seznam.User\UserService.cs:line 62
+   at Seznam.Web.Account.Controllers.AccountController.Login(LoginViewModel viewModel) in C:\Workbench\DeiCon.Seznam\SocketTest\Seznam.Web.Account\Controllers\AccountController.cs:line 47
+   at lambda_method(Closure , ControllerBase , Object[] )
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.<>c__DisplayClass15.<InvokeActionMethodWithFilters>b__12()
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func`1 continuation)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethodWithFilters(ControllerContext controllerContext, IList`1 filters, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeAction(ControllerContext controllerContext, String actionName)
+   at System.Web.Mvc.Controller.ExecuteCore()
+   at System.Web.Mvc.ControllerBase.Execute(RequestContext requestContext)
+   at System.Web.Mvc.MvcHandler.<>c__DisplayClass6.<>c__DisplayClassb.<BeginProcessRequest>b__5()
+   at System.Web.Mvc.Async.AsyncResultWrapper.<>c__DisplayClass1.<MakeVoidDelegate>b__0()
+   at System.Web.Mvc.MvcHandler.<>c__DisplayClasse.<EndProcessRequest>b__d()
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 2/2 results
+ListRepository.StoreSafe => DocumentSession.SaveChanges => DocumentSession.LogBatch Saving 1 changes to http://localhost:8081/ (DB: Seznam.Users)
+	PUT seznamlists/2049
+
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+ListRepository.CreateNewListItem => DocumentSession.Load => LoadOperation.LogOperation Loading document [seznamlists/2049] from http://localhost:8081/ (DB: Seznam.Users)
+ListRepository.CreateNewListItem => DocumentSession.SaveChanges => DocumentSession.LogBatch Saving 1 changes to http://localhost:8081/ (DB: Seznam.Users)
+	PUT seznamlists/2049
+
+ListRepository.CreateNewListItem => DocumentSession.Load => LoadOperation.LogOperation Loading document [seznamlists/2049] from http://localhost:8081/ (DB: Seznam.Users)
+ListRepository.CreateNewListItem => DocumentSession.Load => LoadOperation.LogOperation Loading document [seznamlists/2049] from http://localhost:8081/ (DB: Seznam.Users)
+ListRepository.CreateNewListItem => DocumentSession.SaveChanges => DocumentSession.LogBatch Saving 1 changes to http://localhost:8081/ (DB: Seznam.Users)
+	PUT seznamlists/2049
+
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+ListRepository.ToggleItem => DocumentSession.Load => LoadOperation.LogOperation Loading document [seznamlists/2049] from http://localhost:8081/ (DB: Seznam.Users)
+ListRepository.ToggleItem => DocumentSession.SaveChanges => DocumentSession.LogBatch Saving 1 changes to http://localhost:8081/ (DB: Seznam.Users)
+	PUT seznamlists/2049
+
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://localhost:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8082/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8082/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8082/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query 'Username:k' on index 'dynamic/Accounts' in 'http://127.0.0.1:8081/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 1/1 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:5109/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.LogQuery Executing query '' on index 'dynamic/SeznamLists' in 'http://127.0.0.1:5109/ (DB: Seznam.Users)'
+AbstractDocumentQuery`2.InitSync => AbstractDocumentQuery`2.ExecuteActualQuery => QueryOperation.IsAcceptable Query returned 3/3 results
+Task.Execute => <>c__DisplayClass5.<UpdateReplicationInformationIfNeeded>b__2 => ReplicationInformer.RefreshReplicationInformation Could not contact master for new replication information

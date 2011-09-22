@@ -3,13 +3,15 @@
   <Role name="Seznam.Web">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=seznam;AccountKey=lho1CzRPRzyYFLNxGVAPKOJTRUHXdJfqgt1S3dfWZPetYD34yNxgAETakQApsIkyVJnH7RU40REo15QD9jXhSQ==" />
     </ConfigurationSettings>
+    <Certificates>
+    </Certificates>
   </Role>
   <Role name="Seznam.Storage">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=seznam;AccountKey=lho1CzRPRzyYFLNxGVAPKOJTRUHXdJfqgt1S3dfWZPetYD34yNxgAETakQApsIkyVJnH7RU40REo15QD9jXhSQ==" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

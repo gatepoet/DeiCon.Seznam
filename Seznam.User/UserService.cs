@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
@@ -13,18 +14,30 @@ namespace Seznam.User
 
     public class UserService : IUserService
     {
+       
         private UserRepository _repository;
         private UserRepository Repository { get { return _repository ?? (_repository = CreateRepository()); } }
 
+        private static string GetRandomEnpoint()
+        {
+            //var endpoints = RoleEnvironment.Roles["Raven"].Instances.Select(i => i.InstanceEndpoints["Raven"]).ToArray();
+
+            //var r = new Random();
+
+            //var endpoint = RoleEnvironment.Roles["Raven"].Instances.First().InstanceEndpoints.First().Value.IPEndpoint;
+            //var url = BuildUrl(endpoint.Address.ToString(), Config.Current.Port);
+            var host = HttpContext.Current.Request.Headers["Host"].Split(':')[0];
+            var url = BuildUrl(host, Config.Current.Port);
+            return url;
+        }
+
         private UserRepository CreateRepository()
         {
-            var config = Config.Current;
-            var url = BuildUrl(config.Host, config.Port);
             var documentStore = new DocumentStore
             {
-                Url = url,
+                Url = GetRandomEnpoint(),
                 DefaultDatabase = "Seznam.Users",
-                Conventions = { DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites }
+                //Conventions = { DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites }
             };
             documentStore.Initialize();
             return new UserRepository(documentStore);
@@ -38,6 +51,7 @@ namespace Seznam.User
 
         public UserService()
         {
+         
         }
 
         private static string BuildUrl(string host, int port)

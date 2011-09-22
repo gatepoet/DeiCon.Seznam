@@ -34,6 +34,9 @@
     <Reference Include="FM.WebSync.Core">
       <HintPath>..\..\..\..\..\..\..\..\Workbench\WebSync\FM.WebSync.Core.dll</HintPath>
     </Reference>
+    <Reference Include="FM.WebSync.Server">
+      <HintPath>..\..\..\WebSync\FM.WebSync.Server.dll</HintPath>
+    </Reference>
     <Reference Include="MvcContrib">
       <HintPath>..\Lib\MvcContrib.dll</HintPath>
     </Reference>

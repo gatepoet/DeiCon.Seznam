@@ -68,7 +68,7 @@ namespace Seznam.List
             {
                 var existing = documentSession
                     .Query<T>()
-                    .Customize(c => c.WaitForNonStaleResultsAsOfLastWrite())
+                    .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                     .Any(predicate);
 
                 if (existing)

@@ -35,7 +35,7 @@ Events.SharedItemToggled = "sharedItemToggled";
 Events.SharedItemCreated = "sharedItemCreated";
 Events.SharedItemDeleted = "sharedItemDeleted";
 
-
+Events.Connected = "socketConnected";
 
 Views = new Object();
 Views.Main = "#main";

@@ -45,8 +45,7 @@ namespace Seznam.Web
             Debug.WriteLine("Message: " + ex);
             Debug.WriteLine(ex.StackTrace);
             Server.ClearError();
-            var logger = new LogFactory().GetLogger("file");
-            logger.Error(ex);
+            Trace.TraceError(ex.ToString());
         }
         
         protected void Application_Start()

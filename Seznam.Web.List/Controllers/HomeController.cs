@@ -15,12 +15,10 @@ namespace Seznam.Web.List.Controllers
         }
         private readonly IListService _listService;
         private readonly ISessionContext _sessionContext;
-        private ILogger _logger;
         private Bus _bus;
 
         public HomeController()
         {
-            _logger = new NullLogger();
             _listService = new ListService();
             _sessionContext = SessionContext.Current;
         }
@@ -29,11 +27,10 @@ namespace Seznam.Web.List.Controllers
             base.OnActionExecuting(filterContext);
             _bus = new Bus(Url.Content("~/request.ashx"));
         }
-        public HomeController(IListService listService, ISessionContext sessionContext, ILogger logger)
+        public HomeController(IListService listService, ISessionContext sessionContext)
         {
             _listService = listService;
             _sessionContext = sessionContext;
-            _logger = logger;
         }
         [HttpGet] public ViewResult Index()     { return View(); }
         [HttpGet] public ViewResult Templates() { return View(); }

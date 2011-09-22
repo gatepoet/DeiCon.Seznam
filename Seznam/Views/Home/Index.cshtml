@@ -1,24 +1,7 @@
-﻿@* ReSharper disable Asp.NotResolved *@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-@if (false) {
-<script src="../../Scripts/jquery-1.6.2.js" type="text/javascript"></script>
-<script src="../../Scripts/jquery.mobile-1.0b1.js" type="text/javascript"></script>
-<script src="../../Scripts/jquery.tmpl.js" type="text/javascript"></script>
-<script src="../../Scripts/dojo.js" type="text/javascript"></script>
-<script src="../../Scripts/knockout-1.2.0.js" type="text/javascript"></script>
-<script src="../../Scripts/knockout.mapping.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.util.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.list.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.account.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.knockout.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.app.js" type="text/javascript"></script>
-<script src="../../Scripts/seznam.vars.js" type="text/javascript"></script>
-        
-<link href="../../Content/jquery.mobile-1.0b1.css" rel="stylesheet" type="text/css" />
-<link href="../../Content/site.css" rel="stylesheet" type="text/css" />
-}
+
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"> <title>Seznam &beta;</title>
 
@@ -61,7 +44,7 @@
     @Html.Action("Signup", "Account", new{area="Account"})
 
     <link rel="page" type="text/html" href="@Url.RouteUrl("Account", new { action = "LoggedOut" })"/>
-    <link rel="content" type="text/html" href="@Url.RouteUrl("List", new { action = "Templates" })"/>
+    <link rel="content" type="text/html" href="@Url.RouteUrl("List", new { controller = "Home", action = "Templates" })"/>
     <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { action = "Index" })"/>
     <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Personal", action = "Index" })"/>
     <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Personal", action = "Create" })"/>
@@ -70,4 +53,3 @@
     <link rel="page" type="text/html" href="@Url.RouteUrl("List", new { controller = "Shared", action = "Detail" })"/>
 </body>
 </html>
-@* ReSharper restore Asp.NotResolved *@
